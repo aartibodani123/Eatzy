@@ -46,8 +46,22 @@ public class AuthController {
             cookie.setPath("/");
             cookie.setMaxAge(2 * 60 * 60); // 2 hours
             response.addCookie(cookie);
+            String redirectUrl;
+            switch (role){
+                case "ROLE_ADMIN":
+                    redirectUrl="/admin/dashboard";
+                    break;
+                case "ROLE_RESTAURANT_OWNER"  :
+                    redirectUrl="/restaurant_owner";
+                    break;
+                default:
+                    redirectUrl="/customer/dashboard";
+            }
 
-            return ResponseEntity.ok("Login successful");
+            return ResponseEntity.ok(Map.of(
+                    "role", role,
+                    "redirectUrl",redirectUrl
+            ));
 
         }catch (BadCredentialsException e) {
             return ResponseEntity

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -35,8 +36,8 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-//    private List<Restaurant> restaurants;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Restaurant> restaurants = new ArrayList<>();
 
 }

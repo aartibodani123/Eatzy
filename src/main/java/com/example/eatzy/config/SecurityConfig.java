@@ -40,11 +40,19 @@ public class SecurityConfig {
                         .requestMatchers("/restaurant/**")
                         .hasRole("RESTAURANT_OWNER")
 
+                        .requestMatchers("/admin/**")
+                        .hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .exceptionHandling(ex -> ex
+                    .authenticationEntryPoint(new JwtAuthEntryPoint())   // 401
+                    .accessDeniedHandler(new JwtAccessDeniedHandler())  // 403
                 );
+
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
 

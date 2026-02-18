@@ -59,8 +59,7 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
 
     })
     .then(data => {
-        localStorage.setItem("token", data.token);
-        window.location.href = "${pageContext.request.contextPath}/dashboard";
+        window.location.href = "${pageContext.request.contextPath}" +data.redirectUrl;
     })
     .catch(error => {
         alert("Invalid Email or Password");

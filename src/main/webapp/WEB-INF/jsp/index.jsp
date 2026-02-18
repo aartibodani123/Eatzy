@@ -9,7 +9,7 @@
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style1.css">
+     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 
     <style>
         body {
