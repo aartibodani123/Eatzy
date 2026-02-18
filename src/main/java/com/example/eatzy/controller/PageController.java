@@ -13,10 +13,6 @@ public class PageController {
     public String showLoginPage() {
         return "login";
     }
-    @GetMapping("/dashboard")
-    public String dashboardPage() {
-        return "customer-dashboard"; // /WEB-INF/jsp/dashboard.jsp
-    }
     @GetMapping("/")
     public String home() {
         return "index";
@@ -25,5 +21,15 @@ public class PageController {
     @GetMapping("/signup-page")
     public String showSignupPage(){
         return "sign-up";
+    }
+
+    @GetMapping("/restaurant/add-restaurant")
+    public String addRestaurantPage(){
+        return "addRestaurant";
+    }
+
+    @GetMapping("/admin/pending-restaurants-page")
+    public String pendingRestaurantsPage() {
+        return "pending-restaurants"; // pending-restaurants.jsp
     }
 }
