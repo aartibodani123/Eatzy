@@ -6,6 +6,7 @@ import com.example.eatzy.model.Role;
 import com.example.eatzy.model.Status;
 import com.example.eatzy.model.User;
 import com.example.eatzy.repository.RestaurantRepository;
+import com.example.eatzy.repository.UserRepository;
 import com.example.eatzy.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import java.nio.file.AccessDeniedException;
 public class RestaurantServiceImpl implements RestaurantService {
     @Autowired
     RestaurantRepository repo;
+    @Autowired
+    UserRepository userRepository;
     public RestaurantDTO  addRestuarantDetails(RestaurantDTO rest, User owner) throws AccessDeniedException {
         Restaurant restaurant=new Restaurant();
         restaurant.setName(rest.getName());
@@ -37,8 +40,5 @@ public class RestaurantServiceImpl implements RestaurantService {
         response.setLocation(saved.getLocation());
         response.setPhone(saved.getPhone());
         return response;
-
-
-
     }
 }

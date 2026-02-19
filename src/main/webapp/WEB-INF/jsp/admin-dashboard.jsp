@@ -47,7 +47,7 @@ fetch("${pageContext.request.contextPath}/admin/countRestaurants")
 document.getElementById("hamburgerBtn").addEventListener("click", function () {
         document.getElementById("sidebar").classList.toggle("open");
             document.querySelector(".dashboard").classList.toggle("shift");
-        });
+ });
 </script>
 
 </body>
