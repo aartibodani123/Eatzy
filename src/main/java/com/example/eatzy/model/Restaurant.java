@@ -7,6 +7,7 @@ import org.hibernate.annotations.AnyDiscriminatorImplicitValues;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,12 +17,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "restaurants")
-@Getter
-@Setter
 public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long restaurant_id;
+    @Column(name = "restaurant_id")
+    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -54,7 +54,7 @@ public class Restaurant {
     private String rejectionReason;
 
     @CreationTimestamp
-    private Date created_at;
+    private LocalDateTime created_at;
 
     @OneToMany(
             mappedBy = "restaurant",
@@ -67,7 +67,5 @@ public class Restaurant {
         return this.active;
     }
 
-    public Long getId() {
-        return this.restaurant_id;
-    }
+
 }

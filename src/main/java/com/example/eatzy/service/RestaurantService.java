@@ -8,4 +8,6 @@ import java.nio.file.AccessDeniedException;
 
 public interface RestaurantService {
     RestaurantDTO  addRestuarantDetails(RestaurantDTO rest, User owner) throws AccessDeniedException;
+
+
 }

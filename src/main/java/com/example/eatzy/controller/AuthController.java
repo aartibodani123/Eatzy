@@ -52,7 +52,7 @@ public class AuthController {
                     redirectUrl="/admin/dashboard";
                     break;
                 case "ROLE_RESTAURANT_OWNER"  :
-                    redirectUrl="/restaurant_owner";
+                    redirectUrl="/restaurant/dashboard";
                     break;
                 default:
                     redirectUrl="/customer/dashboard";
