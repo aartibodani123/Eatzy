@@ -1,4 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+
 <html>
 <head>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/slidebar.css">
@@ -15,9 +17,13 @@
     </c:if>
 
     <!-- Owner Menu -->
-    <c:if test="${pageContext.request.isUserInRole('OWNER')}">
-        <a href="/owner/add-restaurant">Add Restaurant</a>
-        <a href="/owner/my-restaurants">My Restaurants</a>
+    <c:if test="${pageContext.request.isUserInRole('RESTAURANT_OWNER')}">
+            <a href="/restaurant/dashboard" class="nav-link" data-page="">Dashboard</a>
+            <a href="/restaurant/profile" class="nav-link" >Restaurant Profile</a>
+            <a href="/restaurant/menu" class="nav-link" >Menu Management</a>
+            <a href="/restaurant/gallery" class="nav-link">Gallery</a>
+            <a href="/restaurant/hours" class="nav-link">Opening Hours</a>
+            <a href="/logout">Logout</a></li>
     </c:if>
 
     <a href="/logout">Logout</a>
