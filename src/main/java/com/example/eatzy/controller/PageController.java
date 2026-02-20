@@ -15,7 +15,7 @@ public class PageController {
     }
     @GetMapping("/")
     public String home() {
-        return "index";
+        return "home-page";
     }
 
     @GetMapping("/signup-page")

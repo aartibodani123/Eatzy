@@ -1,39 +1,47 @@
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Customer Login</title>
-     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login-page.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <title>Login | Eatzy</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/home-page.css">
 </head>
 
-<body class="login-page center">
+<body class="auth-page">
 
-<div class="login-card">
-    <h2 class="title">Welcome Back !</h2>
-    <p class="subtitle">Login to your customer account</p>
+<div class="auth-container">
 
-    <c:if test="${not empty message}">
-        <p class="success-msg">${message}</p>
-    </c:if>
+    <div class="auth-card">
+        <h2>Welcome Back 👋</h2>
+        <p class="subtitle">Sign in to your Eatzy account</p>
 
-    <c:if test="${not empty error}">
-        <p class="error-msg">${error}</p>
-    </c:if>
+        <c:if test="${not empty message}">
+            <p class="success-msg">${message}</p>
+        </c:if>
 
-    <form id="loginForm">
-        <input type="email" id="email" placeholder="Email" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <button type="submit" class="primary-btn">Login</button>
-    </form>
+        <c:if test="${not empty error}">
+            <p class="error-msg">${error}</p>
+        </c:if>
 
-    <p class="signup-text">
-        New user?
-        <a href="${pageContext.request.contextPath}/customers/signup">Sign up</a>
-    </p>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Email address" required>
+            <input type="password" id="password" placeholder="Password" required>
+
+            <button type="submit" class="primary-btn full-width">
+                Sign In
+            </button>
+        </form>
+
+        <p class="signup-text">
+            New user?
+            <a href="${pageContext.request.contextPath}/customers/signup">
+                Create an account
+            </a>
+        </p>
+    </div>
+
 </div>
 
-</body>
 <script>
 document.getElementById("loginForm").addEventListener("submit", function(e) {
     e.preventDefault();
@@ -56,10 +64,10 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
             throw new Error("Invalid credentials");
         }
         return response.json();
-
     })
     .then(data => {
-        window.location.href = "${pageContext.request.contextPath}" +data.redirectUrl;
+        window.location.href =
+            "${pageContext.request.contextPath}" + data.redirectUrl;
     })
     .catch(error => {
         alert("Invalid Email or Password");
@@ -67,4 +75,5 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
 });
 </script>
 
+</body>
 </html>
