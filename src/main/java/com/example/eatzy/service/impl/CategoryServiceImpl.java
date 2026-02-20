@@ -30,6 +30,8 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElseThrow(()->new ResourceAccessDeniedException("Access Denied"));
         Restaurant restaurant=restaurantRepository.findByIdAndOwner(restaurantId,owner)
                 .orElseThrow(()->new InvalidOperationException("Invalid Restaurant"));
+        System.out.println("EMAIL = " + email);
+        System.out.println("RESTAURANT ID = " + restaurantId);
         return categoryRepository.findByRestaurant(restaurant);
     }
 

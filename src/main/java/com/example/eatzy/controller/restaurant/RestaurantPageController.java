@@ -1,6 +1,7 @@
 package com.example.eatzy.controller.restaurant;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -25,9 +26,14 @@ public class RestaurantPageController {
         return "restaurants/restaurant-gallery";
     }
 
-    @RequestMapping("hours")
+    @RequestMapping("/hours")
     public String restaurantHours(){
         return "restaurants/restaurant-hours";
+    }
+
+    @GetMapping("/menuManagement")
+    public String menuManagement(){
+        return "restaurants/add-menuCategory";
     }
 
 }
