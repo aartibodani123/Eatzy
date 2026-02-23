@@ -26,6 +26,9 @@
             <a href("/restaurant/menuManagement" class="nav-link">Menu Management</a>
             <a href="/logout">Logout</a></li>
     </c:if>
+    <c:if test="${pageContext.request.isUserInRole('CUSTOMER')}">
+            <a href="/customer/browse-restaurant" id="/browserestaurant">Browse restaurant</a>
+     </c:if>
 
     <a href="/logout">Logout</a>
 </div>
