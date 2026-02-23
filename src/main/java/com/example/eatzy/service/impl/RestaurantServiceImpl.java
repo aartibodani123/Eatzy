@@ -1,6 +1,7 @@
 package com.example.eatzy.service.impl;
 
 import com.example.eatzy.dto.RestaurantDTO;
+import com.example.eatzy.dto.RestaurantResponseDTO;
 import com.example.eatzy.model.Restaurant;
 import com.example.eatzy.model.Role;
 import com.example.eatzy.model.Status;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
+import java.util.List;
+
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
     @Autowired
@@ -40,5 +43,24 @@ public class RestaurantServiceImpl implements RestaurantService {
         response.setLocation(saved.getLocation());
         response.setPhone(saved.getPhone());
         return response;
+    }
+
+
+    public List<RestaurantResponseDTO> findRestaurantsByArea(String area) {
+        if (area == null || area.trim().isEmpty()) {
+            throw new IllegalArgumentException("Area must not be empty");
+        }
+        List<Restaurant> restaurants = repo.findByAreaIgnoreCase(area);
+        return restaurants.stream()
+                .map(this::toDto)
+                .toList();
+    }
+    private RestaurantResponseDTO toDto(Restaurant restaurant) {
+        RestaurantResponseDTO dto = new RestaurantResponseDTO();
+        dto.setId(restaurant.getId());
+        dto.setName(restaurant.getName());
+        dto.setArea(restaurant.getArea());
+        dto.setLocation(restaurant.getLocation());
+        return dto;
     }
 }

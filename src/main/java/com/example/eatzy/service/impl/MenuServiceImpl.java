@@ -4,6 +4,7 @@ import com.example.eatzy.common.exception.InvalidOperationException;
 import com.example.eatzy.common.exception.ResourceAccessDeniedException;
 import com.example.eatzy.common.exception.ResourceNotFoundException;
 import com.example.eatzy.dto.MenuItemRequest;
+import com.example.eatzy.dto.MenuItemResponseDTO;
 import com.example.eatzy.model.*;
 //import com.example.eatzy.repository.CategoryRepository;
 import com.example.eatzy.repository.CategoryRepository;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -78,5 +80,23 @@ public class MenuServiceImpl implements MenuService {
         menuItemRepository.save(menuItem);
         return request;
 
+    }
+
+    @Override
+    public List<MenuItemResponseDTO> getMenuByRestaurant(Long id) {
+        if(!restaurantRepository.existsById(id)){
+            throw new ResourceNotFoundException("Restaurant not found with id"+id);
+        }
+        List<MenuItem> items=menuItemRepository.findByRestaurantIdAndAvailableTrue(id);
+        return items.stream().map(this::toDto).toList();
+    }
+    private MenuItemResponseDTO toDto(MenuItem item) {
+        MenuItemResponseDTO dto = new MenuItemResponseDTO();
+        dto.setId(item.getId());
+        dto.setName(item.getName());
+        dto.setPrice(item.getPrice());
+        dto.setDescription(item.getDescription());
+        dto.setAvailable(item.isAvailable());
+        return dto;
     }
 }

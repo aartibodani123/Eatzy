@@ -17,4 +17,9 @@ public interface RestaurantRepository extends JpaRepository<Restaurant ,Long> {
     List<Restaurant> findByStatus(Status status);
 
     Optional<Restaurant> findByIdAndOwner(Long restaurantId, User owner);
+
+    @Query("SELECT DISTINCT r.area FROM Restaurant r where r.status='APPROVED' and r.active=true")
+    List<String> findDistinctAreas();
+
+    List<Restaurant> findByAreaIgnoreCase(String area);
 }
