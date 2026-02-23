@@ -56,3 +56,12 @@
     .content.shift {
         margin-left: 260px;
     }
+    .dashboard {
+        transition: margin-left 0.3s ease;
+        padding: 20px;
+    }
+
+    /* Shift content when sidebar opens */
+    .dashboard.shift {
+        margin-left: 240px;
+    }
