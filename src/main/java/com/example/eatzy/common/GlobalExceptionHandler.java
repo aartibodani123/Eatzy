@@ -1,9 +1,6 @@
 package com.example.eatzy.common;
 
-import com.example.eatzy.common.exception.InvalidOperationException;
-import com.example.eatzy.common.exception.ResourceAccessDeniedException;
-import com.example.eatzy.common.exception.ApiException;
-import com.example.eatzy.common.exception.ResourceNotFoundException;
+import com.example.eatzy.common.exception.*;
 import com.example.eatzy.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,5 +70,17 @@ public class GlobalExceptionHandler {
                 );
 
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(CartRestaurantMismatchException.class)
+    public ResponseEntity<ErrorResponse> handleCartRestaurantMismatchException(CartRestaurantMismatchException ex){
+        ErrorResponse error =
+                new ErrorResponse(
+                        409,
+                        ex.getMessage(),
+                        null
+                );
+        return new ResponseEntity<>(error,HttpStatus.CONFLICT);
+
     }
 }
