@@ -29,4 +29,9 @@ public class CustomerPageController {
         return "view-restaurant-menu";
     }
 
+    @GetMapping("/cart-page")
+    public String cartPage() {
+        return "cart";
+    }
+
 }
