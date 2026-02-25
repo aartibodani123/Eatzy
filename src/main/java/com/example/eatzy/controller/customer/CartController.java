@@ -35,10 +35,8 @@ public class CartController {
         CartResponseDTO response = cartService.addToCart(user.getUserId(),
                 request.getRestaurantId(),
                 request.getMenuItemId()
-
         );
         return ResponseEntity.ok(new ApiResponse<>(200,"Item added to cart",response));
-
     }
     @GetMapping("/cart/view")
     public ResponseEntity<ApiResponse<CartViewResponse>> viewCart(){

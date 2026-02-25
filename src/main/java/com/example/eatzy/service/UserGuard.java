@@ -21,9 +21,14 @@ public class UserGuard {
         if (!Role.CUSTOMER.equals(user.getRole())) {
             throw new ResourceAccessDeniedException("Only customers can place orders");
         }
-
-
-
+        return user;
+    }
+    public User validateRestaurantOwner(String email){
+        User user=userRepository.findByEmail(email)
+                .orElseThrow(()->new ResourceNotFoundException("User not found"));
+        if(!Role.RESTAURANT_OWNER.equals(user.getRole())){
+            throw new ResourceAccessDeniedException(("Only Restaurant owner can access this "));
+        }
         return user;
     }
 }
