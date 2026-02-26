@@ -1,5 +1,6 @@
 package com.example.eatzy.service.impl;
 
+import com.example.eatzy.common.exception.ResourceAccessDeniedException;
 import com.example.eatzy.dto.RestaurantDTO;
 import com.example.eatzy.dto.RestaurantResponseDTO;
 import com.example.eatzy.model.Restaurant;
@@ -55,6 +56,29 @@ public class RestaurantServiceImpl implements RestaurantService {
                 .map(this::toDto)
                 .toList();
     }
+
+    public List<RestaurantResponseDTO> getRestaurantsByOwner(Long ownerId) {
+        return repo.findByOwner_UserId(ownerId)
+                .stream()
+                .map(r -> {
+                    RestaurantResponseDTO dto = new RestaurantResponseDTO();
+                    dto.setId(r.getId());
+                    dto.setName(r.getName());
+                    dto.setArea(r.getArea());
+                    dto.setLocation(r.getLocation());
+                    return dto;
+                })
+                .toList();
+    }
+    public boolean isOwnedBy(Long restaurantId, Long ownerId) {
+        return repo.existsByIdAndOwner_UserId(restaurantId, ownerId);
+    }
+    public Restaurant getOwnedRestaurant(Long restaurantId, Long ownerId) {
+        return repo.findById(restaurantId)
+                .filter(r -> r.getOwner().getUserId().equals(ownerId))
+                .orElseThrow(() -> new ResourceAccessDeniedException("Not your restaurant"));
+    }
+
     private RestaurantResponseDTO toDto(Restaurant restaurant) {
         RestaurantResponseDTO dto = new RestaurantResponseDTO();
         dto.setId(restaurant.getId());

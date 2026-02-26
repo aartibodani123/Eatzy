@@ -6,6 +6,7 @@ import com.example.eatzy.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,4 +23,8 @@ public interface RestaurantRepository extends JpaRepository<Restaurant ,Long> {
     List<String> findDistinctAreas();
 
     List<Restaurant> findByAreaIgnoreCase(String area);
+
+    List<Restaurant> findByOwner_UserId(Long ownerId);
+
+    boolean existsByIdAndOwner_UserId(Long restaurantId, Long ownerId);
 }

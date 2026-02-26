@@ -3,6 +3,7 @@ package com.example.eatzy.service;
 import com.example.eatzy.dto.RestaurantDTO;
 import com.example.eatzy.dto.RestaurantResponseDTO;
 
+import com.example.eatzy.model.Restaurant;
 import com.example.eatzy.model.User;
 import java.util.List;
 
@@ -13,4 +14,7 @@ public interface RestaurantService {
 
 
     List<RestaurantResponseDTO> findRestaurantsByArea(String area);
+    List<RestaurantResponseDTO> getRestaurantsByOwner(Long ownerId);
+    boolean isOwnedBy(Long restaurantId, Long ownerId);
+    Restaurant getOwnedRestaurant(Long restaurantId, Long ownerId);
 }

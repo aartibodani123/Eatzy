@@ -21,8 +21,8 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
     private OrderRepository orderRepository;
 
     public List<OrderResponseDTO> getIncomingOrders(Long restaurantId) {
-        System.out.println("In service now");
-        List<Order> orders= orderRepository.findByRestaurantIdAndStatus(restaurantId,OrderStatus.PLACED);
+
+        List<Order> orders= orderRepository.findByRestaurantId(restaurantId);
         return orders.stream()
                 .map(this::toDto)
                 .toList();
@@ -88,6 +88,7 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
         dto.setId(order.getId());
         dto.setStatus(order.getStatus());
         dto.setTotalAmount(order.getTotalAmount());
+        dto.setUserId(order.getUserId());
         dto.setCreatedAt(order.getCreatedAt());
 
         List<OrderItemResponseDTO> items = order.getItems().stream().map(item -> {
