@@ -83,9 +83,12 @@
           }
 
           if (order.status === "READY") {
-            return `<span style="color:green;">Out for delivery</span>`;
+            return `<button class="out-btn" data-id="${order.id}">Out for Delivery</button>`;
           }
 
+          if (order.status === "OUT_FOR_DELIVERY") {
+            return `<span style="color:green; font-weight:bold;">Out for delivery</span>`;
+          }
           if (order.status === "DELIVERED") {
             return `<span style="color:gray;">Completed</span>`;
           }
@@ -144,6 +147,17 @@
                 console.log("Mark ready order:", rowData.id);
                 markReady(rowData.id);
         });
+        $('#pendingTable').on('click', '.out-btn', function () {
+            const tr = $(this).closest('tr');
+            const rowData = table.row(tr).data();
+
+            if (!rowData?.id) {
+                console.error("No order ID found!", rowData);
+                return;
+            }
+
+            markOutForDelivery(rowData.id);
+        });
         function accept(orderId) {
             console.log("restaurnt id",restaurantId);
             console.log("order id",orderId);
@@ -201,6 +215,22 @@
                 }
             });
         }
+        function markOutForDelivery(orderId) {
+            $.ajax({
+                url: contextPath + '/restaurant/' + restaurantId + '/orders/' + orderId + '/out-for-delivery',
+                type: "POST",
+                contentType: "application/json",
+                success: function () {
+                    table.ajax.reload(null, false);
+                    alert("Order is now out for delivery ");
+                },
+                error: function () {
+                    alert("Failed to mark order as out for delivery");
+                }
+            });
+        }
+
+
 
 
     });
