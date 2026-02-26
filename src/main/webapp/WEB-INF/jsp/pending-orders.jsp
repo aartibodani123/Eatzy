@@ -38,14 +38,15 @@
     // restaurantId is passed from  controller:
     // model.addAttribute("restaurantId", restaurantId);
     const restaurantId = ${restaurantId};
+
     const contextPath = "${pageContext.request.contextPath}";
 
 
     $(document).ready(function () {
-
+        console.log("Restaurnt id ", restaurantId);
         const table = $('#pendingTable').DataTable({
             ajax: {
-                url: `${pageContext.request.contextPath}/restaurant/${restaurantId}/incoming/orders`,
+                url: contextPath + '/restaurant/' + restaurantId + '/incoming/orders',
                 dataSrc: "data"
             },
             columns: [
@@ -58,44 +59,94 @@
                     data: null,
                     orderable: false,
                     searchable: false,
-                    render: function (data, type, row) {
-                        return `
-                            <button class="approve-btn">Accept</button>
-                            <button class="reject-btn">Reject</button>
-                        `;
+                    render: function (order) {
+                         return renderButtons(order);
                     }
                 }
             ]
         });
+        function renderButtons(order) {
 
-        // Accept
-        $('#pendingTable').on('click', '.approve-btn', function() {
-            const tr = $(this).closest('tr');
-            const rowData = table.row(tr).data();
+          if (order.status === "PLACED") {
+            return `
+              <button class="accept-btn" data-id="${order.id}">Accept</button>
+              <button class="reject-btn" data-id="${order.id}">Reject</button>
+            `;
+          }
 
-            if (!rowData || !rowData.id) {
-                return console.error("No order ID found!", rowData);
-            }
-            console.log("order Id" , rowData.id);
-            console.log("restaurnt id",restaurantId);
-            accept(rowData.id);
+          if (order.status === "ACCEPTED") {
+            return `<button class="prepare-btn" data-id="${order.id}">Start Preparing</button>`;
+          }
+
+          if (order.status === "PREPARING") {
+            return `<button class="ready-btn" data-id="${order.id}">Mark Ready</button>`;
+          }
+
+          if (order.status === "READY") {
+            return `<span style="color:green;">Out for delivery</span>`;
+          }
+
+          if (order.status === "DELIVERED") {
+            return `<span style="color:gray;">Completed</span>`;
+          }
+
+          if (order.status === "REJECTED") {
+            return `<span style="color:red;">Rejected</span>`;
+          }
+
+          return "-";
+        }
+        $('#pendingTable').on('click', '.accept-btn', function () {
+              const tr = $(this).closest('tr');
+              const rowData = table.row(tr).data();
+
+              if (!rowData || !rowData.id) {
+                  return console.error("No order ID found!", rowData);
+              }
+              console.log("order Id" , rowData.id);
+              console.log("restaurnt id",restaurantId);
+              accept(rowData.id);
         });
 
-        // Reject
-        $('#pendingTable').on('click', '.reject-btn', function() {
-            const tr = $(this).closest('tr');
-            const rowData = table.row(tr).data();
+        $('#pendingTable').on('click', '.reject-btn', function () {
+               const tr = $(this).closest('tr');
+               const rowData = table.row(tr).data();
 
-            if (!rowData || !rowData.id) {
-                return console.error("No order ID found!", rowData);
-            }
+               if (!rowData || !rowData.id) {
+                    return console.error("No order ID found!", rowData);
+               }
 
-            reject(rowData.id);
+               reject(rowData.id);
         });
 
+        $('#pendingTable').on('click', '.prepare-btn', function () {
+                const tr = $(this).closest('tr');
+                const rowData = table.row(tr).data();
+
+                if (!rowData?.id) {
+                    console.error("No order ID found!", rowData);
+                    return;
+                }
+
+                console.log("Start preparing order:", rowData.id);
+                startPreparing(rowData.id);
+        });
+
+        $('#pendingTable').on('click', '.ready-btn', function () {
+                const tr = $(this).closest('tr');
+                const rowData = table.row(tr).data();
+
+                if (!rowData?.id) {
+                    console.error("No order ID found!", rowData);
+                    return;
+                }
+
+                console.log("Mark ready order:", rowData.id);
+                markReady(rowData.id);
+        });
         function accept(orderId) {
-        console.log("restaurnt id",restaurantId);
-        console.log("order id",orderId);
+            console.log("restaurnt id",restaurantId);
+            console.log("order id",orderId);
             $.ajax({
                 url: contextPath + '/restaurant/' + restaurantId + '/orders/' + orderId + '/accept',
                 type: "POST",
@@ -104,29 +155,53 @@
                     alert("Order accepted ");
                 },
                 error: function(err) {
-                    console.error("Accept failed", err);
-                    alert("Accept failed");
+                     console.error("Accept failed", err);
+                     alert("Accept failed");
                 }
             });
         }
-
         function reject(orderId) {
-
-
             $.ajax({
                 url: contextPath + '/restaurant/' + restaurantId + '/orders/' + orderId + '/reject',
                 type: "POST",
                 contentType: "application/json",
                 success: function() {
-                    table.ajax.reload(null, false);
-                    alert("Order rejected ");
+                     table.ajax.reload(null, false);
+                     alert("Order rejected ");
                 },
                 error: function(err) {
-                    console.error("Reject failed", err);
-                    alert("Reject failed");
+                     console.error("Reject failed", err);
+                     alert("Reject failed");
                 }
             });
         }
+        function startPreparing(orderId) {
+            $.ajax({
+                url: contextPath+ '/restaurant/' + restaurantId + '/orders/' + orderId + '/prepare',
+                type: "POST",
+                contentType: "application/json",
+                success: function(){
+                    table.ajax.reload(null,false);
+                },
+                error: function(){
+                    alert("Couldnt start preparing");
+                }
+            });
+        }
+        function markReady(orderId) {
+            $.ajax({
+                url: contextPath+ '/restaurant/' + restaurantId + '/orders/' + orderId + '/ready',
+                type: "POST",
+                contentType: "application/json",
+                success: function(){
+                    table.ajax.reload(null,false);
+                },
+                error: function(){
+                    alert("Order not ready yet");
+                }
+            });
+        }
+
 
     });
 </script>

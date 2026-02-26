@@ -20,5 +20,4 @@ public interface RestaurantOrderService {
     boolean isValidTransition(OrderStatus current, OrderStatus next);
 
 
-
 }

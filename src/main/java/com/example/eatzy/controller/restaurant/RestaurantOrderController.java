@@ -2,6 +2,7 @@ package com.example.eatzy.controller.restaurant;
 
 import com.example.eatzy.common.ApiResponse;
 import com.example.eatzy.dto.OrderResponseDTO;
+import com.example.eatzy.model.OrderStatus;
 import com.example.eatzy.model.User;
 import com.example.eatzy.service.RestaurantGuard;
 import com.example.eatzy.service.RestaurantOrderService;
@@ -63,5 +64,21 @@ public class RestaurantOrderController {
         restaurantGuard.validateOwner(restaurantId, user);
 
         return orderService.rejectOrder(orderId, restaurantId);
+    }
+    @PostMapping("/{restaurantId}/orders/{orderId}/prepare")
+    public OrderResponseDTO prepareOrder(@PathVariable Long restaurantId, @PathVariable Long orderId){
+        String email=SecurityContextHolder.getContext().getAuthentication().getName();
+        User user=userGuard.validateRestaurantOwner(email);
+        restaurantGuard.validateOwner(restaurantId, user);
+        return orderService.updateStatus(orderId, OrderStatus.PREPARING,restaurantId);
+
+    }
+    @PostMapping("/{restaurantId}/orders/{orderId}/ready")
+    public OrderResponseDTO markReady(@PathVariable Long restaurantId, @PathVariable Long orderId){
+        String email=SecurityContextHolder.getContext().getAuthentication().getName();
+        User user=userGuard.validateRestaurantOwner(email);
+        restaurantGuard.validateOwner(restaurantId, user);
+        return orderService.updateStatus(orderId, OrderStatus.READY,restaurantId);
+
     }
 }
