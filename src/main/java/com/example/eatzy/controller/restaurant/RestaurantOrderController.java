@@ -30,6 +30,9 @@ public class RestaurantOrderController {
         String email=auth.getName();
         User user=userGuard.validateRestaurantOwner(email);
         restaurantGuard.validateOwner(restaurantId,user);
+
+        List<OrderResponseDTO> responseDTO=orderService.getIncomingOrders(restaurantId);
+        System.out.println("response size "+responseDTO.size());
         return ResponseEntity.ok(new ApiResponse<>(200,"Incoming orders",orderService.getIncomingOrders(restaurantId)));
     }
 
