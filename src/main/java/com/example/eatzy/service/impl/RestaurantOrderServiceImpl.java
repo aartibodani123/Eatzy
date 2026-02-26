@@ -77,7 +77,9 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
                 return next == OrderStatus.READY;
 
             case READY:
-                return next == OrderStatus.DELIVERED;
+                return next == OrderStatus.OUT_FOR_DELIVERY;
+            case OUT_FOR_DELIVERY:
+                return next== OrderStatus.DELIVERED;
 
             default:
                 return false;

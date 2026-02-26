@@ -1,5 +1,6 @@
 package com.example.eatzy.service.impl;
 
+import com.example.eatzy.dto.TrackOrderResponse;
 import com.example.eatzy.model.*;
 import com.example.eatzy.repository.CartRepository;
 import com.example.eatzy.repository.OrderItemRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -50,6 +52,39 @@ public class OrderServiceImpl implements OrderService {
 
         cartRepository.delete(cart);
         return savedOrder;
+
+    }
+
+    public Order getOrderForUser(Long orderId, Long userId) {
+        return orderRepository.findByIdAndUserId(orderId,userId)
+                .orElseThrow(()->new RuntimeException("Order not found"));
+
+    }
+    public Order confirmDelivery(Long orderId, Long userId) {
+        Order order = orderRepository.findByIdAndUserId(orderId, userId)
+                .orElseThrow(() -> new RuntimeException("Order not found or not yours"));
+
+        if (order.getStatus() != OrderStatus.OUT_FOR_DELIVERY) {
+            throw new IllegalStateException("Cannot confirm delivery yet");
+        }
+
+        order.setStatus(OrderStatus.DELIVERED);
+        return orderRepository.save(order);
+    }
+
+    @Override
+    public List<TrackOrderResponse> allOrders(Long userId) {
+        List<Order> orders = orderRepository.findAllByUserId(userId);
+        return orders.stream()
+                .map(this::toDTO)
+                .toList();
+
+
+    }
+
+    public TrackOrderResponse toDTO(Order order){
+        TrackOrderResponse trackOrderResponse =new TrackOrderResponse(order);
+        return trackOrderResponse;
 
     }
 }
