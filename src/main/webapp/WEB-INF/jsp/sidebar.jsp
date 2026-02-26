@@ -23,7 +23,8 @@
             <a href="/restaurant/menuManagement" class="nav-link" >Menu Management</a>
             <a href="/restaurant/gallery" class="nav-link">Gallery</a>
             <a href="/restaurant/hours" class="nav-link">Opening Hours</a>
-            <a href("/restaurant/menuManagement" class="nav-link">Menu Management</a>
+            <a href="/restaurant/menuManagement" class="nav-link">Menu Management</a>
+            <a href="/restaurant/get/all/restaurants" class="nav-link">manage restaurants</a>
             <a href="/logout">Logout</a></li>
     </c:if>
     <c:if test="${pageContext.request.isUserInRole('CUSTOMER')}">
