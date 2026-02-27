@@ -30,6 +30,7 @@
     <c:if test="${pageContext.request.isUserInRole('CUSTOMER')}">
             <a href="/customer/browse-restaurant" id="/browserestaurant">Browse restaurant</a>
             <a href="/customer/cart-page">My cart</a>
+            <a href="/customer/orders">Orders </a>
      </c:if>
 
     <a href="/logout">Logout</a>

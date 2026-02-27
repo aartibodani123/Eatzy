@@ -1,14 +1,28 @@
 package com.example.eatzy.controller.customer;
 
+import com.example.eatzy.dto.TrackOrderResponse;
+import com.example.eatzy.model.User;
+import com.example.eatzy.service.OrderService;
+import com.example.eatzy.service.UserGuard;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/customer")
 public class CustomerPageController {
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private UserGuard userGuard;
     @RequestMapping("/dashboard")
     public String customerDashboard(){
         return "customer-dashboard";
@@ -33,5 +47,30 @@ public class CustomerPageController {
     public String cartPage() {
         return "cart";
     }
+
+//    @GetMapping("/orders")
+//    public String myOrders(Model model){
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//
+//        System.out.println("Authorities: " + auth.getAuthorities());
+//        System.out.println("Principal: " + auth.getPrincipal());
+//
+//        String email = auth.getName();
+//        User user = userGuard.validateCustomer(email);
+//        List<TrackOrderResponse> orders = orderService.allOrders(user.getUserId());
+//        model.addAttribute("orders", orders);
+//
+//        return "customer-orders";
+//    }
+        @GetMapping("/orders")
+        public String myOrders(Model model){
+            return "customer-orders";
+        }
+    @GetMapping("/orders/{orderId}/track-page")
+    public String trackOrderPage(@PathVariable Long orderId, Model model) {
+        model.addAttribute("orderId", orderId);
+        return "track-order";
+    }
+
 
 }

@@ -81,4 +81,12 @@ public class RestaurantOrderController {
         return orderService.updateStatus(orderId, OrderStatus.READY,restaurantId);
 
     }
+    @PostMapping("/{restaurantId}/orders/{orderId}/out-for-delivery")
+    public OrderResponseDTO outForDelivery(@PathVariable Long restaurantId, @PathVariable Long orderId){
+        String email=SecurityContextHolder.getContext().getAuthentication().getName();
+        User user=userGuard.validateRestaurantOwner(email);
+        restaurantGuard.validateOwner(restaurantId, user);
+        return orderService.updateStatus(orderId, OrderStatus.OUT_FOR_DELIVERY,restaurantId);
+
+    }
 }
