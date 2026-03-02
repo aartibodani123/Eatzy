@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/WEB-INF/jsp/header.jsp" %>
 <html>
 <head>
     <title>Add Restaurant</title>
@@ -16,6 +17,9 @@
 
 <p id="message"></p>
 <script>
+    function getToken() {
+         return sessionStorage.getItem("jwt"); // same key as login.jsp
+    }
     $("#addRestaurantForm").on("submit", function (e) {
         e.preventDefault();
 

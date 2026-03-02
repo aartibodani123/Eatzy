@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/jsp/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -75,12 +76,10 @@ $('#ordersTable tbody').on('click', '.track-btn', function() {
     $.ajax({
         url: `${contextPath}/customer/orders/${orderId}/track`,
         type: "GET",
-        xhrFields: {
-            withCredentials: true // ensures cookies/session are sent
-        },
+
         success: function(res){
             if(res.status === 200){
-                // Show tracking info in a modal or alert
+
                 alert("Order Tracking Info:\n" + JSON.stringify(res.data, null, 2));
             } else {
                 alert("Unable to fetch order tracking");

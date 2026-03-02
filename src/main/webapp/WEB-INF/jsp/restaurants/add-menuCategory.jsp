@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/WEB-INF/jsp/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,11 +38,6 @@
 <script>
     const BASE_URL = "http://localhost:8080";
 
-    function getToken() {
-        return localStorage.getItem("token");
-    }
-
-    // Load categories when restaurantId changes
     $(document).on("input", "#menuRestaurantId", function () {
         const restaurantId = parseInt($(this).val());
 
@@ -58,9 +54,6 @@
         $.ajax({
             url: BASE_URL + "/restaurant/" + restaurantId + "/categories",
             type: "GET",
-            xhrFields: {
-                withCredentials: true
-            },
             success: function (res) {
                 console.log("Categories API response:", res);
 
@@ -149,11 +142,14 @@ $("#addMenuItemForm").submit(function (e) {
     };
 
     $.ajax({
-        url: BASE_URL + "/restaurant/add/MenuItem", // make sure case matches backend
+        url: BASE_URL + "/restaurant/add/MenuItem",
         type: "POST",
         contentType: "application/json",
+        headers: {
+           "Authorization": "Bearer " + getToken()
+        },
         data: JSON.stringify(data),
-        xhrFields: { withCredentials: true },
+
         success: function (res) {
             alert(res.message);
             $("#itemName").val("");
