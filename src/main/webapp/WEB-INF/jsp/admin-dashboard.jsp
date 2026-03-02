@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="/WEB-INF/jsp/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,57 +31,23 @@
     </div>
 </div>
 
-<a href="#" id="logoutBtn">Logout</a>
+<a href="${pageContext.request.contextPath}/logout">Logout</a>
 
 <script>
-    const BASE_URL = "${pageContext.request.contextPath}";
-    const token = sessionStorage.getItem("jwt");
-
-    function authFetch(url) {
-        return fetch(url, {
-            headers: {
-                "Authorization": "Bearer " + token
-            }
-        });
-    }
-
-    authFetch(BASE_URL + "/admin/countUsers")
-        .then(res => {
-            if (res.status === 401 || res.status === 403) {
-                window.location.href = BASE_URL + "/login-page";
-                return;
-            }
-            return res.json();
-        })
-        .then(data => {
-            if (data) {
-                document.getElementById("totalCustomers").innerText = data.totalCustomers;
-            }
-        });
-
-    authFetch(BASE_URL + "/admin/countRestaurants")
-        .then(res => {
-            if (res.status === 401 || res.status === 403) {
-                sessionStorage.removeItem("jwt");
-                window.location.href = BASE_URL + "/login-page";
-                return;
-            }
-            return res.json();
-        })
-        .then(data => {
-            if (data) {
-                document.getElementById("totalRestaurants").innerText = data.totalRestaurant;
-            }
-        });
-
-    document.getElementById("hamburgerBtn").addEventListener("click", function () {
+fetch("${pageContext.request.contextPath}/admin/countUsers")
+.then(res => res.json())
+.then(data=>{
+    document.getElementById("totalCustomers").innerText=data.totalCustomers;
+    });
+fetch("${pageContext.request.contextPath}/admin/countRestaurants")
+.then(res => res.json())
+.then(data=>{
+    document.getElementById("totalRestaurants").innerText=data.totalRestaurant;
+    });
+document.getElementById("hamburgerBtn").addEventListener("click", function () {
         document.getElementById("sidebar").classList.toggle("open");
-        document.querySelector(".dashboard").classList.toggle("shift");
-    });
-    document.getElementById("logoutBtn").addEventListener("click", function () {
-        sessionStorage.removeItem("jwt");
-        window.location.href = "${pageContext.request.contextPath}/login-page";
-    });
+            document.querySelector(".dashboard").classList.toggle("shift");
+ });
 </script>
 
 </body>

@@ -13,98 +13,58 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
- @Configuration
+@Configuration
 public class SecurityConfig {
     @Autowired
     private JwtAuthFilter jwtAuthFilter;
-
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/auth/**", "/signup-page", "/login-page", "/login", "/signup-page", "/css/**", "/images/**", "/jsp/**", "/WEB-INF/**")
-                        .permitAll()
+                .authorizeHttpRequests(auth ->auth
+                        .requestMatchers(
+                                "/",
+                                "/auth/**",
+                                "/signup-page",
+                                "/login-page",
+                                "/login",
+                                "/signup-page",
+                                "/css/**",
+                                "/images/**",
+                                "/jsp/**",
+                                "/WEB-INF/**").permitAll()
 
-                        .requestMatchers("/customer/**").hasRole("CUSTOMER")
-                        .requestMatchers("/restaurant/**").hasRole("RESTAURANT_OWNER")
-                        .requestMatchers("/admin/**").hasRole("ADMIN") // Ensure /admin/** paths require ADMIN role
+                        .requestMatchers("/customer/**")
+                        .hasRole("CUSTOMER")
+
+                        .requestMatchers("/restaurant/**")
+                        .hasRole("RESTAURANT_OWNER")
+
+                        .requestMatchers("/admin/**")
+                        .hasRole("ADMIN")
 
                         .anyRequest().authenticated()
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint(new JwtAuthEntryPoint())  // 401 Unauthorized
-                        .accessDeniedHandler(new JwtAccessDeniedHandler()) // 403 Forbidden
+                        .authenticationEntryPoint(new JwtAuthEntryPoint())   // 401
+                        .accessDeniedHandler(new JwtAccessDeniedHandler())  // 403
                 );
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
+
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-}
 
-//@Configuration
-//public class SecurityConfig {
-//    @Autowired
-//    private JwtAuthFilter jwtAuthFilter;
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-//        http
-//                .csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests(auth ->auth
-//                        .requestMatchers(
-//                                "/",
-//                                "/auth/**",
-//                                "/signup-page",
-//                                "/login-page",
-//                                "/login",
-//                                "/signup-page",
-//                                "/css/**",
-//                                "/images/**",
-//                                "/jsp/**",
-//                                "/WEB-INF/**").permitAll()
-//
-//                        .requestMatchers("/customer/**")
-//                        .hasRole("CUSTOMER")
-//
-//                        .requestMatchers("/restaurant/**")
-//                        .hasRole("RESTAURANT_OWNER")
-//
-//                        .requestMatchers("/admin/**")
-//                        .hasRole("ADMIN")
-//
-//                        .anyRequest().authenticated()
-//                )
-//                .sessionManagement(session ->
-//                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                )
-//                .exceptionHandling(ex -> ex
-//                        .authenticationEntryPoint(new JwtAuthEntryPoint())   // 401
-//                        .accessDeniedHandler(new JwtAccessDeniedHandler())  // 403
-//                );
-//
-//        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-//        return http.build();
-//
-//    }
-//
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-//    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-//        return config.getAuthenticationManager();
-//    }
-//
-//}
+}

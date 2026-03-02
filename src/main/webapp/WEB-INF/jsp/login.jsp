@@ -43,33 +43,6 @@
 </div>
 
 <script>
-function loadProtectedPage(url) {
-    const token = sessionStorage.getItem("jwt"); // Get JWT from sessionStorage
-    if (!token) {
-        window.location.href = "${pageContext.request.contextPath}/login-page"; // Redirect if JWT is missing
-        return;
-    }
-
-    fetch(url, {
-        method: "GET",
-        headers: {
-            "Authorization": "Bearer " + token // Send JWT token in Authorization header
-        }
-    })
-    .then(res => {
-        if (!res.ok) throw new Error("Unauthorized");  // Handle 401 Unauthorized
-        return res.text();
-    })
-    .then(html => {
-        document.open();
-        document.write(html);
-        document.close();
-    })
-    .catch(() => {
-        sessionStorage.removeItem("jwt");  // Remove invalid JWT
-        window.location.href = "${pageContext.request.contextPath}/login-page";  // Redirect to login page on failure
-    });
-}
 document.getElementById("loginForm").addEventListener("submit", function(e) {
     e.preventDefault();
 
@@ -93,14 +66,8 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
         return response.json();
     })
     .then(data => {
-      if (!data.accessToken) {
-        throw new Error("Token missing in response");
-      }
-      sessionStorage.setItem("jwt", data.accessToken);
-
-      loadProtectedPage(
-        "${pageContext.request.contextPath}" + data.redirectUrl
-      );
+        window.location.href =
+            "${pageContext.request.contextPath}" + data.redirectUrl;
     })
     .catch(error => {
         alert("Invalid Email or Password");

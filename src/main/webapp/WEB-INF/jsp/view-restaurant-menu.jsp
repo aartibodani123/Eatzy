@@ -67,35 +67,23 @@ $(document).ready(function () {
         }
     });
     $(document).on("click", ".add-to-cart", function () {
-        const btn = $(this);
-        const restaurantId = btn.data("restaurant-id");
-        const menuItemId = btn.data("menu-item-id");
-
-        const token = sessionStorage.getItem("jwt");
-
-        if (!token) {
-            window.location.href = "${pageContext.request.contextPath}/login";
-            return;
-        }
+        const restaurantId = $(this).data("restaurant-id");
+        const menuItemId = $(this).data("menu-item-id");
 
         $.ajax({
             url: contextPath + "/customer/cart/add",
             method: "POST",
-            headers: {
-                "Authorization": "Bearer " + token
-            },
             contentType: "application/json",
-            data: JSON.stringify({ restaurantId, menuItemId }),
+            data: JSON.stringify({
+                restaurantId: restaurantId,
+                menuItemId: menuItemId
+            }),
             success: function(res) {
                 $("#message").text(res.message).css("color", "green");
-                btn.text("Added ✅").prop("disabled", true);
+                   btn.text("Added ✅");
+                   btn.prop("disabled", true);
             },
             error: function(xhr) {
-                if (xhr.status === 401) {
-                    sessionStorage.removeItem("jwt");
-                    window.location.href = contextPath + "/login";
-                    return;
-                }
                 const msg = xhr.responseJSON?.message || "Failed to add to cart";
                 $("#message").text(msg).css("color", "red");
             }

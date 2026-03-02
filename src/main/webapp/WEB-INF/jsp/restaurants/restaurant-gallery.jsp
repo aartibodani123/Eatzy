@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="/WEB-INF/jsp/header.jsp" %>
 <div>
     <h2>Gallery</h2>
     <p>Upload and manage restaurant photos here.</p>

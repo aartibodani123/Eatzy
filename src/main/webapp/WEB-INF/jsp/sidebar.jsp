@@ -1,6 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ include file="/WEB-INF/jsp/header.jsp" %>
 
 <html>
 <head>
@@ -9,57 +8,32 @@
 <div class="hamburger" id="hamburgerBtn">☰</div>
 
 <div class="sidebar" id="sidebar">
-  <div class="title">Eatzy</div>
+    <div class="title">Eatzy</div>
 
-  <!-- Admin Menu -->
-  <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
-       <a href="#" onclick="navigateWithJwt('/admin/pending-restaurants-page')">
-            Pending Requests
-        </a>
-        <a href="#" onclick="loadPage('/admin/users-page')">
-            Users
-        </a>
-  </c:if>
+    <!-- Admin Menu -->
+    <c:if test="${pageContext.request.isUserInRole('ADMIN')}">
+        <a href="/admin/pending-restaurants-page" id="pendingRequestsLink">Pending Requests</a>
+        <a href="/admin/users">Users</a>
+    </c:if>
 
-  <!-- Owner Menu -->
-  <c:if test="${pageContext.request.isUserInRole('RESTAURANT_OWNER')}">
-        <a href="#" onclick="loadPage('/restaurant/dashboard')">Dashboard</a>
-        <a href="#" onclick="loadPage('/restaurant/profile')">Restaurant Profile</a>
-        <a href="#" onclick="loadPage('/restaurant/menuManagement')">Menu Management</a>
-        <a href="#" onclick="loadPage('/restaurant/gallery')">Gallery</a>
-        <a href="#" onclick="loadPage('/restaurant/hours')">Opening Hours</a>
-  </c:if>
+    <!-- Owner Menu -->
+    <c:if test="${pageContext.request.isUserInRole('RESTAURANT_OWNER')}">
+            <a href="/restaurant/dashboard" class="nav-link" data-page="">Dashboard</a>
+            <a href="/restaurant/profile" class="nav-link" >Restaurant Profile</a>
+            <a href="/restaurant/menuManagement" class="nav-link" >Menu Management</a>
+            <a href="/restaurant/gallery" class="nav-link">Gallery</a>
+            <a href="/restaurant/hours" class="nav-link">Opening Hours</a>
+            <a href="/restaurant/menuManagement" class="nav-link">Menu Management</a>
+            <a href="/restaurant/get/all/restaurants" class="nav-link">manage restaurants</a>
+            <a href="/logout">Logout</a></li>
+    </c:if>
+    <c:if test="${pageContext.request.isUserInRole('CUSTOMER')}">
+            <a href="/customer/browse-restaurant" id="/browserestaurant">Browse restaurant</a>
+            <a href="/customer/cart-page">My cart</a>
+            <a href="/customer/orders">Orders </a>
+     </c:if>
 
-  <!-- Customer Menu -->
-  <c:if test="${pageContext.request.isUserInRole('CUSTOMER')}">
-            <a href="#" onclick="loadPage('/customer/browse-restaurant')">Browse Restaurants</a>
-            <a href="#" onclick="loadPage('/customer/cart-page')">My Cart</a>
-            <a href="#" onclick="loadPage('/customer/orders')">Orders</a>
-  </c:if>
-
-  <a href="#" onclick="logout()">Logout</a>
-  <script>
-  function loadProtectedPage(url) {
-    fetch(url, {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer " + sessionStorage.getItem("jwt")
-      }
-    })
-    .then(res => {
-      if (!res.ok) throw new Error("Unauthorized");
-      return res.text();
-    })
-    .then(html => {
-      document.open();
-      document.write(html);
-      document.close();
-    })
-    .catch(() => {
-      sessionStorage.removeItem("jwt");
-      window.location.href = "${pageContext.request.contextPath}/login-page";
-    });
-  }</script>
+    <a href="/logout">Logout</a>
 </div>
 </body>
 </html>
