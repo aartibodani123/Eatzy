@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
     String restaurantId = String.valueOf(request.getParameter("restaurantId"));
-    String restaurantName = request.getParameter("restaurantName"); // You might want to pass this
+    String restaurantName = request.getParameter("restaurantName");
 %>
 <!DOCTYPE html>
 <html>
@@ -38,10 +38,19 @@
         .menu-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 1.5rem;
             margin-bottom: 2rem;
             padding-bottom: 1.5rem;
             border-bottom: 2px solid #f0e4d5;
+            flex-wrap: wrap;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
         }
 
         .back-btn {
@@ -86,6 +95,7 @@
             display: flex;
             align-items: center;
             gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .header-content p i {
@@ -102,6 +112,44 @@
             border: 1px solid #f97316;
         }
 
+        /* Cart Icon */
+        .cart-icon {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: #f97316;
+            color: white;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .cart-icon:hover {
+            background: #e85d0e;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -8px rgba(249, 115, 22, 0.4);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #2e7d32;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border: 2px solid white;
+        }
+
         /* Message Alert */
         #message {
             padding: 1rem 1.5rem;
@@ -114,13 +162,13 @@
             animation: slideIn 0.3s ease;
         }
 
-        #message[style*="color: green"] {
+        #message.success {
             background: #e6f7e6;
             color: #2e7d32 !important;
             border: 1px solid #b7ebc3;
         }
 
-        #message[style*="color: red"] {
+        #message.error {
             background: #fff1f0;
             color: #b34033 !important;
             border: 1px solid #ffcdc7;
@@ -144,7 +192,7 @@
         /* Menu Grid */
         .menu-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.8rem;
             margin-top: 2rem;
         }
@@ -168,7 +216,6 @@
             box-shadow: 0 20px 30px -12px rgba(249, 115, 22, 0.3);
         }
 
-        /* Optional: Add a food image placeholder */
         .card-image {
             height: 160px;
             background: linear-gradient(45deg, #f97316, #ff8c42);
@@ -220,6 +267,43 @@
             font-size: 0.9rem;
             font-weight: 500;
             color: #6b6b6b;
+        }
+
+        /* Quantity Selector */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .qty-btn {
+            width: 36px;
+            height: 36px;
+            border: 2px solid #eaeef2;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #f97316;
+            font-weight: 700;
+        }
+
+        .qty-btn:hover {
+            border-color: #f97316;
+            background: #fff6ed;
+        }
+
+        .qty-input {
+            width: 50px;
+            text-align: center;
+            border: 2px solid #eaeef2;
+            border-radius: 40px;
+            padding: 0.3rem;
+            font-weight: 600;
         }
 
         /* Add to Cart Button */
@@ -327,6 +411,14 @@
                 align-items: flex-start;
             }
 
+            .header-left {
+                width: 100%;
+            }
+
+            .cart-icon {
+                align-self: flex-end;
+            }
+
             .header-content h2 {
                 font-size: 1.8rem;
             }
@@ -350,16 +442,26 @@
 </head>
 <body>
 <div class="container">
-    <!-- Header with Back Button -->
+    <!-- Header with Back Button and Cart -->
     <div class="menu-header">
-
-        <div class="header-content">
-            <h2>Restaurant Menu</h2>
-            <p>
-                <i class="fas fa-store"></i> Restaurant ID: <span class="restaurant-badge"><%= restaurantId %></span>
-                <i class="fas fa-clock"></i> 30-40 min
-            </p>
+        <div class="header-left">
+            <a href="javascript:history.back()" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+            <div class="header-content">
+                <h2><%= restaurantName != null ? restaurantName : "Restaurant Menu" %></h2>
+                <p>
+                    <i class="fas fa-store"></i> <span class="restaurant-badge">ID: <%= restaurantId %></span>
+                    <i class="fas fa-clock"></i> 30-40 min
+                </p>
+            </div>
         </div>
+
+        <!-- View Cart Button with Count -->
+        <a href="${pageContext.request.contextPath}/customer/cart-page" class="cart-icon">
+            <i class="fas fa-shopping-cart"></i> View Cart
+            <span class="cart-count" id="cartCount">0</span>
+        </a>
     </div>
 
     <!-- Message Area for Cart Alerts -->
@@ -367,7 +469,7 @@
 
     <!-- Menu Grid -->
     <div id="menuGrid" class="menu-grid">
-        <div class="loading">Loading menu</div>
+        <div class="loading">Loading delicious menu</div>
     </div>
 </div>
 
@@ -375,6 +477,27 @@
 $(document).ready(function () {
     const restaurantId = "<%= restaurantId %>";
     const contextPath = "${pageContext.request.contextPath}";
+
+    // Load cart count on page load
+    loadCartCount();
+
+    // Function to load cart count
+    function loadCartCount() {
+        $.ajax({
+            url: contextPath + "/customer/cart/view",
+            method: "GET",
+            success: function(res) {
+                const cart = res.data;
+                if (cart && cart.items) {
+                    const totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+                    $('#cartCount').text(totalItems);
+                }
+            },
+            error: function() {
+                console.log("Could not load cart count");
+            }
+        });
+    }
 
     // Show loading state
     $("#menuGrid").html('<div class="loading">Loading delicious menu</div>');
@@ -393,11 +516,12 @@ $(document).ready(function () {
             let html = "";
 
             $.each(menuItems, function(i, item) {
-                // Generate a random food icon based on item name or category
+                // Generate food icon based on category
                 const foodIcon = item.category === 'Beverage' ? 'fa-mug-hot' :
-                                item.category === 'Dessert' ? 'fa-cake-candles' : 'fa-utensils';
+                                item.category === 'Dessert' ? 'fa-cake-candles' :
+                                item.category === 'Starters' ? 'fa-leaf' : 'fa-utensils';
 
-                html += '<div class="card">' +
+                html += '<div class="card" data-item-id="' + item.id + '">' +
                             '<div class="card-image">' +
                                 '<i class="fas ' + foodIcon + '"></i>' +
                             '</div>' +
@@ -406,7 +530,12 @@ $(document).ready(function () {
                                 (item.description ? '<p><i class="fas fa-info-circle"></i> ' + item.description + '</p>' : '') +
                                 '<div class="price">' +
                                     '<i class="fas fa-indian-rupee-sign"></i> ' + item.price +
-                                    ' <small>(incl. taxes)</small>' +
+                                    ' <small>per item</small>' +
+                                '</div>' +
+                                '<div class="quantity-selector">' +
+                                    '<button class="qty-btn minus-btn" data-item-id="' + item.id + '">−</button>' +
+                                    '<input type="number" class="qty-input" id="qty-' + item.id + '" value="1" min="1" max="99" readonly>' +
+                                    '<button class="qty-btn plus-btn" data-item-id="' + item.id + '">+</button>' +
                                 '</div>' +
                                 '<button class="btn add-to-cart" ' +
                                     'data-restaurant-id="' + restaurantId + '" ' +
@@ -425,48 +554,125 @@ $(document).ready(function () {
         }
     });
 
-    // Add to Cart functionality
+    // Quantity selector - Plus button
+    $(document).on('click', '.plus-btn', function() {
+        const itemId = $(this).data('item-id');
+        const input = $('#qty-' + itemId);
+        let val = parseInt(input.val()) || 1;
+        if (val < 99) {
+            input.val(val + 1);
+        }
+    });
+
+    // Quantity selector - Minus button
+    $(document).on('click', '.minus-btn', function() {
+        const itemId = $(this).data('item-id');
+        const input = $('#qty-' + itemId);
+        let val = parseInt(input.val()) || 1;
+        if (val > 1) {
+            input.val(val - 1);
+        }
+    });
+
+    // Add to Cart functionality with quantity
     $(document).on("click", ".add-to-cart", function () {
         const btn = $(this);
+        const card = btn.closest('.card');
+        const itemId = card.data('item-id');
         const restaurantId = $(this).data("restaurant-id");
         const menuItemId = $(this).data("menu-item-id");
+        const quantity = parseInt($('#qty-' + itemId).val()) || 1;
 
-        // Disable button immediately to prevent double clicks
+
         btn.prop("disabled", true);
         btn.html('<i class="fas fa-spinner fa-spin"></i> Adding...');
 
-        $.ajax({
-            url: contextPath + "/customer/cart/add",
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-                restaurantId: restaurantId,
-                menuItemId: menuItemId
-            }),
-            success: function(res) {
-                $("#message")
-                    .html('<i class="fas fa-check-circle"></i> ' + (res.message || 'Item added to cart!'))
-                    .css({"color": "green", "display": "flex"});
+        if (quantity === 1) {
+            // Single item
+            $.ajax({
+                url: contextPath + "/customer/cart/add",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    restaurantId: restaurantId,
+                    menuItemId: menuItemId
+                }),
+                success: handleAddToCartSuccess,
+                error: handleAddToCartError
+            });
+        } else {
+            // Multiple items - using promise to handle all requests
+            const promises = [];
+            for (let i = 0; i < quantity; i++) {
+                promises.push(
+                    $.ajax({
+                        url: contextPath + "/customer/cart/add",
+                        method: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({
+                            restaurantId: restaurantId,
+                            menuItemId: menuItemId
+                        })
+                    })
+                );
+            }
 
-                btn.html('<i class="fas fa-check"></i> Added to Cart');
-                btn.css("background", "#2e7d32");
+            Promise.all(promises)
+                .then(results => {
+                    handleAddToCartSuccess(results[0]);
+                })
+                .catch(error => {
+                    handleAddToCartError(error);
+                });
+        }
 
-                // Auto-hide message after 3 seconds
-                setTimeout(() => {
-                    $("#message").fadeOut();
-                }, 3000);
-            },
-            error: function(xhr) {
-                const msg = xhr.responseJSON?.message || "Failed to add to cart";
-                $("#message")
-                    .html('<i class="fas fa-exclamation-circle"></i> ' + msg)
-                    .css({"color": "red", "display": "flex"});
+        function handleAddToCartSuccess(res) {
+            // Show success message
+            $("#message")
+                .removeClass('error')
+                .addClass('success')
+                .html('<i class="fas fa-check-circle"></i> ' + quantity + ' x ' + card.find('h3').text() + ' added to cart!')
+                .css("display", "flex");
 
-                // Re-enable button on error
+            // Update button
+            btn.html('<i class="fas fa-check"></i> Added to Cart');
+            btn.css("background", "#2e7d32");
+
+            // Update cart count
+            loadCartCount();
+
+            // Auto-hide message after 3 seconds
+            setTimeout(() => {
+                $("#message").fadeOut();
+            }, 3000);
+
+            // Re-enable button after 2 seconds
+            setTimeout(() => {
                 btn.prop("disabled", false);
                 btn.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
-            }
-        });
+                btn.css("background", "");
+                // Reset quantity to 1
+                $('#qty-' + itemId).val(1);
+            }, 2000);
+        }
+
+        function handleAddToCartError(xhr) {
+            const msg = xhr.responseJSON?.message || "Failed to add to cart";
+            $("#message")
+                .removeClass('success')
+                .addClass('error')
+                .html('<i class="fas fa-exclamation-circle"></i> ' + msg)
+                .css("display", "flex");
+
+            // Re-enable button on error
+            btn.prop("disabled", false);
+            btn.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
+
+            // Auto-hide message after 3 seconds
+            setTimeout(() => {
+                $("#message").fadeOut();
+            }, 3000);
+        }
     });
 });
 </script>
