@@ -12,7 +12,7 @@
 <body>
 
 <div class="container">
-    <a href="browseAreas.jsp">← Back</a>
+
     <h2>Restaurants in <%= area %></h2>
 
     <div id="restaurantGrid" class="grid"></div>
