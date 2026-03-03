@@ -1,52 +1,370 @@
-body {
-    font-family: Arial, sans-serif;
-    background: #f9f2f3;
+/* browse-restaurants.css - Eatzy Theme with Images */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* {
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background: linear-gradient(145deg, #fefaf5 0%, #fff6ed 100%);
+    min-height: 100vh;
+    padding: 2rem;
 }
 
 .container {
-    max-width: 1100px;
-    margin: auto;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 2.5rem;
+    box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.15);
 }
 
+/* Header Section */
+.container h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1e1e1e;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+    position: relative;
+    display: inline-block;
+}
+
+.container h2::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 80px;
+    height: 4px;
+    background: #f97316;
+    border-radius: 4px;
+}
+
+.container > p {
+    font-size: 1.1rem;
+    color: #6b6b6b;
+    margin: 1.5rem 0 2rem 0;
+    font-weight: 500;
+}
+
+/* Grid Layout */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.8rem;
+    margin-top: 1rem;
 }
 
+/* Area Cards with Images */
 .card {
     background: white;
-    border-radius: 14px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border: 2px solid #eaeef2;
+    border-radius: 24px;
     cursor: pointer;
-    transition: 0.2s ease;
+    transition: all 0.3s ease;
+    position: relative;
     overflow: hidden;
+    box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.1);
+    height: 280px;
+    display: flex;
+    flex-direction: column;
 }
 
-.card:hover {
-    transform: translateY(-5px);
+/* Card Image Container */
+.card-image {
+    height: 160px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    transition: transform 0.5s ease;
 }
 
-.card img {
+.card:hover .card-image {
+    transform: scale(1.05);
+}
+
+/* Overlay on image */
+.card-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 150px;
-    object-fit: cover;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%);
+}
+
+/* Card Content */
+.card-content {
+    padding: 1.2rem 1.2rem 1.5rem 1.2rem;
+    background: white;
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .card h3 {
-    margin: 10px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1e1e1e;
+    margin-bottom: 0.3rem;
+    transition: color 0.3s ease;
+    text-transform: capitalize;
 }
 
-.card p {
-    margin: 0 10px 10px;
-    color: gray;
+.card:hover h3 {
+    color: #f97316;
 }
 
-a {
-    text-decoration: none;
-    color: #ff5a5f;
-    font-weight: bold;
+/* Restaurant Count Badge */
+.restaurant-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: #fff6ed;
+    color: #f97316;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    border-radius: 40px;
+    margin-top: 0.3rem;
+    border: 1px solid #f97316;
+    width: fit-content;
+}
+
+.restaurant-count i {
+    font-size: 0.8rem;
+}
+
+/* Card Hover Effect */
+.card:hover {
+    transform: translateY(-8px);
+    border-color: #f97316;
+    box-shadow: 0 20px 30px -12px rgba(249, 115, 22, 0.3);
+}
+
+/* Explore Badge (appears on hover) */
+.explore-badge {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: #f97316;
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 40px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.card:hover .explore-badge {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Loading state */
+.loading {
+    text-align: center;
+    padding: 3rem;
+    color: #6b6b6b;
+    font-size: 1.1rem;
+    grid-column: 1 / -1;
+}
+
+.loading::after {
+    content: '...';
+    animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60%, 100% { content: '...'; }
+}
+
+/* Responsive Design */
+
+/* Large Tablets */
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .container h2 {
+        font-size: 2.2rem;
+    }
+}
+
+/* Medium Tablets */
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+
+    .container {
+        padding: 1.5rem;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .container h2 {
+        font-size: 2rem;
+    }
+
+    .card {
+        height: 250px;
+    }
+
+    .card-image {
+        height: 140px;
+    }
+
+    .card h3 {
+        font-size: 1.2rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .container h2 {
+        font-size: 1.8rem;
+    }
+
+    .card {
+        height: 280px;
+    }
+
+    .card-image {
+        height: 160px;
+    }
+}
+
+/* Animation for cards when they load */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+/* Stagger animation for cards */
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.15s; }
+.card:nth-child(3) { animation-delay: 0.2s; }
+.card:nth-child(4) { animation-delay: 0.25s; }
+.card:nth-child(5) { animation-delay: 0.3s; }
+.card:nth-child(6) { animation-delay: 0.35s; }
+.card:nth-child(7) { animation-delay: 0.4s; }
+.card:nth-child(8) { animation-delay: 0.45s; }
+.card:nth-child(9) { animation-delay: 0.5s; }
+.card:nth-child(10) { animation-delay: 0.55s; }
+.card:nth-child(11) { animation-delay: 0.6s; }
+.card:nth-child(12) { animation-delay: 0.65s; }
+
+/* Search Bar Styling (optional) */
+.search-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.search-input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border: 2px solid #eaeef2;
+    border-radius: 60px;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+    background: #f9f9fb;
+}
+
+.search-input:focus {
+    border-color: #f97316;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+}
+
+.search-btn {
+    padding: 1rem 2rem;
+    background: #f97316;
+    color: white;
+    border: none;
+    border-radius: 60px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.search-btn:hover {
+    background: #e85d0e;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -8px rgba(249, 115, 22, 0.4);
+}
+
+/* Error state */
+.error-message {
+    text-align: center;
+    padding: 3rem;
+    background: #fff1f0;
+    border-radius: 20px;
+    color: #b34033;
+    font-weight: 500;
+    border: 2px solid #ffcdc7;
+    grid-column: 1 / -1;
+}
+
+.error-message i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/* Empty state */
+.no-areas {
+    text-align: center;
+    padding: 4rem;
+    background: #f9f9fb;
+    border-radius: 30px;
+    color: #6b6b6b;
+    font-size: 1.1rem;
+    border: 2px dashed #eaeef2;
+    grid-column: 1 / -1;
+}
+
+.no-areas i {
+    font-size: 3rem;
+    color: #f97316;
+    margin-bottom: 1rem;
+    display: block;
 }

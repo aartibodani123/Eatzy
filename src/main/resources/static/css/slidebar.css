@@ -1,67 +1,217 @@
-    .hamburger {
-        position: fixed;
-        top: 15px;
-        left: 15px;
-        font-size: 24px;
-        cursor: pointer;
-        z-index: 1001;
-        background: #1f2937;
-        color: white;
-        padding: 6px 10px;
-        border-radius: 4px;
-    }
+/* slidebar.css - Eatzy theme matching login/signup pages */
 
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: -240px; /* hidden */
-        width: 240px;
-        height: 100vh;
-        background: #1f2937;
-        color: white;
-        transition: left 0.3s ease;
-        z-index: 1000;
-        padding-top: 60px;
-    }
+/* Import Inter font (optional but matches theme) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-    .sidebar.open {
-        left: 0;
-    }
+/* Base sidebar styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background: white;
+    box-shadow: 8px 0 30px -10px rgba(0, 0, 0, 0.15);
+    padding: 2rem 1.5rem;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    overflow-y: auto;
+    border-right: 1px solid #f0e4d5;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
 
-    .sidebar a {
-        display: block;
-        padding: 12px 20px;
-        color: white;
-        text-decoration: none;
-    }
+.sidebar.open {
+    transform: translateX(0);
+}
 
-    .sidebar a:hover {
-        background: #374151;
-    }
+/* Eatzy title/logo */
+.sidebar .title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #f97316;
+    margin-bottom: 2.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f97316;
+    letter-spacing: -0.02em;
+    font-family: 'Inter', sans-serif;
+}
 
-    .sidebar .title {
-        position: absolute;
-        top: 15px;
-        left: 20px;
-        font-size: 18px;
-        font-weight: bold;
-    }
+/* All sidebar links */
+.sidebar a {
+    display: block;
+    padding: 0.9rem 1rem;
+    margin: 0.4rem 0;
+    color: #2e2e2e;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 40px;
+    transition: all 0.2s ease;
+    background: #f9f9fb;
+    border: 1.5px solid transparent;
+    font-family: 'Inter', sans-serif;
+}
 
-    .content {
-        margin-left: 20px;
-        padding: 20px;
-        transition: margin-left 0.3s ease;
-    }
+/* Hover effect for links */
+.sidebar a:hover {
+    background: #fff6ed;
+    border-color: #f97316;
+    transform: translateX(6px);
+    color: #1e1e1e;
+}
 
-    .content.shift {
-        margin-left: 260px;
-    }
-    .dashboard {
-        transition: margin-left 0.3s ease;
-        padding: 20px;
-    }
+/* Specific styling for logout links */
+.sidebar a[href="/logout"] {
+    margin-top: 1.5rem;
+    background: #ffefe5;
+    color: #b34033;
+    font-weight: 600;
+}
 
-    /* Shift content when sidebar opens */
+.sidebar a[href="/logout"]:hover {
+    background: #ffe1d6;
+    border-color: #b34033;
+}
+
+/* Remove duplicate logout if it appears twice (your code has two logout links) */
+.sidebar a[href="/logout"]:last-of-type {
+    margin-top: 0.5rem;
+}
+/* Main content default state */
+.dashboard {
+    margin-left: 0;
+    padding: 2rem;
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* When sidebar is open, push content */
+.dashboard.shift {
+    margin-left: 300px;
+}
+
+/* Responsive - don't shift on mobile */
+@media (max-width: 768px) {
     .dashboard.shift {
-        margin-left: 240px;
+        margin-left: 0;
     }
+}
+/* Hamburger menu button */
+.hamburger {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    font-size: 2rem;
+    background: #f97316;
+    color: white;
+    width: 52px;
+    height: 52px;
+    border-radius: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1100;
+    box-shadow: 0 8px 20px -6px rgba(249, 115, 22, 0.5);
+    transition: all 0.2s;
+    border: 2px solid white;
+    font-family: 'Inter', sans-serif;
+}
+
+.hamburger:hover {
+    background: #e85d0e;
+    transform: scale(1.05);
+}
+
+/* Optional overlay for mobile (you can add this in HTML if needed) */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(3px);
+    z-index: 999;
+    display: none;
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+/* Role-based section styling (implicit via links, but adds visual grouping) */
+.sidebar a:first-of-type {
+    /* First link after title gets a bit of spacing */
+    margin-top: 0.8rem;
+}
+
+/* Different visual treatment for different sections -
+   this automatically styles based on link patterns */
+.sidebar a[href*="admin"],
+.sidebar a[href*="pending"] {
+    /* Admin links - no special style needed, inherits */
+}
+
+.sidebar a[href*="restaurant"],
+.sidebar a[href*="dashboard"],
+.sidebar a[href*="menu"] {
+    /* Owner links */
+}
+
+.sidebar a[href*="customer"],
+.sidebar a[href*="browse"],
+.sidebar a[href*="cart"] {
+    /* Customer links */
+}
+
+/* Scrollbar styling (optional, for better UX) */
+.sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: #f9f9fb;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #f97316;
+    border-radius: 20px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: #e85d0e;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 260px;
+    }
+
+    .hamburger {
+        top: 1rem;
+        left: 1rem;
+        width: 48px;
+        height: 48px;
+        font-size: 1.8rem;
+    }
+}
+
+/* Animation for when sidebar opens */
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* Active link state (optional - you can add class 'active' to current page link) */
+.sidebar a.active {
+    background: #fff6ed;
+    border-color: #f97316;
+    color: #f97316;
+    font-weight: 600;
+}
