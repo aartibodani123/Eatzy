@@ -25,7 +25,6 @@
             <a href="/restaurant/hours" class="nav-link">Opening Hours</a>
             <a href="/restaurant/menuManagement" class="nav-link">Menu Management</a>
             <a href="/restaurant/get/all/restaurants" class="nav-link">manage restaurants</a>
-            <a href="/logout">Logout</a></li>
     </c:if>
     <c:if test="${pageContext.request.isUserInRole('CUSTOMER')}">
             <a href="/customer/browse-restaurant" id="/browserestaurant">Browse restaurant</a>
@@ -33,8 +32,23 @@
             <a href="/customer/orders">Orders </a>
      </c:if>
 
-    <a href="/logout">Logout</a>
+    <a href="javascript:void(0)" class="logoutBtn">Logout</a>
 </div>
+<script>
+        $(".logoutBtn").click(function () {
+            $.ajax({
+               url: "/auth/logout",
+               type: "POST",
+               success: function (response) {
+                  alert("Logged out successfully!");
+                  window.location.href = "/login-page";
+               },
+               error: function () {
+                  alert("Error while logging out.");
+               }
+            });
+        });
+</script>
 </body>
 </html>
 

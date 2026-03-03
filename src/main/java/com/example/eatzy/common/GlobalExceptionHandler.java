@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, ex.getStatus());
     }
-  //unauthorize access
+    //unauthorize access
 
 
     @ExceptionHandler(ResourceAccessDeniedException.class)

@@ -1,38 +1,374 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%
     String restaurantId = String.valueOf(request.getParameter("restaurantId"));
+    String restaurantName = request.getParameter("restaurantName"); // You might want to pass this
 %>
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Restaurant Menu | Eatzy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-            .card {
-                border: 1px solid #ddd;
-                padding: 12px;
-                margin: 10px;
-                width: 200px;
-                display: inline-block;
-                border-radius: 6px;
+        /* Eatzy Theme Menu Page CSS */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #fefaf5 0%, #fff6ed 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 2.5rem;
+            box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Header Section */
+        .menu-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #f0e4d5;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: #f9f9fb;
+            border: 1.5px solid #eaeef2;
+            border-radius: 40px;
+            color: #2e2e2e;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            border-color: #f97316;
+            background: #fff6ed;
+            transform: translateX(-5px);
+        }
+
+        .back-btn i {
+            color: #f97316;
+        }
+
+        .header-content {
+            flex: 1;
+        }
+
+        .header-content h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #1e1e1e;
+            margin-bottom: 0.3rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header-content p {
+            color: #6b6b6b;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-content p i {
+            color: #f97316;
+        }
+
+        .restaurant-badge {
+            background: #fff6ed;
+            color: #f97316;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid #f97316;
+        }
+
+        /* Message Alert */
+        #message {
+            padding: 1rem 1.5rem;
+            border-radius: 40px;
+            margin: 1rem 0 2rem 0;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            animation: slideIn 0.3s ease;
+        }
+
+        #message[style*="color: green"] {
+            background: #e6f7e6;
+            color: #2e7d32 !important;
+            border: 1px solid #b7ebc3;
+        }
+
+        #message[style*="color: red"] {
+            background: #fff1f0;
+            color: #b34033 !important;
+            border: 1px solid #ffcdc7;
+        }
+
+        #message i {
+            font-size: 1.2rem;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
             }
-            .btn {
-                background: #ff6b6b;
-                color: white;
-                border: none;
-                padding: 6px 10px;
-                cursor: pointer;
-                border-radius: 4px;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
+        }
+
+        /* Menu Grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin-top: 2rem;
+        }
+
+        /* Menu Card */
+        .card {
+            background: white;
+            border: 2px solid #eaeef2;
+            border-radius: 24px;
+            padding: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: #f97316;
+            box-shadow: 0 20px 30px -12px rgba(249, 115, 22, 0.3);
+        }
+
+        /* Optional: Add a food image placeholder */
+        .card-image {
+            height: 160px;
+            background: linear-gradient(45deg, #f97316, #ff8c42);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-image i {
+            font-size: 3rem;
+            color: white;
+            opacity: 0.8;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1e1e1e;
+            margin-bottom: 0.8rem;
+        }
+
+        .card p {
+            color: #6b6b6b;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .card p i {
+            color: #f97316;
+            width: 18px;
+        }
+
+        .price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #f97316;
+            margin: 1rem 0 1.2rem 0;
+        }
+
+        .price small {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #6b6b6b;
+        }
+
+        /* Add to Cart Button */
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background: #f97316;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: #e85d0e;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -8px rgba(249, 115, 22, 0.4);
+        }
+
+        .btn:disabled {
+            background: #b7ebc3;
+            color: #2e7d32;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        .btn i {
+            font-size: 1.1rem;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: #6b6b6b;
+            font-size: 1.1rem;
+            grid-column: 1 / -1;
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        /* Empty State */
+        .empty-menu {
+            text-align: center;
+            padding: 4rem;
+            background: #f9f9fb;
+            border-radius: 30px;
+            color: #6b6b6b;
+            font-size: 1.1rem;
+            border: 2px dashed #eaeef2;
+            grid-column: 1 / -1;
+        }
+
+        .empty-menu i {
+            font-size: 3rem;
+            color: #f97316;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* Animation for cards */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 1.5rem;
+            }
+
+            .menu-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-content h2 {
+                font-size: 1.8rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-content h2 {
+                font-size: 1.5rem;
+            }
+
+            .card-image {
+                height: 140px;
+            }
+        }
     </style>
-    <title>Menu</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div class="container">
-    <a href="${pageContext.request.contextPath}/jsp/area-restaurants.jsp">← Back</a>
+    <!-- Header with Back Button -->
+    <div class="menu-header">
 
-    <h2>Restaurant Menu</h2>
-    <div id="message" style="margin:10px 0; font-weight:bold;"></div>
-    <div id="menuGrid"></div>
+        <div class="header-content">
+            <h2>Restaurant Menu</h2>
+            <p>
+                <i class="fas fa-store"></i> Restaurant ID: <span class="restaurant-badge"><%= restaurantId %></span>
+                <i class="fas fa-clock"></i> 30-40 min
+            </p>
+        </div>
+    </div>
+
+    <!-- Message Area for Cart Alerts -->
+    <div id="message" style="display: none;"></div>
+
+    <!-- Menu Grid -->
+    <div id="menuGrid" class="menu-grid">
+        <div class="loading">Loading menu</div>
+    </div>
 </div>
 
 <script>
@@ -40,35 +376,64 @@ $(document).ready(function () {
     const restaurantId = "<%= restaurantId %>";
     const contextPath = "${pageContext.request.contextPath}";
 
+    // Show loading state
+    $("#menuGrid").html('<div class="loading">Loading delicious menu</div>');
+
     $.ajax({
         url: contextPath + "/customer/restaurants/" + restaurantId + "/menu",
         method: "GET",
         success: function(response) {
             const menuItems = response.data;
+
+            if (!menuItems || menuItems.length === 0) {
+                $("#menuGrid").html('<div class="empty-menu"><i class="fas fa-utensils"></i>No menu items available</div>');
+                return;
+            }
+
             let html = "";
 
             $.each(menuItems, function(i, item) {
+                // Generate a random food icon based on item name or category
+                const foodIcon = item.category === 'Beverage' ? 'fa-mug-hot' :
+                                item.category === 'Dessert' ? 'fa-cake-candles' : 'fa-utensils';
+
                 html += '<div class="card">' +
-                '<h3>' + item.name + '</h3>' +
-                '<p>Price: ₹' + item.price + '</p>' +
-                '<p>' + (item.description || '') + '</p>' +
-                '<button class="btn add-to-cart" ' +
-                'data-restaurant-id="' + restaurantId + '" ' +
-                'data-menu-item-id="' + item.id + '">' +
-                'Add to Cart 🛒' +
-                '</button>' +
-                '</div>';
+                            '<div class="card-image">' +
+                                '<i class="fas ' + foodIcon + '"></i>' +
+                            '</div>' +
+                            '<div class="card-content">' +
+                                '<h3>' + item.name + '</h3>' +
+                                (item.description ? '<p><i class="fas fa-info-circle"></i> ' + item.description + '</p>' : '') +
+                                '<div class="price">' +
+                                    '<i class="fas fa-indian-rupee-sign"></i> ' + item.price +
+                                    ' <small>(incl. taxes)</small>' +
+                                '</div>' +
+                                '<button class="btn add-to-cart" ' +
+                                    'data-restaurant-id="' + restaurantId + '" ' +
+                                    'data-menu-item-id="' + item.id + '">' +
+                                    '<i class="fas fa-shopping-cart"></i> Add to Cart' +
+                                '</button>' +
+                            '</div>' +
+                        '</div>';
             });
 
             $("#menuGrid").html(html);
         },
-        error: function() {
-            alert("Failed to load menu");
+        error: function(xhr, status, error) {
+            console.error("Error loading menu:", error);
+            $("#menuGrid").html('<div class="empty-menu"><i class="fas fa-exclamation-circle"></i>Failed to load menu. Please try again.</div>');
         }
     });
+
+    // Add to Cart functionality
     $(document).on("click", ".add-to-cart", function () {
+        const btn = $(this);
         const restaurantId = $(this).data("restaurant-id");
         const menuItemId = $(this).data("menu-item-id");
+
+        // Disable button immediately to prevent double clicks
+        btn.prop("disabled", true);
+        btn.html('<i class="fas fa-spinner fa-spin"></i> Adding...');
 
         $.ajax({
             url: contextPath + "/customer/cart/add",
@@ -79,18 +444,32 @@ $(document).ready(function () {
                 menuItemId: menuItemId
             }),
             success: function(res) {
-                $("#message").text(res.message).css("color", "green");
-                   btn.text("Added ✅");
-                   btn.prop("disabled", true);
+                $("#message")
+                    .html('<i class="fas fa-check-circle"></i> ' + (res.message || 'Item added to cart!'))
+                    .css({"color": "green", "display": "flex"});
+
+                btn.html('<i class="fas fa-check"></i> Added to Cart');
+                btn.css("background", "#2e7d32");
+
+                // Auto-hide message after 3 seconds
+                setTimeout(() => {
+                    $("#message").fadeOut();
+                }, 3000);
             },
             error: function(xhr) {
                 const msg = xhr.responseJSON?.message || "Failed to add to cart";
-                $("#message").text(msg).css("color", "red");
+                $("#message")
+                    .html('<i class="fas fa-exclamation-circle"></i> ' + msg)
+                    .css({"color": "red", "display": "flex"});
+
+                // Re-enable button on error
+                btn.prop("disabled", false);
+                btn.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
             }
         });
     });
 });
-
 </script>
+
 </body>
 </html>
