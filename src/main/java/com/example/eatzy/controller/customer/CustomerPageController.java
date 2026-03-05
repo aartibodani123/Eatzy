@@ -4,6 +4,8 @@ import com.example.eatzy.dto.TrackOrderResponse;
 import com.example.eatzy.model.User;
 import com.example.eatzy.service.OrderService;
 import com.example.eatzy.service.UserGuard;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,10 +25,18 @@ public class CustomerPageController {
     private OrderService orderService;
     @Autowired
     private UserGuard userGuard;
-    @RequestMapping("/dashboard")
-    public String customerDashboard(){
+    @GetMapping("/dashboard")
+    public String customerDashboard(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("========== DASHBOARD ACCESS ==========");
+        System.out.println("Request URI: " + request.getRequestURI());
+        System.out.println("Auth header: " + request.getHeader("Authorization"));
+
+        // Get token from session if you're also using session
+        System.out.println("Session token: " + request.getSession().getAttribute("jwt"));
+
         return "customer-dashboard";
     }
+
 
     @RequestMapping("/browse-restaurant")
     public String browseRestaurant(){
