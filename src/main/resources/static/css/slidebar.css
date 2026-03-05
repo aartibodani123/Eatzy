@@ -61,13 +61,7 @@
     color: #1e1e1e;
 }
 
-/* Specific styling for logout links */
-.sidebar a[href="/logout"] {
-    margin-top: 1.5rem;
-    background: #ffefe5;
-    color: #b34033;
-    font-weight: 600;
-}
+
 
 .sidebar a[href="/logout"]:hover {
     background: #ffe1d6;
