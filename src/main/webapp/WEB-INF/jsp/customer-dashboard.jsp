@@ -5,257 +5,11 @@
     <title>Dashboard | Eatzy</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* Eatzy Theme Dashboard CSS */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(145deg, #fefaf5 0%, #fff6ed 100%);
-            min-height: 100vh;
-        }
-
-        /* Dashboard main content */
-        .dashboard {
-            margin-left: 0;
-            padding: 2rem 2rem 2rem 5rem;
-            transition: margin-left 0.3s ease;
-            min-height: 100vh;
-        }
-
-        .dashboard.shift {
-            margin-left: 280px;
-        }
-
-        /* Welcome Card */
-        .welcome-card {
-            background: white;
-            border-radius: 30px;
-            padding: 2.5rem;
-            box-shadow: 0 20px 40px -15px rgba(249, 115, 22, 0.2);
-            margin-bottom: 2rem;
-            border: 1px solid #f0e4d5;
-        }
-
-        .welcome-card h2 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: #1e1e1e;
-            margin-bottom: 0.8rem;
-        }
-
-        .welcome-card h2 i {
-            color: #f97316;
-            margin-right: 0.5rem;
-        }
-
-        .welcome-card p {
-            font-size: 1.1rem;
-            color: #6b6b6b;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Stats Grid */
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-box {
-            background: white;
-            border-radius: 24px;
-            padding: 1.8rem;
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-            transition: transform 0.2s;
-        }
-
-        .stat-box:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-icon {
-            width: 60px;
-            height: 60px;
-            background: #fff6ed;
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            color: #f97316;
-        }
-
-        .stat-content h3 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #1e1e1e;
-            line-height: 1.2;
-        }
-
-        .stat-content p {
-            color: #6b6b6b;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        /* Quick Actions */
-        .actions-section {
-            background: white;
-            border-radius: 30px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-        }
-
-        .actions-section h3 {
-            font-size: 1.3rem;
-            color: #1e1e1e;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .actions-section h3 i {
-            color: #f97316;
-        }
-
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
-        .action-btn {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            padding: 1rem 1.5rem;
-            background: #f9f9fb;
-            border: 1.5px solid #eaeef2;
-            border-radius: 40px;
-            color: #2e2e2e;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .action-btn:hover {
-            border-color: #f97316;
-            background: #fff6ed;
-            transform: translateX(5px);
-        }
-
-        .action-btn i {
-            color: #f97316;
-            font-size: 1.1rem;
-        }
-
-        /* Logout button */
-        .logout-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.8rem;
-            padding: 1rem 2rem;
-            background: #ffefe5;
-            border: 1.5px solid #ffcdc7;
-            border-radius: 40px;
-            color: #b34033;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s;
-            margin-top: 1rem;
-        }
-
-        .logout-btn:hover {
-            background: #ffe1d6;
-            border-color: #b34033;
-        }
-
-        .logout-btn i {
-            color: #b34033;
-        }
-
-        /* Info Cards */
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .info-card {
-            background: white;
-            border-radius: 24px;
-            padding: 1.5rem;
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
-        }
-
-        .info-card h4 {
-            color: #1e1e1e;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .info-card h4 i {
-            color: #f97316;
-        }
-
-        .info-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.8rem 0;
-            border-bottom: 1px solid #f0e4d5;
-        }
-
-        .info-item:last-child {
-            border-bottom: none;
-        }
-
-        .info-label {
-            color: #6b6b6b;
-        }
-
-        .info-value {
-            color: #1e1e1e;
-            font-weight: 600;
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .dashboard {
-                padding: 1rem 1rem 1rem 4rem;
-            }
-
-            .dashboard.shift {
-                margin-left: 0;
-            }
-
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .welcome-card h2 {
-                font-size: 1.8rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/customer-dashboard.css">
 </head>
 <body>
 
     <jsp:include page="/WEB-INF/jsp/sidebar.jsp" />
-
 
     <div class="dashboard" id="dashboard">
         <!-- Welcome Card -->
@@ -264,7 +18,7 @@
                 <i class="fas fa-hand-peace"></i>
                 Welcome to Dashboard
             </h2>
-            <p>You are logged in as <strong>${pageContext.request.userPrincipal.name}</strong></p>
+            <p>You are logged in as <strong id="userEmail">Loading...</strong></p>
             <div style="display: flex; gap: 1rem; align-items: center;">
                 <span style="background: #f97316; color: white; padding: 0.3rem 1rem; border-radius: 40px; font-size: 0.9rem;">
                     <i class="fas fa-circle" style="font-size: 0.5rem; margin-right: 0.3rem; vertical-align: middle;"></i>
@@ -280,7 +34,7 @@
                     <i class="fas fa-clock"></i>
                 </div>
                 <div class="stat-content">
-                    <h3>30 min</h3>
+                    <h3 id="avgDeliveryTime">30 min</h3>
                     <p>Avg. Delivery Time</p>
                 </div>
             </div>
@@ -289,7 +43,7 @@
                     <i class="fas fa-shopping-bag"></i>
                 </div>
                 <div class="stat-content">
-                    <h3>12</h3>
+                    <h3 id="totalOrders">0</h3>
                     <p>Total Orders</p>
                 </div>
             </div>
@@ -298,7 +52,7 @@
                     <i class="fas fa-heart"></i>
                 </div>
                 <div class="stat-content">
-                    <h3>5</h3>
+                    <h3 id="favorites">0</h3>
                     <p>Favorites</p>
                 </div>
             </div>
@@ -307,7 +61,7 @@
                     <i class="fas fa-tag"></i>
                 </div>
                 <div class="stat-content">
-                    <h3>3</h3>
+                    <h3 id="activeOffers">0</h3>
                     <p>Active Offers</p>
                 </div>
             </div>
@@ -320,19 +74,19 @@
                 Quick Actions
             </h3>
             <div class="action-grid">
-                <a href="#" class="action-btn">
+                <a href="${pageContext.request.contextPath}/customer/restaurants" class="action-btn">
                     <i class="fas fa-utensils"></i>
                     Browse Restaurants
                 </a>
-                <a href="#" class="action-btn">
+                <a href="${pageContext.request.contextPath}/customer/cart" class="action-btn">
                     <i class="fas fa-shopping-cart"></i>
                     View Cart
                 </a>
-                <a href="#" class="action-btn">
+                <a href="${pageContext.request.contextPath}/customer/orders" class="action-btn">
                     <i class="fas fa-history"></i>
                     Order History
                 </a>
-                <a href="#" class="action-btn">
+                <a href="${pageContext.request.contextPath}/customer/profile" class="action-btn">
                     <i class="fas fa-user"></i>
                     My Profile
                 </a>
@@ -348,15 +102,15 @@
                 </h4>
                 <div class="info-item">
                     <span class="info-label">User ID</span>
-                    <span class="info-value">#12345</span>
+                    <span class="info-value" id="userId">Loading...</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Member Since</span>
-                    <span class="info-value">Jan 2024</span>
+                    <span class="info-value" id="memberSince">Loading...</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Last Login</span>
-                    <span class="info-value">Today</span>
+                    <span class="info-value" id="lastLogin">Loading...</span>
                 </div>
             </div>
 
@@ -367,20 +121,20 @@
                 </h4>
                 <div class="info-item">
                     <span class="info-label">Free Delivery</span>
-                    <span class="info-value">✓ Active</span>
+                    <span class="info-value" id="freeDelivery">Loading...</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Member Discount</span>
-                    <span class="info-value">10% OFF</span>
+                    <span class="info-value" id="memberDiscount">Loading...</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">Reward Points</span>
-                    <span class="info-value">250 pts</span>
+                    <span class="info-value" id="rewardPoints">Loading...</span>
                 </div>
             </div>
         </div>
 
-        <!-- Logout Link (styled) -->
+        <!-- Logout Link -->
         <a class="logout-btn" id="logoutBtn">
             <i class="fas fa-sign-out-alt"></i>
             Logout
@@ -388,31 +142,136 @@
     </div>
 
     <script>
+        // Simple TokenManager
+        const TokenManager = {
+            getToken: function() {
+                return sessionStorage.getItem('eatzy_token');
+            },
+            getEmail: function() {
+                return sessionStorage.getItem('eatzy_email');
+            },
+            setUserInfo: function(email, role) {
+                sessionStorage.setItem('eatzy_email', email);
+                sessionStorage.setItem('eatzy_role', role);
+            },
+            clearToken: function() {
+                sessionStorage.removeItem('eatzy_token');
+                sessionStorage.removeItem('eatzy_email');
+                sessionStorage.removeItem('eatzy_role');
+            }
+        };
+
+        // Check if user is authenticated on page load
+        $(document).ready(function() {
+            const token = TokenManager.getToken();
+
+            if (!token) {
+                console.log('No token found, redirecting to login');
+                window.location.href = '${pageContext.request.contextPath}/login-page';
+                return;
+            }
+
+            // Load user data
+            loadUserData();
+        });
+
+
+        function loadUserData() {
+            let email = TokenManager.getEmail();
+
+            if (email) {
+                $('#userEmail').text(email);
+            } else {
+                $.ajax({
+                url: "${pageContext.request.contextPath}/auth/check",
+                type: "GET",
+                headers: {
+                    "Authorization": "Bearer " + TokenManager.getToken()
+                },
+                success: function(data) {
+                    if (data.authenticated) {
+                        $('#userEmail').text(data.email);
+                        sessionStorage.setItem('eatzy_email', data.email);
+                        sessionStorage.setItem('eatzy_role', data.role);
+                    }
+                },
+                error: function() {
+                    $('#userEmail').text('Customer');
+                }
+            });
+        }
+        loadDashboardStats();
+    }
+
+        function loadDashboardStats() {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/customer/dashboard/stats",
+                type: "GET",
+                headers: {
+                   "Authorization": "Bearer " + TokenManager.getToken()
+                },
+                success: function(data) {
+                    $('#totalOrders').text(data.totalOrders || '0');
+                    $('#favorites').text(data.favorites || '0');
+                    $('#activeOffers').text(data.activeOffers || '0');
+                },
+                error: function(xhr) {
+                    if (xhr.status === 401) {
+                        TokenManager.clearToken();
+                        window.location.href = '${pageContext.request.contextPath}/login-page';
+                    }
+                }
+            });
+        }
+
+        // Hamburger menu functionality
         document.getElementById("hamburgerBtn").addEventListener("click", function () {
             document.getElementById("sidebar").classList.toggle("open");
             document.querySelector(".dashboard").classList.toggle("shift");
         });
 
-        document.addEventListener('click', function(event) {
-            const sidebar = document.getElementById('sidebar');
-            const hamburger = document.getElementById('hamburgerBtn');
-
-            if (!sidebar.contains(event.target) && !hamburger.contains(event.target) && sidebar.classList.contains('open')) {
-                sidebar.classList.remove('open');
-                document.querySelector(".dashboard").classList.remove("shift");
+        // Logout
+        $("#logoutBtn").click(function () {
+            if (confirm('Are you sure you want to logout?')) {
+                TokenManager.clearToken();
+                window.location.href = '${pageContext.request.contextPath}/login-page';
             }
         });
-        $("#logoutBtn").click(function () {
+        // Add this at the very beginning of your dashboard script
+        console.log("========== DASHBOARD LOADED ==========");
+        console.log("Current URL:", window.location.href);
+        console.log("Token in storage:", sessionStorage.getItem('eatzy_token') ? "YES" : "NO");
+        console.log("Token value:", sessionStorage.getItem('eatzy_token') ? sessionStorage.getItem('eatzy_token').substring(0, 20) + '...' : 'none');
+        console.log("User email:", sessionStorage.getItem('eatzy_email'));
+        console.log("User role:", sessionStorage.getItem('eatzy_role'));
+
+        // Test if token is being sent in AJAX
+        $.ajaxSetup({
+            beforeSend: function(xhr) {
+                const token = sessionStorage.getItem('eatzy_token');
+                console.log("AJAX BeforeSend - Token present:", token ? "YES" : "NO");
+                if (token) {
+                    console.log("AJAX BeforeSend - Setting header with token:", token.substring(0, 20) + '...');
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                }
+            }
+        });
+
+        // Test a simple API call
+        $(document).ready(function() {
+            console.log("Document ready - testing API call");
+
             $.ajax({
-               url: "/auth/logout",
-               type: "POST",
-               success: function (response) {
-                  alert("Logged out successfully!");
-                  window.location.href = "/login-page";
-               },
-               error: function () {
-                  alert("Error while logging out.");
-               }
+                url: "${pageContext.request.contextPath}/auth/check",
+                type: "GET",
+                success: function(data) {
+                    console.log("Auth check SUCCESS:", data);
+                },
+                error: function(xhr, status, error) {
+                    console.log("Auth check FAILED:", status, error);
+                    console.log("Response status:", xhr.status);
+                    console.log("Response headers:", xhr.getAllResponseHeaders());
+                }
             });
         });
     </script>

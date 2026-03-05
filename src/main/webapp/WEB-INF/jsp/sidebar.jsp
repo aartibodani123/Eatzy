@@ -32,23 +32,8 @@
             <a href="/customer/orders">Orders </a>
      </c:if>
 
-    <a href="javascript:void(0)" class="logoutBtn">Logout</a>
 </div>
-<script>
-        $(".logoutBtn").click(function () {
-            $.ajax({
-               url: "/auth/logout",
-               type: "POST",
-               success: function (response) {
-                  alert("Logged out successfully!");
-                  window.location.href = "/login-page";
-               },
-               error: function () {
-                  alert("Error while logging out.");
-               }
-            });
-        });
-</script>
+
 </body>
 </html>
 
