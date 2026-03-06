@@ -18,7 +18,18 @@
         body {
             background: linear-gradient(145deg, #fefaf5 0%, #fff6ed 100%);
             min-height: 100vh;
-            padding: 2rem;
+        }
+
+        /* Main Content with Sidebar Shift */
+        .content {
+            margin-left: 0;
+            padding: 2rem 2rem 2rem 5rem;
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+        }
+
+        .content.shift {
+            margin-left: 280px;
         }
 
         /* Main Container */
@@ -35,10 +46,18 @@
         .cart-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 1rem;
             margin-bottom: 2rem;
             padding-bottom: 1.5rem;
             border-bottom: 2px solid #f0e4d5;
+            flex-wrap: wrap;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .cart-header i {
@@ -64,6 +83,31 @@
             background: #f97316;
             border-radius: 4px;
             margin-top: 0.5rem;
+        }
+
+        /* View Orders Button */
+        .view-orders-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1.5rem;
+            background: #f9f9fb;
+            border: 1.5px solid #eaeef2;
+            border-radius: 40px;
+            color: #2e2e2e;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .view-orders-btn:hover {
+            border-color: #f97316;
+            background: #fff6ed;
+            transform: translateY(-2px);
+        }
+
+        .view-orders-btn i {
+            color: #f97316;
         }
 
         /* Table Styling */
@@ -245,6 +289,17 @@
             transform: translateY(-2px);
         }
 
+        .btn-outline {
+            background: transparent;
+            color: #f97316;
+            border: 2px solid #f97316;
+        }
+
+        .btn-outline:hover {
+            background: #fff6ed;
+            transform: translateY(-2px);
+        }
+
         /* Message Area */
         .message-area {
             margin-top: 2rem;
@@ -333,12 +388,25 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            body {
-                padding: 1rem;
+            .content {
+                padding: 1rem 1rem 1rem 4rem;
+            }
+
+            .content.shift {
+                margin-left: 0;
             }
 
             .cart-container {
                 padding: 1.5rem;
+            }
+
+            .cart-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-left {
+                width: 100%;
             }
 
             .cart-header h2 {
@@ -348,6 +416,11 @@
             .cart-header i {
                 font-size: 2rem;
                 padding: 0.8rem;
+            }
+
+            .view-orders-btn {
+                width: 100%;
+                justify-content: center;
             }
 
             .cart-summary {
@@ -408,172 +481,235 @@
     </style>
 </head>
 <body>
+    <!-- Include Sidebar -->
+    <jsp:include page="/WEB-INF/jsp/sidebar.jsp" />
 
-<div class="cart-container">
-    <!-- Header -->
-    <div class="cart-header">
-        <i class="fas fa-shopping-cart"></i>
-        <h2>Your Cart</h2>
-    </div>
+    <!-- Main Content with Sidebar Shift -->
+    <div class="content" id="mainContent">
+        <div class="cart-container">
+            <!-- Header with View Orders Button -->
+            <div class="cart-header">
+                <div class="header-left">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h2>Your Cart</h2>
+                </div>
+                <a href="${pageContext.request.contextPath}/customer/orders" class="view-orders-btn">
+                    <i class="fas fa-clipboard-list"></i>
+                    View My Orders
+                </a>
+            </div>
 
-    <!-- Cart Table -->
-    <div class="table-wrapper">
-        <table>
-            <thead>
-            <tr>
-                <th>Item</th>
-                <th>Quantity</th>
-                <th>Price</th>
-            </tr>
-            </thead>
-            <tbody id="cart-body">
-                <!-- Will be populated by JavaScript -->
-            </tbody>
-        </table>
-    </div>
+            <!-- Cart Table -->
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                    </thead>
+                    <tbody id="cart-body">
+                        <!-- Will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
 
-    <!-- Cart Summary -->
-    <div class="cart-summary">
-        <span class="total-label">Total Amount</span>
-        <span class="total-amount" id="total">
-            0 <small>₹</small>
-        </span>
-    </div>
+            <!-- Cart Summary -->
+            <div class="cart-summary">
+                <span class="total-label">Total Amount</span>
+                <span class="total-amount" id="total">
+                    0 <small>₹</small>
+                </span>
+            </div>
 
-    <!-- Cart Actions -->
-    <div class="cart-actions">
-        <button class="btn btn-secondary" onclick="window.location.href='${pageContext.request.contextPath}/customer/browse-restaurant'">
-            <i class="fas fa-arrow-left"></i>
-            Continue Shopping
-        </button>
-        <button class="btn btn-primary" id="place-order">
-            <i class="fas fa-check-circle"></i>
-            Place Order
-        </button>
-    </div>
+            <!-- Cart Actions -->
+            <div class="cart-actions">
+                <button class="btn btn-secondary" onclick="window.location.href='${pageContext.request.contextPath}/customer/browse-restaurant'">
+                    <i class="fas fa-arrow-left"></i>
+                    Continue Shopping
+                </button>
+                <button class="btn btn-primary" id="place-order">
+                    <i class="fas fa-check-circle"></i>
+                    Place Order
+                </button>
+            </div>
 
-    <!-- Message Area -->
-    <div id="message" class="message-area" style="display: none;"></div>
+            <!-- Message Area -->
+            <div id="message" class="message-area" style="display: none;"></div>
 
-    <!-- Hidden template for empty cart -->
-    <div id="empty-cart-template" style="display: none;">
-        <div class="empty-cart">
-            <i class="fas fa-shopping-cart"></i>
-            <h3>Your cart is empty</h3>
-            <p>Looks like you haven't added any items to your cart yet.</p>
-            <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/customer/browse-restaurant'">
-                <i class="fas fa-utensils"></i>
-                Browse Restaurants
-            </button>
+            <!-- Hidden template for empty cart -->
+            <div id="empty-cart-template" style="display: none;">
+                <div class="empty-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Your cart is empty</h3>
+                    <p>Looks like you haven't added any items to your cart yet.</p>
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="window.location.href='${pageContext.request.contextPath}/customer/browse-restaurant'">
+                            <i class="fas fa-utensils"></i>
+                            Browse Restaurants
+                        </button>
+                        <a href="${pageContext.request.contextPath}/customer/orders" class="btn btn-outline">
+                            <i class="fas fa-clipboard-list"></i>
+                            View My Orders
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    function loadCart() {
-        // Show loading state
-        $("#cart-body").html('<tr><td colspan="3" class="loading">Loading your cart</td></tr>');
+    <script>
+        function loadCart() {
+            // Show loading state
+            $("#cart-body").html('<tr><td colspan="3" class="loading">Loading your cart</td></tr>');
 
-        $.get("/customer/cart/view", function (res) {
-            const cart = res.data;
-            console.log("Cart data:", cart);
+            $.ajax({
+                url: "/customer/cart/view",
+                method: "GET",
+                success: function (res) {
+                    const cart = res.data;
+                    console.log("Cart data:", cart);
 
-            // Check if cart is empty
-            if (!cart.items || cart.items.length === 0) {
-                const emptyTemplate = $("#empty-cart-template").html();
-                $("#cart-body").parent().parent().html(emptyTemplate);
-                $(".cart-summary, .cart-actions").hide();
+                    // Check if cart is empty
+                    if (!cart.items || cart.items.length === 0) {
+                        const emptyTemplate = $("#empty-cart-template").html();
+                        $(".table-wrapper").html(emptyTemplate);
+                        $(".cart-summary, .cart-actions").hide();
+                        return;
+                    }
+
+                    // Show summary and actions
+                    $(".cart-summary, .cart-actions").show();
+
+                    // Clear and populate table
+                    $("#cart-body").empty();
+
+                    cart.items.forEach(function(item, index) {
+                        // Add animation delay based on index
+                        const delay = index * 0.1;
+
+                        var row = "<tr style='animation-delay: " + delay + "s'>" +
+                                    "<td>" +
+                                        "<div class='item-name'>" +
+                                            "<i class='fas fa-utensils'></i>" +
+                                            "<span>" + item.name + "</span>" +
+                                        "</div>" +
+                                    "</td>" +
+                                    "<td>" +
+                                        "<span class='quantity-badge'>" +
+                                            "<i class='fas fa-times'></i>" +
+                                            item.quantity +
+                                        "</span>" +
+                                    "</td>" +
+                                    "<td><span class='price'>₹" + item.price + "</span></td>" +
+                                  "</tr>";
+
+                        $("#cart-body").append(row);
+                    });
+
+                    $("#total").html(cart.totalPrice + " <small>₹</small>");
+                },
+                error: function(xhr, status, error) {
+                    console.error("Failed to load cart:", error);
+                    if (xhr.status === 401) {
+                        window.location.href = "${pageContext.request.contextPath}/login";
+                    } else {
+                        $("#cart-body").html('<tr><td colspan="3" style="text-align: center; color: #b34033; padding: 2rem;"><i class="fas fa-exclamation-circle"></i> Failed to load cart. Please try again.</td></tr>');
+                    }
+                }
+            });
+        }
+
+        $("#place-order").click(function () {
+            const btn = $(this);
+
+            // Disable button to prevent double clicks
+            btn.prop("disabled", true);
+            btn.html('<i class="fas fa-spinner fa-spin"></i> Placing Order...');
+
+            $.ajax({
+                url: "/customer/orders/place",
+                method: "POST",
+                success: function (res) {
+                    $("#message")
+                        .removeClass("error")
+                        .addClass("success")
+                        .html('<i class="fas fa-check-circle"></i> ' + (res.message || "Order placed successfully!"))
+                        .show();
+
+                    // Reload cart
+                    loadCart();
+
+                    // Re-enable button
+                    btn.prop("disabled", false);
+                    btn.html('<i class="fas fa-check-circle"></i> Place Order');
+
+                    // Auto-hide message after 5 seconds
+                    setTimeout(() => {
+                        $("#message").fadeOut();
+                    }, 5000);
+                },
+                error: function (xhr) {
+                    const msg = xhr.responseJSON?.message || "Order failed. Please try again.";
+
+                    $("#message")
+                        .removeClass("success")
+                        .addClass("error")
+                        .html('<i class="fas fa-exclamation-circle"></i> ' + msg)
+                        .show();
+
+                    // Re-enable button
+                    btn.prop("disabled", false);
+                    btn.html('<i class="fas fa-check-circle"></i> Place Order');
+
+                    // Auto-hide message after 5 seconds
+                    setTimeout(() => {
+                        $("#message").fadeOut();
+                    }, 5000);
+                }
+            });
+        });
+
+        // Sidebar toggle functionality
+        function initSidebarToggle() {
+            const hamburger = document.getElementById("hamburgerBtn");
+            const sidebar = document.getElementById("sidebar");
+            const mainContent = document.getElementById("mainContent");
+
+            if (!hamburger || !sidebar || !mainContent) {
+                console.error("Sidebar elements not found");
                 return;
             }
 
-            // Show summary and actions
-            $(".cart-summary, .cart-actions").show();
-
-            // Clear and populate table
-            $("#cart-body").empty();
-
-            cart.items.forEach(function(item, index) {
-                // Add animation delay based on index
-                const delay = index * 0.1;
-
-                var row = "<tr style='animation-delay: " + delay + "s'>" +
-                            "<td>" +
-                                "<div class='item-name'>" +
-                                    "<i class='fas fa-utensils'></i>" +
-                                    "<span>" + item.name + "</span>" +
-                                "</div>" +
-                            "</td>" +
-                            "<td>" +
-                                "<span class='quantity-badge'>" +
-                                    "<i class='fas fa-times'></i>" +
-                                    item.quantity +
-                                "</span>" +
-                            "</td>" +
-                            "<td><span class='price'>₹" + item.price + "</span></td>" +
-                          "</tr>";
-
-                $("#cart-body").append(row);
+            // Toggle sidebar on hamburger click
+            hamburger.addEventListener("click", function (e) {
+                e.stopPropagation();
+                sidebar.classList.toggle("open");
+                mainContent.classList.toggle("shift");
             });
 
-            $("#total").html(cart.totalPrice + " <small>₹</small>");
-        }).fail(function(xhr, status, error) {
-            console.error("Failed to load cart:", error);
-            $("#cart-body").html('<tr><td colspan="3" style="text-align: center; color: #b34033; padding: 2rem;"><i class="fas fa-exclamation-circle"></i> Failed to load cart. Please try again.</td></tr>');
+            // Close sidebar when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!sidebar.contains(event.target) &&
+                    !hamburger.contains(event.target) &&
+                    sidebar.classList.contains('open')) {
+                    sidebar.classList.remove('open');
+                    mainContent.classList.remove('shift');
+                }
+            });
+
+            // Prevent clicks inside sidebar from closing it
+            sidebar.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+
+        // Load cart on page load
+        $(document).ready(function() {
+            loadCart();
+            setTimeout(initSidebarToggle, 100);
         });
-    }
-
-    $("#place-order").click(function () {
-        const btn = $(this);
-
-        // Disable button to prevent double clicks
-        btn.prop("disabled", true);
-        btn.html('<i class="fas fa-spinner fa-spin"></i> Placing Order...');
-
-        $.post("/customer/orders/place")
-            .done(function (res) {
-                $("#message")
-                    .removeClass("error")
-                    .addClass("success")
-                    .html('<i class="fas fa-check-circle"></i> ' + (res.message || "Order placed successfully!"))
-                    .show();
-
-                // Reload cart
-                loadCart();
-
-                // Re-enable button
-                btn.prop("disabled", false);
-                btn.html('<i class="fas fa-check-circle"></i> Place Order');
-
-                // Auto-hide message after 5 seconds
-                setTimeout(() => {
-                    $("#message").fadeOut();
-                }, 5000);
-            })
-            .fail(function (xhr) {
-                const msg = xhr.responseJSON?.message || "Order failed. Please try again.";
-
-                $("#message")
-                    .removeClass("success")
-                    .addClass("error")
-                    .html('<i class="fas fa-exclamation-circle"></i> ' + msg)
-                    .show();
-
-                // Re-enable button
-                btn.prop("disabled", false);
-                btn.html('<i class="fas fa-check-circle"></i> Place Order');
-
-                // Auto-hide message after 5 seconds
-                setTimeout(() => {
-                    $("#message").fadeOut();
-                }, 5000);
-            });
-    });
-
-    // Load cart on page load
-    $(document).ready(function() {
-        loadCart();
-    });
-</script>
-
+    </script>
 </body>
 </html>

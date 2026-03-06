@@ -16,6 +16,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -33,9 +34,10 @@ public class CartServiceImpl implements CartService {
 
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseGet(() -> {
-                    Cart c = new Cart();
-                    c.setUserId(userId);
-                    return c;
+                    Cart newCart = new Cart();
+                    newCart.setUserId(userId);
+                    newCart.setItems(new ArrayList<>());
+                    return cartRepository.save(newCart);
                 });
 
         if (cart.getRestaurantId() != null && !cart.getRestaurantId().equals(restaurantId)) {
