@@ -32,4 +32,9 @@ public class PageController {
     public String pendingRestaurantsPage() {
         return "pending-restaurants"; // pending-restaurants.jsp
     }
+
+    @GetMapping("/admin/customer-details")
+    public String customerDetailsPage(){
+        return "customer-details";
+    }
 }

@@ -12,7 +12,8 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "restaurants")
@@ -55,12 +56,12 @@ public class Restaurant {
     @CreationTimestamp
     private LocalDateTime created_at;
 
-    @OneToMany(
-            mappedBy = "restaurant",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<RestaurantTiming> timings = new ArrayList<>();
+//    @OneToMany(
+//            mappedBy = "restaurant",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true
+//    )
+//    private List<RestaurantTiming> timings = new ArrayList<>();
 
     public boolean getActive() {
         return this.active;
