@@ -5,6 +5,7 @@
 
 /* Base sidebar styles */
 .sidebar {
+     padding-top: 100px;
     position: fixed;
     top: 0;
     left: 0;
@@ -12,7 +13,8 @@
     height: 100vh;
     background: white;
     box-shadow: 8px 0 30px -10px rgba(0, 0, 0, 0.15);
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.5rem ;
+
     transform: translateX(-100%);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 1000;
