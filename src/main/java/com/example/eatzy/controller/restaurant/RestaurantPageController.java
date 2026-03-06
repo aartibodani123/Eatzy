@@ -76,4 +76,9 @@ public class RestaurantPageController {
         return "pending-orders";
     }
 
+    @GetMapping("/add/details")
+    public String addRestaurantDetails(){
+        return "add-restaurant";
+    }
+
 }
