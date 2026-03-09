@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/browse-restaurants.css">
     <style>
-        /* Additional styles for sidebar shifting (add to your CSS file or keep here) */
+
         .content {
             margin-left: 0;
             padding: 2rem 2rem 2rem 5rem;
@@ -109,7 +109,7 @@
             });
         });
 
-        // Card click handler
+
         $(document).on("click", ".card", function () {
             const area = $(this).attr("data-area");
 
@@ -125,7 +125,7 @@
                 encodeURIComponent(area);
         });
 
-        // Sidebar toggle functionality
+
         function initSidebarToggle() {
             const hamburger = document.getElementById("hamburgerBtn");
             const sidebar = document.getElementById("sidebar");
@@ -136,14 +136,14 @@
                 return;
             }
 
-            // Toggle sidebar on hamburger click
+
             hamburger.addEventListener("click", function (e) {
                 e.stopPropagation();
                 sidebar.classList.toggle("open");
                 mainContent.classList.toggle("shift");
             });
 
-            // Close sidebar when clicking outside
+
             document.addEventListener('click', function(event) {
                 if (!sidebar.contains(event.target) &&
                     !hamburger.contains(event.target) &&
@@ -153,13 +153,13 @@
                 }
             });
 
-            // Prevent clicks inside sidebar from closing it
+
             sidebar.addEventListener('click', function(e) {
                 e.stopPropagation();
             });
         }
 
-        // Initialize sidebar toggle when DOM is ready
+
         $(document).ready(function() {
             // Small delay to ensure sidebar is loaded from include
             setTimeout(initSidebarToggle, 100);

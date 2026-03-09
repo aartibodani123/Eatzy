@@ -6,7 +6,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Eatzy Theme Menu Management CSS */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         * {
@@ -21,7 +20,7 @@
             min-height: 100vh;
         }
 
-        /* Content with Sidebar Shift */
+
         .content {
             margin-left: 0;
             padding: 2rem 2rem 2rem 5rem;

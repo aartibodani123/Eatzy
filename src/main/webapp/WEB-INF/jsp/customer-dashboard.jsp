@@ -6,7 +6,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Eatzy Theme Dashboard CSS */
+
         * {
             margin: 0;
             padding: 0;
@@ -19,7 +19,7 @@
             min-height: 100vh;
         }
 
-        /* Dashboard main content */
+
         .dashboard {
             margin-left: 0;
             padding: 2rem 2rem 2rem 5rem;
@@ -31,7 +31,7 @@
             margin-left: 280px;
         }
 
-        /* Welcome Card */
+
         .welcome-card {
             background: white;
             border-radius: 30px;
@@ -59,7 +59,7 @@
             margin-bottom: 1.5rem;
         }
 
-        /* Stats Grid */
+
         .stats-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -107,7 +107,7 @@
             font-weight: 500;
         }
 
-        /* Quick Actions */
+
         .actions-section {
             background: white;
             border-radius: 30px;
@@ -160,7 +160,7 @@
             font-size: 1.1rem;
         }
 
-        /* Logout button */
+
         .logout-btn {
             display: inline-flex;
             align-items: center;
@@ -185,7 +185,7 @@
             color: #b34033;
         }
 
-        /* Info Cards */
+
         .info-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -232,7 +232,7 @@
             font-weight: 600;
         }
 
-        /* Mobile Responsive */
+
         @media (max-width: 768px) {
             .dashboard {
                 padding: 1rem 1rem 1rem 4rem;
@@ -258,7 +258,7 @@
 
 
     <div class="dashboard" id="dashboard">
-        <!-- Welcome Card -->
+
         <div class="welcome-card">
             <h2>
                 <i class="fas fa-hand-peace"></i>
@@ -273,7 +273,7 @@
             </div>
         </div>
 
-        <!-- Stats Overview -->
+
         <div class="stats-container">
             <div class="stat-box">
                 <div class="stat-icon">
@@ -313,7 +313,7 @@
             </div>
         </div>
 
-        <!-- Quick Actions -->
+
         <div class="actions-section">
             <h3>
                 <i class="fas fa-bolt"></i>
@@ -339,7 +339,7 @@
             </div>
         </div>
 
-        <!-- Info Cards -->
+
         <div class="info-grid">
             <div class="info-card">
                 <h4>
@@ -380,7 +380,7 @@
             </div>
         </div>
 
-        <!-- Logout Link (styled) -->
+
         <a class="logout-btn" id="logoutBtn">
             <i class="fas fa-sign-out-alt"></i>
             Logout

@@ -9,7 +9,7 @@
     <title>Restaurant Menu | Eatzy</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Eatzy Theme Menu Page CSS */
+
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         * {
@@ -24,7 +24,7 @@
             min-height: 100vh;
         }
 
-        /* Main Content with Sidebar Shift */
+
         .content {
             margin-left: 0;
             padding: 2rem 2rem 2rem 5rem;
@@ -45,7 +45,7 @@
             box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.15);
         }
 
-        /* Header Section */
+
         .menu-header {
             display: flex;
             align-items: center;
@@ -123,7 +123,7 @@
             border: 1px solid #f97316;
         }
 
-        /* Cart Icon */
+
         .cart-icon {
             position: relative;
             display: inline-flex;
@@ -161,7 +161,7 @@
             border: 2px solid white;
         }
 
-        /* Message Alert */
+
         #message {
             padding: 1rem 1.5rem;
             border-radius: 40px;
@@ -200,7 +200,7 @@
             }
         }
 
-        /* Menu Grid */
+
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -208,7 +208,7 @@
             margin-top: 2rem;
         }
 
-        /* Menu Card */
+
         .card {
             background: white;
             border: 2px solid #eaeef2;
@@ -280,7 +280,7 @@
             color: #6b6b6b;
         }
 
-        /* Quantity Selector */
+
         .quantity-selector {
             display: flex;
             align-items: center;
@@ -317,7 +317,7 @@
             font-weight: 600;
         }
 
-        /* Add to Cart Button */
+
         .btn {
             width: 100%;
             padding: 1rem;
@@ -352,7 +352,7 @@
             font-size: 1.1rem;
         }
 
-        /* Loading State */
+
         .loading {
             text-align: center;
             padding: 4rem;
@@ -372,7 +372,7 @@
             60%, 100% { content: '...'; }
         }
 
-        /* Empty State */
+
         .empty-menu {
             text-align: center;
             padding: 4rem;
@@ -391,7 +391,7 @@
             display: block;
         }
 
-        /* Animation for cards */
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -407,7 +407,7 @@
             animation: fadeInUp 0.5s ease forwards;
         }
 
-        /* Responsive Design */
+
         @media (max-width: 768px) {
             .content {
                 padding: 1rem 1rem 1rem 4rem;
@@ -456,10 +456,10 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <!-- Include Sidebar -->
+
     <jsp:include page="/WEB-INF/jsp/sidebar.jsp" />
 
-    <!-- Main Content with Sidebar Shift -->
+
     <div class="content" id="mainContent">
         <div class="container">
             <!-- Header with Back Button and Cart -->
@@ -477,17 +477,17 @@
                     </div>
                 </div>
 
-                <!-- View Cart Button with Count -->
+
                 <a href="${pageContext.request.contextPath}/customer/cart-page" class="cart-icon">
                     <i class="fas fa-shopping-cart"></i> View Cart
                     <span class="cart-count" id="cartCount">0</span>
                 </a>
             </div>
 
-            <!-- Message Area for Cart Alerts -->
+
             <div id="message" style="display: none;"></div>
 
-            <!-- Menu Grid -->
+
             <div id="menuGrid" class="menu-grid">
                 <div class="loading">Loading delicious menu</div>
             </div>
@@ -499,10 +499,10 @@
             const restaurantId = "<%= restaurantId %>";
             const contextPath = "${pageContext.request.contextPath}";
 
-            // Load cart count on page load
+
             loadCartCount();
 
-            // Function to load cart count
+
             function loadCartCount() {
                 $.ajax({
                     url: contextPath + "/customer/cart/view",
@@ -525,7 +525,7 @@
                 });
             }
 
-            // Show loading state
+
             $("#menuGrid").html('<div class="loading">Loading delicious menu</div>');
 
             $.ajax({
@@ -547,7 +547,7 @@
                     let html = "";
 
                     $.each(menuItems, function(i, item) {
-                        // Generate food icon based on category
+
                         const foodIcon = item.category === 'Beverage' ? 'fa-mug-hot' :
                                         item.category === 'Dessert' ? 'fa-cake-candles' :
                                         item.category === 'Starters' ? 'fa-leaf' : 'fa-utensils';
@@ -602,7 +602,7 @@
                 }
             });
 
-            // Quantity selector - Plus button
+
             $(document).on('click', '.plus-btn', function() {
                 const itemId = $(this).data('item-id');
                 const input = $('#qty-' + itemId);
@@ -612,7 +612,7 @@
                 }
             });
 
-            // Quantity selector - Minus button
+
             $(document).on('click', '.minus-btn', function() {
                 const itemId = $(this).data('item-id');
                 const input = $('#qty-' + itemId);
@@ -622,7 +622,7 @@
                 }
             });
 
-            // Add to Cart functionality with quantity
+
             $(document).on("click", ".add-to-cart", function () {
                 const btn = $(this);
                 const card = btn.closest('.card');
@@ -635,7 +635,7 @@
                 btn.html('<i class="fas fa-spinner fa-spin"></i> Adding...');
 
                 if (quantity === 1) {
-                    // Single item
+
                     $.ajax({
                         url: contextPath + "/customer/cart/add",
                         method: "POST",
@@ -652,7 +652,7 @@
                         }
                     });
                 } else {
-                    // Multiple items - using promise to handle all requests
+
                     const promises = [];
                     for (let i = 0; i < quantity; i++) {
                         promises.push(
@@ -678,26 +678,26 @@
                 }
 
                 function handleAddToCartSuccess(res, quantity, card, btn, itemId) {
-                    // Show success message
+
                     $("#message")
                         .removeClass('error')
                         .addClass('success')
                         .html('<i class="fas fa-check-circle"></i> ' + quantity + ' x ' + card.find('h3').text() + ' added to cart!')
                         .css("display", "flex");
 
-                    // Update button
+
                     btn.html('<i class="fas fa-check"></i> Added to Cart');
                     btn.css("background", "#2e7d32");
 
-                    // Update cart count
+
                     loadCartCount();
 
-                    // Auto-hide message after 3 seconds
+
                     setTimeout(() => {
                         $("#message").fadeOut();
                     }, 3000);
 
-                    // Re-enable button after 2 seconds
+
                     setTimeout(() => {
                         btn.prop("disabled", false);
                         btn.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
@@ -715,11 +715,11 @@
                         .html('<i class="fas fa-exclamation-circle"></i> ' + msg)
                         .css("display", "flex");
 
-                    // Re-enable button on error
+
                     btn.prop("disabled", false);
                     btn.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
 
-                    // Auto-hide message after 3 seconds
+
                     setTimeout(() => {
                         $("#message").fadeOut();
                     }, 3000);
@@ -727,7 +727,7 @@
             });
         });
 
-        // Sidebar toggle functionality
+
         function initSidebarToggle() {
             const hamburger = document.getElementById("hamburgerBtn");
             const sidebar = document.getElementById("sidebar");
@@ -738,14 +738,14 @@
                 return;
             }
 
-            // Toggle sidebar on hamburger click
+
             hamburger.addEventListener("click", function (e) {
                 e.stopPropagation();
                 sidebar.classList.toggle("open");
                 mainContent.classList.toggle("shift");
             });
 
-            // Close sidebar when clicking outside
+
             document.addEventListener('click', function(event) {
                 if (!sidebar.contains(event.target) &&
                     !hamburger.contains(event.target) &&
@@ -755,13 +755,13 @@
                 }
             });
 
-            // Prevent clicks inside sidebar from closing it
+
             sidebar.addEventListener('click', function(e) {
                 e.stopPropagation();
             });
         }
 
-        // Initialize sidebar toggle when DOM is ready
+
         $(document).ready(function() {
             setTimeout(initSidebarToggle, 100);
         });

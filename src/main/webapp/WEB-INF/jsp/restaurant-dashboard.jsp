@@ -574,7 +574,7 @@
     let currentRestaurantId = null;
     let activeOrdersData = [];
 
-    // Load restaurants on page load
+
     $(document).ready(function() {
         loadRestaurants();
     });
@@ -610,7 +610,7 @@
 
         $('#loadingOverlay').addClass('active');
 
-        // Load menu count (you may need an API for this)
+
         $.ajax({
             url: "/restaurant/" + restaurantId + "/categories",
             method: "GET",
@@ -619,7 +619,7 @@
             }
         });
 
-        // Load incoming orders
+
         $.ajax({
             url: "/restaurant/" + restaurantId + "/incoming/orders",
             method: "GET",
@@ -648,7 +648,7 @@
             }
         });
 
-        // Load active orders
+
         $.ajax({
             url: "/restaurant/" + restaurantId + "/orders/active",
             method: "GET",
@@ -778,7 +778,7 @@
         setTimeout(() => $('#message').fadeOut(), 3000);
     }
 
-    // Sidebar toggle
+
     document.addEventListener("DOMContentLoaded", function() {
         const hamburger = document.getElementById("hamburgerBtn");
         const sidebar = document.getElementById("sidebar");

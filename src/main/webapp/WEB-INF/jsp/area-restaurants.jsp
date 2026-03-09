@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/browse-restaurants.css">
     <style>
-        /* Additional styles for sidebar shifting and restaurant cards */
+
         .content {
             margin-left: 0;
             padding: 2rem 2rem 2rem 5rem;
@@ -22,7 +22,7 @@
             margin-left: 280px;
         }
 
-        /* Restaurant card specific styles */
+
         .restaurant-image {
             height: 160px;
             background-size: cover;
@@ -78,7 +78,7 @@
             color: #f9b43a;
         }
 
-        /* Back button */
+
         .back-btn {
             display: inline-flex;
             align-items: center;
@@ -165,7 +165,7 @@
             let area = "<%= area %>";
             const contextPath = "${pageContext.request.contextPath}";
 
-            // Show loading state
+
             $("#restaurantGrid").html('<div class="loading">Finding restaurants in ' + area + '</div>');
 
             $.ajax({
@@ -183,10 +183,10 @@
                     let html = "";
 
                     $.each(restaurants, function (i, r) {
-                        // Default image for restaurants
+
                         const imageUrl = r.imageUrl || 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600';
 
-                        // Generate random rating between 3.5 and 5.0
+
                         const rating = (Math.random() * 1.5 + 3.5).toFixed(1);
 
                         html += '<div class="card" data-id="' + r.id + '">' +
@@ -212,7 +212,7 @@
                 }
             });
 
-            // Restaurant card click handler
+
             $(document).on("click", ".card", function () {
                 const restaurantId = $(this).attr("data-id");
 
@@ -227,7 +227,7 @@
             });
         });
 
-        // Sidebar toggle functionality
+
         function initSidebarToggle() {
             const hamburger = document.getElementById("hamburgerBtn");
             const sidebar = document.getElementById("sidebar");
@@ -238,14 +238,14 @@
                 return;
             }
 
-            // Toggle sidebar on hamburger click
+
             hamburger.addEventListener("click", function (e) {
                 e.stopPropagation();
                 sidebar.classList.toggle("open");
                 mainContent.classList.toggle("shift");
             });
 
-            // Close sidebar when clicking outside
+
             document.addEventListener('click', function(event) {
                 if (!sidebar.contains(event.target) &&
                     !hamburger.contains(event.target) &&
@@ -255,13 +255,13 @@
                 }
             });
 
-            // Prevent clicks inside sidebar from closing it
+
             sidebar.addEventListener('click', function(e) {
                 e.stopPropagation();
             });
         }
 
-        // Initialize sidebar toggle when DOM is ready
+
         $(document).ready(function() {
             setTimeout(initSidebarToggle, 100);
         });

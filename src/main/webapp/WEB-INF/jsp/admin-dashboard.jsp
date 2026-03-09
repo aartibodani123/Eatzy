@@ -6,7 +6,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Eatzy Theme Admin Dashboard CSS */
+
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         * {
@@ -21,7 +21,7 @@
             min-height: 100vh;
         }
 
-        /* Dashboard Main Content */
+
         .dashboard {
             margin-left: 0;
             padding: 2rem 2rem 2rem 5rem;
@@ -33,7 +33,7 @@
             margin-left: 280px;
         }
 
-        /* Dashboard Title */
+
         .dashboard-title {
             font-size: 2.2rem;
             font-weight: 800;
@@ -55,7 +55,7 @@
             border-radius: 4px;
         }
 
-        /* Stats Grid */
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -63,7 +63,7 @@
             margin-bottom: 3rem;
         }
 
-        /* Stat Cards */
+
         .stat-card {
             background: white;
             border-radius: 24px;
@@ -139,7 +139,7 @@
             box-shadow: 0 10px 20px -8px rgba(249, 115, 22, 0.3);
         }
 
-        /* Quick Actions Section */
+
         .actions-section {
             background: white;
             border-radius: 24px;
@@ -193,7 +193,7 @@
             color: #f97316;
         }
 
-        /* Recent Activity Section */
+
         .activity-section {
             background: white;
             border-radius: 24px;
@@ -244,7 +244,7 @@
             color: #6b6b6b;
         }
 
-        /* Logout Button */
+
         .logout-btn {
             display: inline-flex;
             align-items: center;
@@ -270,7 +270,7 @@
             color: #b34033;
         }
 
-        /* Loading States */
+
         .loading {
             opacity: 0.6;
             position: relative;
@@ -293,7 +293,7 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Responsive Design */
+
         @media (max-width: 1024px) {
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -334,7 +334,7 @@
             }
         }
 
-        /* Animation for cards */
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -355,10 +355,10 @@
     </style>
 </head>
 <body>
-    <!-- Include Sidebar -->
+
     <jsp:include page="/WEB-INF/jsp/sidebar.jsp" />
 
-    <!-- Main Dashboard Content -->
+
     <div class="dashboard" id="dashboard">
         <!-- Welcome Header -->
         <h2 class="dashboard-title">
@@ -366,7 +366,7 @@
             Admin Dashboard
         </h2>
 
-        <!-- Stats Grid -->
+
         <div class="stats-grid">
             <!-- Total Customers Card -->
             <div class="stat-card customers">
@@ -383,7 +383,7 @@
                 <div class="stat-icon">👥</div>
             </div>
 
-            <!-- Total Restaurants Card -->
+
             <div class="stat-card customers">
                 <div class="stat-info">
                     <span class="stat-title">
@@ -399,7 +399,7 @@
             </div>
         </div>
 
-        <!-- Quick Actions Section -->
+
         <div class="actions-section">
             <h3 class="section-title">
                 <i class="fas fa-bolt"></i>
@@ -425,7 +425,7 @@
             </div>
         </div>
 
-        <!-- Recent Activity Section -->
+
         <div class="activity-section">
             <h3 class="section-title">
                 <i class="fas fa-history"></i>
@@ -462,7 +462,7 @@
             </div>
         </div>
 
-        <!-- Logout Button -->
+
         <a href="${pageContext.request.contextPath}/logout" class="logout-btn">
             <i class="fas fa-sign-out-alt"></i>
             Logout
@@ -470,7 +470,7 @@
     </div>
 
     <script>
-        // Fetch total customers
+
         fetch("${pageContext.request.contextPath}/admin/countUsers")
             .then(res => res.json())
             .then(data => {
@@ -481,7 +481,7 @@
                 document.getElementById("totalCustomers").innerText = "Error";
             });
 
-        // Fetch total restaurants
+
         fetch("${pageContext.request.contextPath}/admin/countRestaurants")
             .then(res => res.json())
             .then(data => {
@@ -492,13 +492,13 @@
                 document.getElementById("totalRestaurants").innerText = "Error";
             });
 
-        // Sidebar toggle functionality
+
         document.getElementById("hamburgerBtn").addEventListener("click", function () {
             document.getElementById("sidebar").classList.toggle("open");
             document.querySelector(".dashboard").classList.toggle("shift");
         });
 
-        // Close sidebar when clicking outside
+
         document.addEventListener('click', function(event) {
             const sidebar = document.getElementById('sidebar');
             const hamburger = document.getElementById('hamburgerBtn');

@@ -303,7 +303,7 @@
 </head>
 <body class="auth-page">
     <div class="eatzy-login-wrapper">
-        <!-- LEFT: login form (your original structure + nav) -->
+
         <div class="auth-panel">
 
             <!-- main auth card (your jsp friendly block) -->

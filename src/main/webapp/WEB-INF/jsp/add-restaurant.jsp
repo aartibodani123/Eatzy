@@ -6,7 +6,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Eatzy Theme Add Restaurant CSS */
+
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         * {
@@ -21,7 +21,7 @@
             min-height: 100vh;
         }
 
-        /* Content with Sidebar Shift */
+
         .content {
             margin-left: 0;
             padding: 2rem 2rem 2rem 5rem;
@@ -33,13 +33,13 @@
             margin-left: 280px;
         }
 
-        /* Main Container */
+
         .container {
             max-width: 600px;
             margin: 0 auto;
         }
 
-        /* Page Header */
+
         .page-header {
             display: flex;
             align-items: center;
@@ -72,7 +72,7 @@
             margin-top: 0.5rem;
         }
 
-        /* Form Card */
+
         .form-card {
             background: white;
             border-radius: 2rem;
@@ -95,7 +95,7 @@
             color: #f97316;
         }
 
-        /* Form Groups */
+
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -135,7 +135,7 @@
             font-weight: 400;
         }
 
-        /* Buttons */
+
         .btn {
             padding: 1rem 2rem;
             border: none;
@@ -167,7 +167,7 @@
             font-size: 1.1rem;
         }
 
-        /* Message Area */
+
         .message-area {
             margin-top: 1.5rem;
             padding: 1rem;
@@ -208,7 +208,7 @@
             }
         }
 
-        /* Loading Spinner */
+
         .loading-spinner {
             display: inline-block;
             width: 20px;
@@ -223,7 +223,7 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Helper Text */
+
         .helper-text {
             font-size: 0.85rem;
             color: #6b6b6b;
@@ -236,7 +236,7 @@
             margin-right: 0.3rem;
         }
 
-        /* Responsive */
+
         @media (max-width: 768px) {
             .content {
                 padding: 1rem;
@@ -312,7 +312,7 @@
 
 <script>
     $(document).ready(function() {
-        // Sidebar toggle functionality
+
         const hamburger = document.getElementById("hamburgerBtn");
         const sidebar = document.getElementById("sidebar");
         const mainContent = document.getElementById("mainContent");
@@ -334,7 +334,7 @@
             });
         }
 
-        // Form submission
+
         $("#addRestaurantForm").on("submit", function (e) {
             e.preventDefault();
 

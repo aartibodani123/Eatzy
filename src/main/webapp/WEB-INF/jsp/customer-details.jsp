@@ -26,7 +26,7 @@
             padding-left: 50px;
         }
 
-        /* Dashboard Layout */
+
         .dashboard {
             margin-left: 0;
             padding: 2rem;
@@ -37,7 +37,7 @@
             margin-left: 280px;
         }
 
-        /* Page Title */
+
         .dashboard h2 {
             font-size: 2.2rem;
             font-weight: 700;
@@ -58,7 +58,7 @@
             border-radius: 4px;
         }
 
-        /* Stats Summary */
+
         .stats-summary {
             display: flex;
             gap: 1.5rem;
@@ -96,7 +96,7 @@
             margin-left: 0.5rem;
         }
 
-        /* Table Container */
+
         .dataTables_wrapper {
             background: white;
             border-radius: 24px;
@@ -105,7 +105,7 @@
             border: 2px solid #eaeef2;
         }
 
-        /* DataTable Customization */
+
         .dataTables_wrapper .dataTables_length,
         .dataTables_wrapper .dataTables_filter {
             margin-bottom: 1.5rem;
@@ -140,7 +140,7 @@
             min-width: 250px;
         }
 
-        /* Table Styling */
+
         #customersTable {
             border-collapse: separate;
             border-spacing: 0 0.8rem;
@@ -195,7 +195,7 @@
             border-right: 2px solid transparent;
         }
 
-        /* Name styling */
+
         .customer-name {
             font-weight: 600;
             color: #1e1e1e;
@@ -206,7 +206,7 @@
             margin-right: 0.5rem;
         }
 
-        /* Email styling */
+
         .customer-email {
             color: #6b6b6b;
         }
@@ -216,7 +216,7 @@
             margin-right: 0.5rem;
         }
 
-        /* DataTable Pagination */
+
         .dataTables_info {
             color: #6b6b6b;
             font-size: 0.9rem;
@@ -246,7 +246,7 @@
             border-color: #f97316 !important;
         }
 
-        /* Hamburger button styling */
+
         .hamburger {
             position: fixed;
             top: 20px;
@@ -272,7 +272,7 @@
             transform: scale(1.05);
         }
 
-        /* Responsive Design */
+
         @media (max-width: 768px) {
             body {
                 padding-left: 0;
@@ -310,7 +310,7 @@
 <div class="dashboard" id="mainContent">
     <h2>Manage Customers</h2>
 
-    <!-- Stats Summary -->
+
     <div class="stats-summary">
         <div class="stat-badge">
             <i class="fas fa-users"></i>

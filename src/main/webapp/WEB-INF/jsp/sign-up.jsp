@@ -9,7 +9,7 @@
     <!-- Font Awesome (same as login) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ----- EXACT same base as login page (preserved for consistency) ----- */
+
         * {
             margin: 0;
             padding: 0;
@@ -149,7 +149,7 @@
             font-weight: 400;
         }
 
-        /* role selection — enhanced version of your original role-card, now modern & matching login style */
+
         .role-selection {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -196,7 +196,7 @@
             line-height: 1.3;
         }
 
-        /* Hide the radio visually but remain accessible */
+
         .role-card input[type="radio"] {
             position: absolute;
             opacity: 0;
@@ -245,7 +245,7 @@
             border-bottom-color: #f97316;
         }
 
-        /* RIGHT SIDE — brand hero / stats (exactly like login) */
+
         .brand-panel {
             background: #fbf3ea;
             padding: 2.5rem 2rem;
@@ -380,7 +380,7 @@
                 <h2>Create Account 🍕</h2>
                 <p class="subtitle">Join Eatzy and get your favourite food</p>
 
-                <!-- you can keep JSTL messages if needed -->
+
                 <!--
                 <c:if test="${not empty message}">...</c:if>
                 <c:if test="${not empty error}">...</c:if>
@@ -465,7 +465,7 @@
                 </h3>
             </div>
 
-            <!-- extra flavour -->
+
             <div class="fast-fresh">
                 <span><i class="fas fa-bolt"></i> 30 min or it's free</span>
                 <span><i class="fas fa-leaf"></i> 100% fresh</span>

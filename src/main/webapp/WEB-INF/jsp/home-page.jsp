@@ -191,7 +191,7 @@
       $("#signup").click(function () {
            window.location.href = "/signup-page";
       });
-        // Category click interaction
+
         document.querySelectorAll('.cat-card').forEach(card => {
           card.addEventListener('click', () => {
             document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
@@ -199,7 +199,7 @@
           });
         });
 
-        // Smooth scroll on nav links
+
         document.querySelectorAll('a[href="#"]').forEach(a => {
           a.addEventListener('click', e => e.preventDefault());
         });

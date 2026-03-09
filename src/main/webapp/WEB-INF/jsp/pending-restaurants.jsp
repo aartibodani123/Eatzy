@@ -425,7 +425,7 @@
     </div>
 </div>
 
-<!-- Loading Overlay -->
+
 <div class="loading-overlay" id="loadingOverlay">
     <div class="loading-spinner"></div>
 </div>
@@ -434,7 +434,7 @@
 $(document).ready(function () {
     const loadingOverlay = $('#loadingOverlay');
 
-    // Initialize DataTable with Eatzy theme
+
     const table = $('#pendingTable').DataTable({
         ajax: {
             url: "${pageContext.request.contextPath}/admin/pending-restaurants",
@@ -521,7 +521,7 @@ $(document).ready(function () {
         }
     });
 
-    // Approve button click
+
     $('#pendingTable').on('click', '.approve-btn', function() {
         const tr = $(this).closest('tr');
         const rowData = table.row(tr).data();
@@ -531,7 +531,7 @@ $(document).ready(function () {
             return;
         }
 
-        // Show loading
+
         loadingOverlay.addClass('active');
 
         $.ajax({
@@ -558,7 +558,7 @@ $(document).ready(function () {
         });
     });
 
-    // Reject button click
+
     $('#pendingTable').on('click', '.reject-btn', function() {
         const tr = $(this).closest('tr');
         const rowData = table.row(tr).data();
@@ -572,7 +572,7 @@ $(document).ready(function () {
         showRejectModal(rowData.id, table, loadingOverlay);
     });
 
-    // Toast notification function
+
     function showToast(message, type) {
         const toast = $('<div class="toast-message"></div>')
             .text(message)
@@ -593,7 +593,7 @@ $(document).ready(function () {
         setTimeout(() => toast.fadeOut(() => toast.remove()), 3000);
     }
 
-    // Custom reject modal
+
     function showRejectModal(restaurantId, table, loadingOverlay) {
         const modal = $(`
             <div class="modal-overlay">
@@ -705,13 +705,13 @@ $(document).ready(function () {
         });
     }
 
-    // Sidebar toggle
+
     document.getElementById("hamburgerBtn").addEventListener("click", function () {
         document.getElementById("sidebar").classList.toggle("open");
         document.querySelector(".dashboard").classList.toggle("shift");
     });
 
-    // Close sidebar when clicking outside
+
     document.addEventListener('click', function(event) {
         const sidebar = document.getElementById('sidebar');
         const hamburger = document.getElementById('hamburgerBtn');

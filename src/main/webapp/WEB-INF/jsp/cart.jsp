@@ -5,7 +5,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Eatzy Theme Cart CSS */
+
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         * {
@@ -20,7 +20,7 @@
             min-height: 100vh;
         }
 
-        /* Main Content with Sidebar Shift */
+
         .content {
             margin-left: 0;
             padding: 2rem 2rem 2rem 5rem;
@@ -32,7 +32,7 @@
             margin-left: 280px;
         }
 
-        /* Main Container */
+
         .cart-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -42,7 +42,7 @@
             box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.15);
         }
 
-        /* Header */
+
         .cart-header {
             display: flex;
             align-items: center;
@@ -85,7 +85,7 @@
             margin-top: 0.5rem;
         }
 
-        /* View Orders Button */
+
         .view-orders-btn {
             display: inline-flex;
             align-items: center;
@@ -110,7 +110,7 @@
             color: #f97316;
         }
 
-        /* Table Styling */
+
         .table-wrapper {
             overflow-x: auto;
             margin-bottom: 2rem;
@@ -170,7 +170,7 @@
             padding-right: 2rem;
         }
 
-        /* Item Name with Icon */
+
         .item-name {
             display: flex;
             align-items: center;
@@ -182,7 +182,6 @@
             font-size: 1.2rem;
         }
 
-        /* Quantity Badge */
         .quantity-badge {
             display: inline-flex;
             align-items: center;
@@ -198,13 +197,13 @@
             color: #f97316;
         }
 
-        /* Price Styling */
+
         .price {
             font-weight: 700;
             color: #f97316;
         }
 
-        /* Cart Summary */
+
         .cart-summary {
             background: #f9f9fb;
             border-radius: 20px;
@@ -236,7 +235,7 @@
             color: #6b6b6b;
         }
 
-        /* Action Buttons */
+
         .cart-actions {
             display: flex;
             gap: 1rem;
@@ -300,7 +299,7 @@
             transform: translateY(-2px);
         }
 
-        /* Message Area */
+
         .message-area {
             margin-top: 2rem;
             padding: 1rem;
@@ -338,7 +337,7 @@
             }
         }
 
-        /* Empty Cart State */
+
         .empty-cart {
             text-align: center;
             padding: 4rem;
@@ -368,7 +367,7 @@
             display: inline-flex;
         }
 
-        /* Loading State */
+
         .loading {
             text-align: center;
             padding: 3rem;
@@ -386,7 +385,7 @@
             60%, 100% { content: '...'; }
         }
 
-        /* Responsive Design */
+
         @media (max-width: 768px) {
             .content {
                 padding: 1rem 1rem 1rem 4rem;
@@ -463,7 +462,7 @@
             }
         }
 
-        /* Animation for table rows */
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -481,13 +480,13 @@
     </style>
 </head>
 <body>
-    <!-- Include Sidebar -->
+
     <jsp:include page="/WEB-INF/jsp/sidebar.jsp" />
 
-    <!-- Main Content with Sidebar Shift -->
+
     <div class="content" id="mainContent">
         <div class="cart-container">
-            <!-- Header with View Orders Button -->
+
             <div class="cart-header">
                 <div class="header-left">
                     <i class="fas fa-shopping-cart"></i>
@@ -499,7 +498,7 @@
                 </a>
             </div>
 
-            <!-- Cart Table -->
+
             <div class="table-wrapper">
                 <table>
                     <thead>
@@ -515,7 +514,7 @@
                 </table>
             </div>
 
-            <!-- Cart Summary -->
+
             <div class="cart-summary">
                 <span class="total-label">Total Amount</span>
                 <span class="total-amount" id="total">
@@ -523,7 +522,7 @@
                 </span>
             </div>
 
-            <!-- Cart Actions -->
+
             <div class="cart-actions">
                 <button class="btn btn-secondary" onclick="window.location.href='${pageContext.request.contextPath}/customer/browse-restaurant'">
                     <i class="fas fa-arrow-left"></i>
@@ -535,10 +534,10 @@
                 </button>
             </div>
 
-            <!-- Message Area -->
+
             <div id="message" class="message-area" style="display: none;"></div>
 
-            <!-- Hidden template for empty cart -->
+
             <div id="empty-cart-template" style="display: none;">
                 <div class="empty-cart">
                     <i class="fas fa-shopping-cart"></i>
@@ -561,7 +560,7 @@
 
     <script>
         function loadCart() {
-            // Show loading state
+
             $("#cart-body").html('<tr><td colspan="3" class="loading">Loading your cart</td></tr>');
 
             $.ajax({
@@ -571,7 +570,7 @@
                     const cart = res.data;
                     console.log("Cart data:", cart);
 
-                    // Check if cart is empty
+
                     if (!cart.items || cart.items.length === 0) {
                         const emptyTemplate = $("#empty-cart-template").html();
                         $(".table-wrapper").html(emptyTemplate);
@@ -579,10 +578,10 @@
                         return;
                     }
 
-                    // Show summary and actions
+
                     $(".cart-summary, .cart-actions").show();
 
-                    // Clear and populate table
+
                     $("#cart-body").empty();
 
                     cart.items.forEach(function(item, index) {
@@ -624,7 +623,7 @@
         $("#place-order").click(function () {
             const btn = $(this);
 
-            // Disable button to prevent double clicks
+
             btn.prop("disabled", true);
             btn.html('<i class="fas fa-spinner fa-spin"></i> Placing Order...');
 
@@ -638,14 +637,14 @@
                         .html('<i class="fas fa-check-circle"></i> ' + (res.message || "Order placed successfully!"))
                         .show();
 
-                    // Reload cart
+
                     loadCart();
 
-                    // Re-enable button
+
                     btn.prop("disabled", false);
                     btn.html('<i class="fas fa-check-circle"></i> Place Order');
 
-                    // Auto-hide message after 5 seconds
+
                     setTimeout(() => {
                         $("#message").fadeOut();
                     }, 5000);
@@ -659,11 +658,10 @@
                         .html('<i class="fas fa-exclamation-circle"></i> ' + msg)
                         .show();
 
-                    // Re-enable button
                     btn.prop("disabled", false);
                     btn.html('<i class="fas fa-check-circle"></i> Place Order');
 
-                    // Auto-hide message after 5 seconds
+
                     setTimeout(() => {
                         $("#message").fadeOut();
                     }, 5000);
@@ -671,7 +669,7 @@
             });
         });
 
-        // Sidebar toggle functionality
+
         function initSidebarToggle() {
             const hamburger = document.getElementById("hamburgerBtn");
             const sidebar = document.getElementById("sidebar");
@@ -682,14 +680,14 @@
                 return;
             }
 
-            // Toggle sidebar on hamburger click
+
             hamburger.addEventListener("click", function (e) {
                 e.stopPropagation();
                 sidebar.classList.toggle("open");
                 mainContent.classList.toggle("shift");
             });
 
-            // Close sidebar when clicking outside
+
             document.addEventListener('click', function(event) {
                 if (!sidebar.contains(event.target) &&
                     !hamburger.contains(event.target) &&
@@ -699,13 +697,13 @@
                 }
             });
 
-            // Prevent clicks inside sidebar from closing it
+
             sidebar.addEventListener('click', function(e) {
                 e.stopPropagation();
             });
         }
 
-        // Load cart on page load
+
         $(document).ready(function() {
             loadCart();
             setTimeout(initSidebarToggle, 100);

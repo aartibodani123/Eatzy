@@ -54,7 +54,7 @@ $(document).on("click", ".card", function () {
         return;
     }
 
-    // Navigate to a page to view menu, passing restaurant ID
+
     window.location.href =
         "${pageContext.request.contextPath}/customer/restaurant-menu?restaurantId=" +
         encodeURIComponent(restaurantId);
