@@ -4,6 +4,9 @@
 <head>
     <title>Restaurant Dashboard</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/ajax-setup.js"></script>
+    <script src="${pageContext.request.contextPath}/js/auth-check.js"></script>
+
      <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
@@ -19,6 +22,7 @@
         </div>
     </div>
 </div>
+<script>
 <script>
 document.getElementById("hamburgerBtn").addEventListener("click", function () {
         document.getElementById("sidebar").classList.toggle("open");

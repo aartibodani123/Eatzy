@@ -65,22 +65,29 @@
    <script>
 const TokenManager = {
    setToken: function(token) {
-       sessionStorage.setItem('eatzy_token', token);
+       localStorage.setItem('eatzy_token', token);
        console.log('Token saved:', token.substring(0, 20) + '...');
    },
    getToken: function() {
-       return sessionStorage.getItem('eatzy_token');
+       return localStorage.getItem('eatzy_token');
    },
    setUserInfo: function(email, role) {
-       sessionStorage.setItem('eatzy_email', email);
-       sessionStorage.setItem('eatzy_role', role);
+       localStorage.setItem('eatzy_email', email);
+       localStorage.setItem('eatzy_role', role);
        console.log('User info saved:', email, role);
    },
    clearToken: function() {
-       sessionStorage.removeItem('eatzy_token');
-       sessionStorage.removeItem('eatzy_email');
-       sessionStorage.removeItem('eatzy_role');
+       localStorage.removeItem('eatzy_token');
+       localStorage.removeItem('eatzy_email');
+       localStorage.removeItem('eatzy_role');
        console.log('Token cleared');
+   },
+   getAuthHeaders: function() {
+       const token = this.getToken();
+       return {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+       };
    }
 };
 

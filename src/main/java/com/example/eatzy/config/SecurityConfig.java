@@ -32,6 +32,7 @@ public class SecurityConfig {
                                 "/signup-page",
                                 "/login-page",
                                 "/login",
+                                "/js/**",
                                 "/css/**",
                                 "/images/**",
                                 "/jsp/**",

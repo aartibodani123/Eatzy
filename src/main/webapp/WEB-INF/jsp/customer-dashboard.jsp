@@ -4,6 +4,8 @@
 <head>
     <title>Dashboard | Eatzy</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/auth-check.js"></script>
+    <script src="${pageContext.request.contextPath}/js/ajax-setup.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/customer-dashboard.css">
 </head>
@@ -142,138 +144,138 @@
     </div>
 
     <script>
-        // Simple TokenManager
-        const TokenManager = {
-            getToken: function() {
-                return sessionStorage.getItem('eatzy_token');
-            },
-            getEmail: function() {
-                return sessionStorage.getItem('eatzy_email');
-            },
-            setUserInfo: function(email, role) {
-                sessionStorage.setItem('eatzy_email', email);
-                sessionStorage.setItem('eatzy_role', role);
-            },
-            clearToken: function() {
-                sessionStorage.removeItem('eatzy_token');
-                sessionStorage.removeItem('eatzy_email');
-                sessionStorage.removeItem('eatzy_role');
-            }
-        };
 
-        // Check if user is authenticated on page load
-        $(document).ready(function() {
-            const token = TokenManager.getToken();
+    const TokenManager = {
 
-            if (!token) {
-                console.log('No token found, redirecting to login');
-                window.location.href = '${pageContext.request.contextPath}/login-page';
-                return;
-            }
+        getToken: function(){
+            return localStorage.getItem("eatzy_token");
+        },
 
-            // Load user data
-            loadUserData();
-        });
+        getEmail: function(){
+            return localStorage.getItem("eatzy_email");
+        },
+
+        setUserInfo: function(email, role){
+            localStorage.setItem("eatzy_email", email);
+            localStorage.setItem("eatzy_role", role);
+        },
+
+        clearToken: function(){
+            localStorage.removeItem("eatzy_token");
+            localStorage.removeItem("eatzy_email");
+            localStorage.removeItem("eatzy_role");
+        }
+
+    };
 
 
-        function loadUserData() {
-            let email = TokenManager.getEmail();
+    $(document).ready(function(){
 
-            if (email) {
-                $('#userEmail').text(email);
-            } else {
-                $.ajax({
+        loadUserData();
+
+    });
+
+
+    function loadUserData(){
+
+        let email = TokenManager.getEmail();
+
+        if(email){
+
+            $("#userEmail").text(email);
+
+        }else{
+
+            $.ajax({
                 url: "${pageContext.request.contextPath}/auth/check",
                 type: "GET",
-                headers: {
-                    "Authorization": "Bearer " + TokenManager.getToken()
-                },
-                success: function(data) {
-                    if (data.authenticated) {
-                        $('#userEmail').text(data.email);
-                        sessionStorage.setItem('eatzy_email', data.email);
-                        sessionStorage.setItem('eatzy_role', data.role);
+
+                success: function(data){
+
+                    if(data.authenticated){
+
+                        $("#userEmail").text(data.email);
+
+                        TokenManager.setUserInfo(data.email, data.role);
+
                     }
+
                 },
-                error: function() {
-                    $('#userEmail').text('Customer');
+
+                error: function(){
+
+                    $("#userEmail").text("Customer");
+
                 }
+
             });
+
         }
+
         loadDashboardStats();
+
     }
 
-        function loadDashboardStats() {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/customer/dashboard/stats",
-                type: "GET",
-                headers: {
-                   "Authorization": "Bearer " + TokenManager.getToken()
-                },
-                success: function(data) {
-                    $('#totalOrders').text(data.totalOrders || '0');
-                    $('#favorites').text(data.favorites || '0');
-                    $('#activeOffers').text(data.activeOffers || '0');
-                },
-                error: function(xhr) {
-                    if (xhr.status === 401) {
-                        TokenManager.clearToken();
-                        window.location.href = '${pageContext.request.contextPath}/login-page';
-                    }
+
+    function loadDashboardStats(){
+
+        $.ajax({
+
+            url: "${pageContext.request.contextPath}/customer/dashboard/stats",
+            type: "GET",
+
+            success: function(data){
+
+                $("#totalOrders").text(data.totalOrders || "0");
+
+                $("#favorites").text(data.favorites || "0");
+
+                $("#activeOffers").text(data.activeOffers || "0");
+
+            },
+
+            error: function(xhr){
+
+                if(xhr.status === 401){
+
+                    TokenManager.clearToken();
+
+                    window.location.href = "${pageContext.request.contextPath}/login-page";
+
                 }
-            });
+
+            }
+
+        });
+
+    }
+
+
+    // Sidebar toggle
+
+    document.getElementById("hamburgerBtn").addEventListener("click", function(){
+
+        document.getElementById("sidebar").classList.toggle("open");
+
+        document.querySelector(".dashboard").classList.toggle("shift");
+
+    });
+
+
+    // Logout
+
+    $("#logoutBtn").click(function(){
+
+        if(confirm("Are you sure you want to logout?")){
+
+            TokenManager.clearToken();
+
+            window.location.href = "${pageContext.request.contextPath}/login-page";
+
         }
 
-        // Hamburger menu functionality
-        document.getElementById("hamburgerBtn").addEventListener("click", function () {
-            document.getElementById("sidebar").classList.toggle("open");
-            document.querySelector(".dashboard").classList.toggle("shift");
-        });
+    });
 
-        // Logout
-        $("#logoutBtn").click(function () {
-            if (confirm('Are you sure you want to logout?')) {
-                TokenManager.clearToken();
-                window.location.href = '${pageContext.request.contextPath}/login-page';
-            }
-        });
-        // Add this at the very beginning of your dashboard script
-        console.log("========== DASHBOARD LOADED ==========");
-        console.log("Current URL:", window.location.href);
-        console.log("Token in storage:", sessionStorage.getItem('eatzy_token') ? "YES" : "NO");
-        console.log("Token value:", sessionStorage.getItem('eatzy_token') ? sessionStorage.getItem('eatzy_token').substring(0, 20) + '...' : 'none');
-        console.log("User email:", sessionStorage.getItem('eatzy_email'));
-        console.log("User role:", sessionStorage.getItem('eatzy_role'));
-
-        // Test if token is being sent in AJAX
-        $.ajaxSetup({
-            beforeSend: function(xhr) {
-                const token = sessionStorage.getItem('eatzy_token');
-                console.log("AJAX BeforeSend - Token present:", token ? "YES" : "NO");
-                if (token) {
-                    console.log("AJAX BeforeSend - Setting header with token:", token.substring(0, 20) + '...');
-                    xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-                }
-            }
-        });
-
-        // Test a simple API call
-        $(document).ready(function() {
-            console.log("Document ready - testing API call");
-
-            $.ajax({
-                url: "${pageContext.request.contextPath}/auth/check",
-                type: "GET",
-                success: function(data) {
-                    console.log("Auth check SUCCESS:", data);
-                },
-                error: function(xhr, status, error) {
-                    console.log("Auth check FAILED:", status, error);
-                    console.log("Response status:", xhr.status);
-                    console.log("Response headers:", xhr.getAllResponseHeaders());
-                }
-            });
-        });
     </script>
 </body>
 </html>

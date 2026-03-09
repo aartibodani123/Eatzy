@@ -4,6 +4,8 @@
 <head>
     <title>Admin Dashboard | Eatzy</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/ajax-setup.js"></script>
+    <script src="${pageContext.request.contextPath}/js/auth-check.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Eatzy Theme Admin Dashboard CSS */
@@ -462,8 +464,8 @@
             </div>
         </div>
 
-        <!-- Logout Button -->
-        <a href="${pageContext.request.contextPath}/logout" class="logout-btn">
+
+        <a href="#" class="logout-btn" id="logoutBtn">
             <i class="fas fa-sign-out-alt"></i>
             Logout
         </a>
@@ -471,34 +473,33 @@
 
     <script>
         // Fetch total customers
-        fetch("${pageContext.request.contextPath}/admin/countUsers")
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById("totalCustomers").innerText = data.totalCustomers || 0;
-            })
-            .catch(error => {
-                console.error("Error fetching customers:", error);
-                document.getElementById("totalCustomers").innerText = "Error";
+        $(document).ready(function(){
+
+            $.ajax({
+                url: "${pageContext.request.contextPath}/admin/countUsers",
+                type: "GET",
+                success: function(data){
+                    $("#totalCustomers").text(data.totalCustomers || 0);
+                }
             });
 
-        // Fetch total restaurants
-        fetch("${pageContext.request.contextPath}/admin/countRestaurants")
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById("totalRestaurants").innerText = data.totalRestaurant || 0;
-            })
-            .catch(error => {
-                console.error("Error fetching restaurants:", error);
-                document.getElementById("totalRestaurants").innerText = "Error";
+            $.ajax({
+                url: "${pageContext.request.contextPath}/admin/countRestaurants",
+                type: "GET",
+                success: function(data){
+                    $("#totalRestaurants").text(data.totalRestaurant || 0);
+                }
             });
 
-        // Sidebar toggle functionality
+        });
+
+
         document.getElementById("hamburgerBtn").addEventListener("click", function () {
             document.getElementById("sidebar").classList.toggle("open");
             document.querySelector(".dashboard").classList.toggle("shift");
         });
 
-        // Close sidebar when clicking outside
+
         document.addEventListener('click', function(event) {
             const sidebar = document.getElementById('sidebar');
             const hamburger = document.getElementById('hamburgerBtn');
@@ -507,6 +508,13 @@
                 sidebar.classList.remove('open');
                 document.querySelector(".dashboard").classList.remove("shift");
             }
+        });
+        $("#logoutBtn").click(function(e){
+            e.preventDefault();
+
+            localStorage.removeItem("eatzy_token");
+
+            window.location.href = "${pageContext.request.contextPath}/login-page";
         });
     </script>
 </body>
