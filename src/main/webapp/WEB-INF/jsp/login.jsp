@@ -165,7 +165,7 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
            TokenManager.setUserInfo(data.email, data.role);
 
 
-           addDebug('9. Token and user info saved to sessionStorage');
+           addDebug('9. Token and user info saved to localStorage');
 
 
            // Verify token

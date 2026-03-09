@@ -1,4 +1,4 @@
-
+const CONTEXT_PATH = "${pageContext.request.contextPath}";
 $.ajaxSetup({
     beforeSend: function(xhr) {
         const token = localStorage.getItem('eatzy_token');
@@ -13,7 +13,7 @@ $.ajaxSetup({
             localStorage.removeItem('eatzy_token');
             localStorage.removeItem('eatzy_email');
             localStorage.removeItem('eatzy_role');
-            window.location.href = '/login-page';
+            window.location.href = CONTEXT_PATH + "/login-page";
         } else if (xhr.status === 403) {
             console.log('403 Forbidden');
             alert('You do not have permission to perform this action');
