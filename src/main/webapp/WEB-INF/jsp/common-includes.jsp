@@ -14,9 +14,9 @@
         // Store token and user data
         setAuthData: function(data) {
             if (data.token) {
-                sessionStorage.setItem('eatzy_token', data.token);
-                sessionStorage.setItem('eatzy_email', data.email || '');
-                sessionStorage.setItem('eatzy_role', data.role || '');
+                localStorage.setItem('eatzy_token', data.token);
+                localStorage.setItem('eatzy_email', data.email || '');
+                localStorage.setItem('eatzy_role', data.role || '');
                 console.log('Auth data stored');
                 return true;
             }
@@ -25,17 +25,17 @@
 
         // Get token
         getToken: function() {
-            return sessionStorage.getItem('eatzy_token');
+            return localStorage.getItem('eatzy_token');
         },
 
         // Get user email
         getEmail: function() {
-            return sessionStorage.getItem('eatzy_email');
+            return localStorage.getItem('eatzy_email');
         },
 
         // Get user role
         getRole: function() {
-            return sessionStorage.getItem('eatzy_role');
+            return localStorage.getItem('eatzy_role');
         },
 
         // Check if authenticated
@@ -45,9 +45,9 @@
 
         // Clear all auth data
         logout: function() {
-            sessionStorage.removeItem('eatzy_token');
-            sessionStorage.removeItem('eatzy_email');
-            sessionStorage.removeItem('eatzy_role');
+            localStorage.removeItem('eatzy_token');
+            localStorage.removeItem('eatzy_email');
+            localStorage.removeItem('eatzy_role');
             window.location.href = '${pageContext.request.contextPath}/login-page';
         },
 

@@ -156,31 +156,25 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
        addDebug('7. Token present: ' + (data.token ? 'YES' : 'NO'));
 
 
-       if (data.token) {
-           addDebug('8. Token length: ' + data.token.length);
+if (data.token) {
 
+   TokenManager.setToken(data.token);
+   TokenManager.setUserInfo(data.email, data.role);
 
-           // Save token and user info
-           TokenManager.setToken(data.token);
-           TokenManager.setUserInfo(data.email, data.role);
+   const contextPath = "${pageContext.request.contextPath}";
 
+   addDebug("Redirecting to: " + data.redirectUrl);
 
-           addDebug('9. Token and user info saved to localStorage');
+   window.location.href = contextPath + data.redirectUrl;
 
+   addDebug('Role: ' + data.role);
+   addDebug('Redirect URL: ' + data.redirectUrl);
+   addDebug('Full URL: ' + contextPath + data.redirectUrl);
+   setTimeout(function() {
+       window.location.href = contextPath + data.redirectUrl;
+   }, 3000);
 
-           // Verify token
-           const savedToken = TokenManager.getToken();
-           addDebug('10. Verified token in storage: ' + (savedToken ? 'YES' : 'NO'));
-
-
-           addDebug('11. LOGIN SUCCESSFUL! Redirecting to dashboard...');
-
-
-           // Automatic redirect
-           window.location.href = data.redirectUrl || '/customer/dashboard';
-
-
-       } else {
+} else {
            addDebug('8. ERROR: No token in response!', true);
            addDebug('9. Full response: ' + JSON.stringify(data), true);
        }
@@ -196,4 +190,3 @@ document.getElementById("loginForm").addEventListener("submit", function(e) {
    </script>
 </body>
 </html>
-
