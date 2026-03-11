@@ -1,6 +1,7 @@
 package com.example.eatzy.dto;
 
-import com.example.eatzy.model.Order;
+import com.example.eatzy.model.CustomerOrder;
+
 import com.example.eatzy.model.OrderStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ public class TrackOrderResponse {
     private LocalDateTime lastUpdated;
     private double totalAmount;
 
-    public TrackOrderResponse(Order order) {
+    public TrackOrderResponse(CustomerOrder order) {
         this.orderId = order.getId();
         this.status = order.getStatus();
         this.lastUpdated = order.getLastUpdated();
