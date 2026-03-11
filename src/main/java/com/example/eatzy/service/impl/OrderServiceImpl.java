@@ -2,9 +2,7 @@ package com.example.eatzy.service.impl;
 
 import com.example.eatzy.dto.TrackOrderResponse;
 import com.example.eatzy.model.*;
-import com.example.eatzy.repository.CartRepository;
-import com.example.eatzy.repository.OrderItemRepository;
-import com.example.eatzy.repository.OrderRepository;
+import com.example.eatzy.repository.*;
 import com.example.eatzy.service.OrderService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,49 +17,72 @@ public class OrderServiceImpl implements OrderService {
     private CartRepository cartRepository;
 
     @Autowired
-    private OrderRepository orderRepository;
+    private CustomerOrderRepository customerOrderRepository;
+
+    @Autowired
+    private RestaurantOrderRepository restaurantOrderRepository;
 
     @Autowired
     private OrderItemRepository orderItemRepository;
 
     @Transactional
-    public Order placeOrder(Long userId){
+    public CustomerOrder  placeOrder(Long userId){
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseThrow(()-> new IllegalStateException("Cart is empty"));
         if(cart.getItems().isEmpty()){
             throw new IllegalStateException("Cart is empty");
         }
-        Order order =new Order();
-        order.setUserId(userId);
-        order.setRestaurantId(cart.getRestaurantId());
-        order.setStatus(OrderStatus.PLACED);
-        order.setTotalAmount(cart.getTotal());
-        order.setCreatedAt(LocalDateTime.now());
-        Order savedOrder = orderRepository.save(order);
+        // CUSTOMER ORDER
+        CustomerOrder customerOrder = new CustomerOrder();
+        customerOrder.setUserId(userId);
+        customerOrder.setRestaurantId(cart.getRestaurantId());
+        customerOrder.setStatus(OrderStatus.PLACED);
+        customerOrder.setTotalAmount(cart.getTotal());
+
+        CustomerOrder savedCustomerOrder = customerOrderRepository.save(customerOrder);
+
+
+        // RESTAURANT ORDER
+        RestaurantOrder restaurantOrder = new RestaurantOrder();
+
+        restaurantOrder.setId(savedCustomerOrder.getId());
+        restaurantOrder.setUserId(savedCustomerOrder.getUserId());
+        restaurantOrder.setRestaurantId(savedCustomerOrder.getRestaurantId());
+        restaurantOrder.setStatus(savedCustomerOrder.getStatus());
+        restaurantOrder.setTotalAmount(savedCustomerOrder.getTotalAmount());
+
+        restaurantOrderRepository.save(restaurantOrder);
+
+
 
         for (CartItem ci : cart.getItems()) {
+
             OrderItem oi = new OrderItem();
+
             oi.setMenuItemId(ci.getMenuItemId());
             oi.setName(ci.getName());
             oi.setPrice(ci.getPrice());
             oi.setQuantity(ci.getQuantity());
-            oi.setOrder(savedOrder);
+            oi.setOrder(savedCustomerOrder);
+
             orderItemRepository.save(oi);
         }
 
-
         cartRepository.delete(cart);
-        return savedOrder;
+
+        return savedCustomerOrder;
 
     }
 
-    public Order getOrderForUser(Long orderId, Long userId) {
-        return orderRepository.findByIdAndUserId(orderId,userId)
-                .orElseThrow(()->new RuntimeException("Order not found"));
+    public CustomerOrder getOrderForUser(Long orderId, Long userId) {
+
+        return customerOrderRepository.findByIdAndUserId(orderId, userId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
 
     }
-    public Order confirmDelivery(Long orderId, Long userId) {
-        Order order = orderRepository.findByIdAndUserId(orderId, userId)
+    public CustomerOrder confirmDelivery(Long orderId, Long userId) {
+
+        CustomerOrder order = customerOrderRepository.findByIdAndUserId(orderId, userId)
                 .orElseThrow(() -> new RuntimeException("Order not found or not yours"));
 
         if (order.getStatus() != OrderStatus.OUT_FOR_DELIVERY) {
@@ -69,22 +90,24 @@ public class OrderServiceImpl implements OrderService {
         }
 
         order.setStatus(OrderStatus.DELIVERED);
-        return orderRepository.save(order);
+
+        return customerOrderRepository.save(order);
     }
 
     @Override
     public List<TrackOrderResponse> allOrders(Long userId) {
-        List<Order> orders = orderRepository.findAllByUserId(userId);
+
+        List<CustomerOrder> orders = customerOrderRepository.findAllByUserId(userId);
+
         return orders.stream()
                 .map(this::toDTO)
                 .toList();
-
-
     }
 
-    public TrackOrderResponse toDTO(Order order){
-        TrackOrderResponse trackOrderResponse =new TrackOrderResponse(order);
-        return trackOrderResponse;
+
+    public TrackOrderResponse toDTO(CustomerOrder order) {
+
+        return new TrackOrderResponse(order);
 
     }
 }

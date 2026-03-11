@@ -1,7 +1,7 @@
 package com.example.eatzy.service;
 
 import com.example.eatzy.dto.OrderResponseDTO;
-import com.example.eatzy.model.Order;
+
 import com.example.eatzy.model.OrderStatus;
 
 import java.util.List;
