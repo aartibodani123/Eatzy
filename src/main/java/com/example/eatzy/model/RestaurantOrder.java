@@ -22,5 +22,7 @@ public class RestaurantOrder extends BaseOrder {
     @Column(name="commission_amount")
     private Double commissionAmount;
 
+    @Column(name = "customer_order_id")
+    private Long customerOrderId;
 
 }

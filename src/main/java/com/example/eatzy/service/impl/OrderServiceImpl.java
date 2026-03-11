@@ -44,12 +44,11 @@ public class OrderServiceImpl implements OrderService {
 
         // RESTAURANT ORDER
         RestaurantOrder restaurantOrder = new RestaurantOrder();
-
-        restaurantOrder.setId(savedCustomerOrder.getId());
         restaurantOrder.setUserId(savedCustomerOrder.getUserId());
         restaurantOrder.setRestaurantId(savedCustomerOrder.getRestaurantId());
         restaurantOrder.setStatus(savedCustomerOrder.getStatus());
         restaurantOrder.setTotalAmount(savedCustomerOrder.getTotalAmount());
+        restaurantOrder.setCustomerOrderId(savedCustomerOrder.getId());
 
         restaurantOrderRepository.save(restaurantOrder);
 
