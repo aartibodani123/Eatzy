@@ -8,7 +8,12 @@ import org.springframework.stereotype.Service;
 @Service
 public interface CartService {
 
-    CartResponseDTO addToCart(Long userId, Long restaurantId, Long menuItemId);
+    CartResponseDTO addToCart(Long userId, Long restaurantId, Long menuItemId,Integer quantity);
 
     CartViewResponse viewCart(Long userId);
+
+
+    CartViewResponse updateCartItemQuantity(Long userId, Long menuItemId, Integer quantity);
+
+    CartViewResponse removeCartItem(Long userId, Long menuItemId);
 }

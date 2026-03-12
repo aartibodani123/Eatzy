@@ -30,8 +30,10 @@ public class CartServiceImpl implements CartService {
     private MenuItemRepository menuItemRepository;
 
     @Transactional
-    public CartResponseDTO addToCart(Long userId, Long restaurantId, Long menuItemId) {
-
+    public CartResponseDTO addToCart(Long userId, Long restaurantId, Long menuItemId,Integer quantity) {
+        if (quantity == null || quantity < 1) {
+            quantity = 1;
+        }
         Cart cart = cartRepository.findByUserId(userId)
                 .orElseGet(() -> {
                     Cart newCart = new Cart();
@@ -58,13 +60,15 @@ public class CartServiceImpl implements CartService {
                 .findFirst();
 
         if (existing.isPresent()) {
-            existing.get().setQuantity(existing.get().getQuantity() + 1);
+
+            int newQuantity = existing.get().getQuantity() + quantity;
+            existing.get().setQuantity(newQuantity);
         } else {
             CartItem item = new CartItem();
             item.setMenuItemId(menuItem.getId());
             item.setName(menuItem.getName());
             item.setPrice(menuItem.getPrice());
-            item.setQuantity(1);
+            item.setQuantity(quantity);
             item.setCart(cart);
             cart.getItems().add(item);
         }
@@ -94,6 +98,76 @@ public class CartServiceImpl implements CartService {
         return new CartViewResponse(cart.getItems(),totalItems,totalPrice);
 
     }
+
+    @Override
+    public CartViewResponse updateCartItemQuantity(Long userId, Long menuItemId, Integer quantity) {
+        if (quantity == null || quantity < 1) {
+            throw new InvalidOperationException("Quantity must be at least 1");
+        }
+        Cart cart =cartRepository.findByUserId(userId)
+                .orElseThrow(()->new ResourceNotFoundException("cart not found for user"));
+        CartItem cartItem = cart.getItems().stream()
+                .filter(item -> item.getMenuItemId().equals(menuItemId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Item not found in cart"));
+        cartItem.setQuantity(quantity);
+
+
+        recalculateCartTotal(cart);
+
+
+        Cart savedCart = cartRepository.save(cart);
+
+
+        int totalItems = savedCart.getItems()
+                .stream()
+                .mapToInt(CartItem::getQuantity)
+                .sum();
+
+        double totalPrice = savedCart.getItems()
+                .stream()
+                .mapToDouble(item -> item.getPrice() * item.getQuantity())
+                .sum();
+
+
+        return new CartViewResponse(savedCart.getItems(), totalItems, totalPrice);
+    }
+
+    @Override
+    public CartViewResponse removeCartItem(Long userId, Long menuItemId) {
+        Cart cart=cartRepository.findByUserId(userId)
+                .orElseThrow(()->new ResourceNotFoundException("cart not found for user"));
+        boolean removed =cart.getItems().removeIf(item->item.getMenuItemId().equals(menuItemId));
+        if(!removed){
+            throw new ResourceNotFoundException("Item not found in cart");
+        }
+
+        if(cart.getItems().isEmpty()){
+            cart.setRestaurantId(null);
+        }
+        recalculateCartTotal(cart);
+        Cart savedCart=cartRepository.save(cart);
+        int totalItems = savedCart.getItems()
+                .stream()
+                .mapToInt(CartItem::getQuantity)
+                .sum();
+
+        double totalPrice = savedCart.getItems()
+                .stream()
+                .mapToDouble(item -> item.getPrice() * item.getQuantity())
+                .sum();
+
+
+        return new CartViewResponse(savedCart.getItems(), totalItems, totalPrice);
+    }
+
+    private void recalculateCartTotal(Cart cart) {
+        double total = cart.getItems().stream()
+                .mapToDouble(item -> item.getPrice() * item.getQuantity())
+                .sum();
+        cart.setTotal(total);
+    }
+
 
     public static CartResponseDTO toDto(Cart cart) {
         CartResponseDTO dto = new CartResponseDTO();

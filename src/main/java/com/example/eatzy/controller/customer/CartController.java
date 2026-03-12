@@ -2,10 +2,7 @@ package com.example.eatzy.controller.customer;
 
 import com.example.eatzy.common.ApiResponse;
 import com.example.eatzy.common.exception.ResourceAccessDeniedException;
-import com.example.eatzy.dto.AddToCartRequest;
-import com.example.eatzy.dto.CartResponseDTO;
-import com.example.eatzy.dto.CartViewResponse;
-import com.example.eatzy.dto.TrackOrderResponse;
+import com.example.eatzy.dto.*;
 import com.example.eatzy.model.Cart;
 import com.example.eatzy.model.CustomerOrder;
 
@@ -38,7 +35,8 @@ public class CartController {
         User user = userGuard.validateCustomer(email);
         CartResponseDTO response = cartService.addToCart(user.getUserId(),
                 request.getRestaurantId(),
-                request.getMenuItemId()
+                request.getMenuItemId(),
+                request.getQuantity()
         );
         return ResponseEntity.ok(new ApiResponse<>(200,"Item added to cart",response));
     }
@@ -49,6 +47,23 @@ public class CartController {
         User user = userGuard.validateCustomer(email);
         CartViewResponse response = cartService.viewCart(user.getUserId());
         return ResponseEntity.ok(new ApiResponse<>(200,"Cart fetched",response));
+    }
+    @PostMapping("/cart/update-quantity")
+    public ResponseEntity<ApiResponse<CartViewResponse>> updateCartQuantity(@RequestBody UpdateCartQuantityRequest request){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email=auth.getName();
+        User user = userGuard.validateCustomer(email);
+        CartViewResponse response=cartService.updateCartItemQuantity(user.getUserId(),request.getMenuItemId(),request.getQuantity());
+        return ResponseEntity.ok(new ApiResponse<>(200,"Cart quantity update",response));
+    }
+    @PostMapping("/cart/remove")
+    public ResponseEntity<ApiResponse<CartViewResponse>> removeFromCart(@RequestBody RemoveCartItemRequest request){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email=auth.getName();
+        User user = userGuard.validateCustomer(email);
+
+        CartViewResponse response=cartService.removeCartItem(user.getUserId(),request.getMenuItemId());
+        return ResponseEntity.ok(new ApiResponse<>(200,"Item removed from cart",response));
     }
     @PostMapping("/orders/place")
     public ResponseEntity<ApiResponse<CustomerOrder>> placeOrder(){
