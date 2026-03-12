@@ -5,7 +5,6 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         * {
@@ -20,7 +19,6 @@
             min-height: 100vh;
         }
 
-
         .content {
             margin-left: 0;
             padding: 2rem 2rem 2rem 5rem;
@@ -32,7 +30,6 @@
             margin-left: 280px;
         }
 
-
         .cart-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -41,7 +38,6 @@
             border-radius: 2.5rem;
             box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.15);
         }
-
 
         .cart-header {
             display: flex;
@@ -85,7 +81,6 @@
             margin-top: 0.5rem;
         }
 
-
         .view-orders-btn {
             display: inline-flex;
             align-items: center;
@@ -109,7 +104,6 @@
         .view-orders-btn i {
             color: #f97316;
         }
-
 
         .table-wrapper {
             overflow-x: auto;
@@ -140,12 +134,10 @@
 
         thead th:first-child {
             padding-left: 2rem;
-            border-radius: 20px 0 0 0;
         }
 
         thead th:last-child {
             padding-right: 2rem;
-            border-radius: 0 20px 0 0;
         }
 
         tbody tr {
@@ -160,6 +152,7 @@
         tbody td {
             padding: 1.2rem 1rem;
             color: #2e2e2e;
+            vertical-align: middle;
         }
 
         tbody td:first-child {
@@ -169,7 +162,6 @@
         tbody td:last-child {
             padding-right: 2rem;
         }
-
 
         .item-name {
             display: flex;
@@ -182,27 +174,103 @@
             font-size: 1.2rem;
         }
 
-        .quantity-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            background: #f9f9fb;
-            border: 1px solid #eaeef2;
-            padding: 0.3rem 1rem;
-            border-radius: 40px;
+        .item-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item-name-main {
             font-weight: 600;
         }
 
-        .quantity-badge i {
-            color: #f97316;
+        .item-price-per {
+            font-size: 0.85rem;
+            color: #6b6b6b;
         }
 
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .qty-btn {
+            width: 32px;
+            height: 32px;
+            border: 2px solid #eaeef2;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #f97316;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .qty-btn:hover:not(:disabled) {
+            border-color: #f97316;
+            background: #fff6ed;
+        }
+
+        .qty-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #ccc;
+        }
+
+        .qty-input {
+            width: 50px;
+            text-align: center;
+            border: 2px solid #eaeef2;
+            border-radius: 40px;
+            padding: 0.3rem;
+            font-weight: 600;
+        }
+
+        .qty-input.loading {
+            background-color: #f5f5f5;
+            opacity: 0.7;
+        }
 
         .price {
             font-weight: 700;
             color: #f97316;
         }
 
+        .subtotal {
+            font-weight: 700;
+            color: #2e7d32;
+            font-size: 1.1rem;
+        }
+
+        .remove-item {
+            background: none;
+            border: none;
+            color: #b34033;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.2s;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .remove-item:hover:not(:disabled) {
+            background: #fff1f0;
+            color: #8b2c1f;
+        }
+
+        .remove-item:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
 
         .cart-summary {
             background: #f9f9fb;
@@ -235,7 +303,6 @@
             color: #6b6b6b;
         }
 
-
         .cart-actions {
             display: flex;
             gap: 1rem;
@@ -263,7 +330,7 @@
             box-shadow: 0 10px 20px -8px rgba(249, 115, 22, 0.4);
         }
 
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             background: #e85d0e;
             transform: translateY(-2px);
         }
@@ -298,7 +365,6 @@
             background: #fff6ed;
             transform: translateY(-2px);
         }
-
 
         .message-area {
             margin-top: 2rem;
@@ -337,7 +403,6 @@
             }
         }
 
-
         .empty-cart {
             text-align: center;
             padding: 4rem;
@@ -363,11 +428,6 @@
             margin-bottom: 2rem;
         }
 
-        .empty-cart .btn {
-            display: inline-flex;
-        }
-
-
         .loading {
             text-align: center;
             padding: 3rem;
@@ -384,7 +444,6 @@
             40% { content: '..'; }
             60%, 100% { content: '...'; }
         }
-
 
         @media (max-width: 768px) {
             .content {
@@ -404,22 +463,8 @@
                 align-items: flex-start;
             }
 
-            .header-left {
-                width: 100%;
-            }
-
             .cart-header h2 {
                 font-size: 1.8rem;
-            }
-
-            .cart-header i {
-                font-size: 2rem;
-                padding: 0.8rem;
-            }
-
-            .view-orders-btn {
-                width: 100%;
-                justify-content: center;
             }
 
             .cart-summary {
@@ -440,53 +485,14 @@
                 justify-content: center;
             }
         }
-
-        @media (max-width: 480px) {
-            thead th {
-                font-size: 0.9rem;
-                padding: 1rem 0.5rem;
-            }
-
-            tbody td {
-                padding: 1rem 0.5rem;
-            }
-
-            thead th:first-child,
-            tbody td:first-child {
-                padding-left: 1rem;
-            }
-
-            thead th:last-child,
-            tbody td:last-child {
-                padding-right: 1rem;
-            }
-        }
-
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateX(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        tbody tr {
-            animation: fadeIn 0.3s ease forwards;
-        }
     </style>
 </head>
 <body>
 
     <jsp:include page="/WEB-INF/jsp/sidebar.jsp" />
 
-
     <div class="content" id="mainContent">
         <div class="cart-container">
-
             <div class="cart-header">
                 <div class="header-left">
                     <i class="fas fa-shopping-cart"></i>
@@ -498,32 +504,33 @@
                 </a>
             </div>
 
-
             <div class="table-wrapper">
                 <table>
                     <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                    </tr>
+                        <tr>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Subtotal</th>
+                            <th>Action</th>
+                        </tr>
                     </thead>
                     <tbody id="cart-body">
-                        <!-- Will be populated by JavaScript -->
+                        <tr>
+                            <td colspan="5" class="loading">Loading your cart...</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
-
-            <div class="cart-summary">
+            <div class="cart-summary" id="cart-summary" style="display: none;">
                 <span class="total-label">Total Amount</span>
                 <span class="total-amount" id="total">
-                    0 <small>₹</small>
+                    0.00 <small>₹</small>
                 </span>
             </div>
 
-
-            <div class="cart-actions">
+            <div class="cart-actions" id="cart-actions" style="display: none;">
                 <button class="btn btn-secondary" onclick="window.location.href='${pageContext.request.contextPath}/customer/browse-restaurant'">
                     <i class="fas fa-arrow-left"></i>
                     Continue Shopping
@@ -534,9 +541,7 @@
                 </button>
             </div>
 
-
             <div id="message" class="message-area" style="display: none;"></div>
-
 
             <div id="empty-cart-template" style="display: none;">
                 <div class="empty-cart">
@@ -559,117 +564,302 @@
     </div>
 
     <script>
-        function loadCart() {
+        const contextPath = "${pageContext.request.contextPath}";
 
-            $("#cart-body").html('<tr><td colspan="3" class="loading">Loading your cart</td></tr>');
+        $(document).ready(function() {
+            loadCart();
+            initSidebarToggle();
+        });
+
+        function loadCart() {
+            showLoading();
 
             $.ajax({
-                url: "/customer/cart/view",
+                url: contextPath + "/customer/cart/view",
                 method: "GET",
-                success: function (res) {
-                    const cart = res.data;
-                    console.log("Cart data:", cart);
+                success: function(res) {
+                    if (res && res.data) {
+                        const cartData = res.data;
 
-
-                    if (!cart.items || cart.items.length === 0) {
-                        const emptyTemplate = $("#empty-cart-template").html();
-                        $(".table-wrapper").html(emptyTemplate);
-                        $(".cart-summary, .cart-actions").hide();
-                        return;
-                    }
-
-
-                    $(".cart-summary, .cart-actions").show();
-
-
-                    $("#cart-body").empty();
-
-                    cart.items.forEach(function(item, index) {
-                        // Add animation delay based on index
-                        const delay = index * 0.1;
-
-                        var row = "<tr style='animation-delay: " + delay + "s'>" +
-                                    "<td>" +
-                                        "<div class='item-name'>" +
-                                            "<i class='fas fa-utensils'></i>" +
-                                            "<span>" + item.name + "</span>" +
-                                        "</div>" +
-                                    "</td>" +
-                                    "<td>" +
-                                        "<span class='quantity-badge'>" +
-                                            "<i class='fas fa-times'></i>" +
-                                            item.quantity +
-                                        "</span>" +
-                                    "</td>" +
-                                    "<td><span class='price'>₹" + item.price + "</span></td>" +
-                                  "</tr>";
-
-                        $("#cart-body").append(row);
-                    });
-
-                    $("#total").html(cart.totalPrice + " <small>₹</small>");
-                },
-                error: function(xhr, status, error) {
-                    console.error("Failed to load cart:", error);
-                    if (xhr.status === 401) {
-                        window.location.href = "${pageContext.request.contextPath}/login";
+                        if (!cartData.items || cartData.items.length === 0) {
+                            showEmptyCart();
+                        } else {
+                            renderCartItems(cartData);
+                            showCartSummaryAndActions();
+                        }
                     } else {
-                        $("#cart-body").html('<tr><td colspan="3" style="text-align: center; color: #b34033; padding: 2rem;"><i class="fas fa-exclamation-circle"></i> Failed to load cart. Please try again.</td></tr>');
+                        showEmptyCart();
+                    }
+                },
+                error: function(xhr) {
+                    console.error("Failed to load cart:", xhr);
+                    if (xhr.status === 401) {
+                        window.location.href = contextPath + "/login";
+                    } else {
+                        showError("Failed to load cart. Please try again.");
                     }
                 }
             });
         }
 
-        $("#place-order").click(function () {
+        function renderCartItems(cartData) {
+            const items = cartData.items;
+            let html = '';
+
+            items.forEach(function(item, index) {
+                const subtotal = item.price * item.quantity;
+
+                html += '<tr data-menu-item-id="' + item.menuItemId + '">' +
+                    '<td>' +
+                        '<div class="item-name">' +
+                            '<i class="fas fa-utensils"></i>' +
+                            '<div class="item-details">' +
+                                '<span class="item-name-main">' + item.name + '</span>' +
+                                '<span class="item-price-per">₹' + item.price + ' each</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</td>' +
+                    '<td>' +
+                        '<div class="quantity-controls">' +
+                            '<button class="qty-btn minus-qty" data-item-id="' + item.menuItemId + '" ' + (item.quantity <= 1 ? 'disabled' : '') + '>−</button>' +
+                            '<input type="number" class="qty-input" id="qty-' + item.menuItemId + '" value="' + item.quantity + '" min="1" max="99" readonly>' +
+                            '<button class="qty-btn plus-qty" data-item-id="' + item.menuItemId + '" ' + (item.quantity >= 99 ? 'disabled' : '') + '>+</button>' +
+                        '</div>' +
+                    '</td>' +
+                    '<td><span class="price" id="price-' + item.menuItemId + '">₹' + item.price + '</span></td>' +
+                    '<td><span class="subtotal" id="subtotal-' + item.menuItemId + '">₹' + subtotal.toFixed(2) + '</span></td>' +
+                    '<td>' +
+                        '<button class="remove-item" data-item-id="' + item.menuItemId + '" title="Remove item">' +
+                            '<i class="fas fa-trash"></i>' +
+                        '</button>' +
+                    '</td>' +
+                '</tr>';
+            });
+
+            $('#cart-body').html(html);
+            updateCartTotal(cartData.totalPrice || calculateTotalFromItems(items));
+        }
+
+        function calculateTotalFromItems(items) {
+            return items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        }
+
+        function updateCartTotal(total) {
+            $('#total').html(total.toFixed(2) + ' <small>₹</small>');
+        }
+
+        function showLoading() {
+            $('#cart-body').html('<tr><td colspan="5" class="loading">Loading your cart...</td></tr>');
+            $('#cart-summary, #cart-actions').hide();
+        }
+
+        function showEmptyCart() {
+            const emptyTemplate = $('#empty-cart-template').html();
+            $('.table-wrapper').html(emptyTemplate);
+            $('#cart-summary, #cart-actions').hide();
+        }
+
+        function showCartSummaryAndActions() {
+            $('#cart-summary, #cart-actions').show();
+        }
+
+        function showMessage(type, text) {
+            $('#message')
+                .removeClass('success error')
+                .addClass(type)
+                .html('<i class="fas fa-' + (type === 'success' ? 'check-circle' : 'exclamation-circle') + '"></i> ' + text)
+                .show();
+
+            setTimeout(() => {
+                $('#message').fadeOut();
+            }, 3000);
+        }
+
+        function showError(text) {
+            showMessage('error', text);
+        }
+
+$(document).on('click', '.plus-qty', function(e) {
+    e.preventDefault();
+    const btn = $(this);
+    if (btn.prop('disabled')) return;
+
+    const itemId = btn.data('item-id');
+    const row = btn.closest('tr');
+    const input = row.find('.qty-input'); // ← find by CLASS inside row, not by ID
+    const currentVal = parseInt(input.val());
+
+    console.log('Plus clicked, itemId:', itemId, 'val:', input.val(), 'parsed:', currentVal);
+
+    if (!isNaN(currentVal) && currentVal < 99) {
+        updateQuantity(itemId, currentVal + 1, row, 'plus');
+    }
+});
+
+$(document).on('click', '.minus-qty', function(e) {
+    e.preventDefault();
+    const btn = $(this);
+    if (btn.prop('disabled')) return;
+
+    const itemId = btn.data('item-id');
+    const row = btn.closest('tr');
+    const input = row.find('.qty-input'); // ← find by CLASS inside row, not by ID
+    const currentVal = parseInt(input.val());
+
+    console.log('Minus clicked, itemId:', itemId, 'val:', input.val(), 'parsed:', currentVal);
+
+    if (!isNaN(currentVal) && currentVal > 1) {
+        updateQuantity(itemId, currentVal - 1, row, 'minus');
+    }
+});
+
+        // Remove item handler
+        $(document).on('click', '.remove-item', function() {
+            const btn = $(this);
+            const itemId = btn.data('item-id');
+
+            if (confirm('Are you sure you want to remove this item?')) {
+                removeItem(itemId, btn);
+            }
+        });
+
+        // Place order handler
+        $('#place-order').click(function() {
             const btn = $(this);
 
-
-            btn.prop("disabled", true);
+            btn.prop('disabled', true);
             btn.html('<i class="fas fa-spinner fa-spin"></i> Placing Order...');
 
             $.ajax({
-                url: "/customer/orders/place",
+                url: contextPath + "/customer/orders/place",
                 method: "POST",
-                success: function (res) {
-                    $("#message")
-                        .removeClass("error")
-                        .addClass("success")
-                        .html('<i class="fas fa-check-circle"></i> ' + (res.message || "Order placed successfully!"))
-                        .show();
+                success: function(res) {
+                    showMessage('success', res.message || 'Order placed successfully!');
+                    loadCart(); // Reload cart (should be empty now)
 
-
-                    loadCart();
-
-
-                    btn.prop("disabled", false);
+                    btn.prop('disabled', false);
                     btn.html('<i class="fas fa-check-circle"></i> Place Order');
-
-
-                    setTimeout(() => {
-                        $("#message").fadeOut();
-                    }, 5000);
                 },
-                error: function (xhr) {
-                    const msg = xhr.responseJSON?.message || "Order failed. Please try again.";
+                error: function(xhr) {
+                    const msg = xhr.responseJSON?.message || 'Order failed. Please try again.';
+                    showMessage('error', msg);
 
-                    $("#message")
-                        .removeClass("success")
-                        .addClass("error")
-                        .html('<i class="fas fa-exclamation-circle"></i> ' + msg)
-                        .show();
-
-                    btn.prop("disabled", false);
+                    btn.prop('disabled', false);
                     btn.html('<i class="fas fa-check-circle"></i> Place Order');
-
-
-                    setTimeout(() => {
-                        $("#message").fadeOut();
-                    }, 5000);
                 }
             });
         });
 
 
+       function updateQuantity(menuItemId, newQuantity, row, action) {
+           const plusBtn  = row.find('.plus-qty');
+           const minusBtn = row.find('.minus-qty');
+           const removeBtn = row.find('.remove-item');
+           const qtyInput  = row.find('.qty-input'); // ← class, not ID
+
+           plusBtn.prop('disabled', true);
+           minusBtn.prop('disabled', true);
+           removeBtn.prop('disabled', true);
+           qtyInput.addClass('loading');
+
+           const priceText = row.find('.price').text(); // ← also grab price from row
+           const price = parseFloat(priceText.replace('₹', ''));
+
+           $.ajax({
+               url: contextPath + "/customer/cart/update-quantity",
+               method: "POST",
+               contentType: "application/json",
+               data: JSON.stringify({ menuItemId: menuItemId, quantity: newQuantity }),
+               success: function(res) {
+                   qtyInput.val(newQuantity);
+                   row.find('.subtotal').text('₹' + (price * newQuantity).toFixed(2));
+
+                   if (res.data && res.data.totalPrice !== undefined) {
+                       updateCartTotal(res.data.totalPrice);
+                   } else {
+                       recalculateCartTotal();
+                   }
+                   showMessage('success', 'Quantity updated');
+               },
+               error: function(xhr) {
+                   console.error('Update failed:', xhr.responseText);
+                   showMessage('error', xhr.responseJSON?.message || 'Failed to update quantity');
+                   qtyInput.val(action === 'plus' ? newQuantity - 1 : newQuantity + 1);
+               },
+               complete: function() {
+                   const currentQty = parseInt(qtyInput.val());
+                   minusBtn.prop('disabled', currentQty <= 1);
+                   plusBtn.prop('disabled', currentQty >= 99);
+                   removeBtn.prop('disabled', false);
+                   qtyInput.removeClass('loading');
+               }
+           });
+       }
+
+        // Function to remove item
+        function removeItem(menuItemId, btn) {
+            const row = $(`tr[data-menu-item-id="${menuItemId}"]`);
+
+            // Disable button during removal
+            btn.prop('disabled', true);
+            btn.html('<i class="fas fa-spinner fa-spin"></i>');
+
+            // Dim the row
+            row.css('opacity', '0.5');
+
+            $.ajax({
+                url: contextPath + "/customer/cart/remove",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    menuItemId: menuItemId
+                }),
+                success: function(res) {
+                    showMessage('success', 'Item removed from cart');
+
+                    // Remove row with animation
+                    row.fadeOut(300, function() {
+                        $(this).remove();
+
+                        // Check if cart is empty
+                        if ($('#cart-body tr').length === 0) {
+                            loadCart(); // Reload to show empty cart message
+                        } else {
+                            // Recalculate total
+                            if (res.data && res.data.totalPrice) {
+                                updateCartTotal(res.data.totalPrice);
+                            } else {
+                                recalculateCartTotal();
+                            }
+                        }
+                    });
+                },
+                error: function(xhr) {
+                    const msg = xhr.responseJSON?.message || 'Failed to remove item';
+                    showMessage('error', msg);
+
+                    // Restore row
+                    row.css('opacity', '1');
+                    btn.prop('disabled', false);
+                    btn.html('<i class="fas fa-trash"></i>');
+                }
+            });
+        }
+
+        // Function to recalculate cart total from all subtotals
+        function recalculateCartTotal() {
+            let total = 0;
+            $('[id^="subtotal-"]').each(function() {
+                const subtotalText = $(this).text();
+                const subtotal = parseFloat(subtotalText.replace('₹', ''));
+                if (!isNaN(subtotal)) {
+                    total += subtotal;
+                }
+            });
+            updateCartTotal(total);
+        }
+
+        // Sidebar toggle function
         function initSidebarToggle() {
             const hamburger = document.getElementById("hamburgerBtn");
             const sidebar = document.getElementById("sidebar");
@@ -680,13 +870,11 @@
                 return;
             }
 
-
-            hamburger.addEventListener("click", function (e) {
+            hamburger.addEventListener("click", function(e) {
                 e.stopPropagation();
                 sidebar.classList.toggle("open");
                 mainContent.classList.toggle("shift");
             });
-
 
             document.addEventListener('click', function(event) {
                 if (!sidebar.contains(event.target) &&
@@ -697,17 +885,10 @@
                 }
             });
 
-
             sidebar.addEventListener('click', function(e) {
                 e.stopPropagation();
             });
         }
-
-
-        $(document).ready(function() {
-            loadCart();
-            setTimeout(initSidebarToggle, 100);
-        });
     </script>
 </body>
 </html>

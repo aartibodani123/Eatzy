@@ -499,9 +499,7 @@
             const restaurantId = "<%= restaurantId %>";
             const contextPath = "${pageContext.request.contextPath}";
 
-
             loadCartCount();
-
 
             function loadCartCount() {
                 $.ajax({
@@ -525,7 +523,6 @@
                 });
             }
 
-
             $("#menuGrid").html('<div class="loading">Loading delicious menu</div>');
 
             $.ajax({
@@ -547,7 +544,6 @@
                     let html = "";
 
                     $.each(menuItems, function(i, item) {
-
                         const foodIcon = item.category === 'Beverage' ? 'fa-mug-hot' :
                                         item.category === 'Dessert' ? 'fa-cake-candles' :
                                         item.category === 'Starters' ? 'fa-leaf' : 'fa-utensils';
@@ -602,7 +598,6 @@
                 }
             });
 
-
             $(document).on('click', '.plus-btn', function() {
                 const itemId = $(this).data('item-id');
                 const input = $('#qty-' + itemId);
@@ -612,7 +607,6 @@
                 }
             });
 
-
             $(document).on('click', '.minus-btn', function() {
                 const itemId = $(this).data('item-id');
                 const input = $('#qty-' + itemId);
@@ -621,7 +615,6 @@
                     input.val(val - 1);
                 }
             });
-
 
             $(document).on("click", ".add-to-cart", function () {
                 const btn = $(this);
@@ -634,135 +627,86 @@
                 btn.prop("disabled", true);
                 btn.html('<i class="fas fa-spinner fa-spin"></i> Adding...');
 
-                if (quantity === 1) {
+                $.ajax({
+                    url: contextPath + "/customer/cart/add",
+                    method: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        restaurantId: restaurantId,
+                        menuItemId: menuItemId,
+                        quantity: quantity
+                    }),
+                    success: function(res) {
+                        $("#message")
+                            .removeClass('error')
+                            .addClass('success')
+                            .html('<i class="fas fa-check-circle"></i> ' + quantity + ' x ' +
+                                 card.find('h3').text() + ' added to cart!')
+                            .css("display", "flex");
 
-                    $.ajax({
-                        url: contextPath + "/customer/cart/add",
-                        method: "POST",
-                        contentType: "application/json",
-                        data: JSON.stringify({
-                            restaurantId: restaurantId,
-                            menuItemId: menuItemId
-                        }),
-                        success: function(res) {
-                            handleAddToCartSuccess(res, quantity, card, btn, itemId);
-                        },
-                        error: function(xhr) {
-                            handleAddToCartError(xhr, btn);
-                        }
-                    });
-                } else {
+                        btn.html('<i class="fas fa-check"></i> Added to Cart');
+                        btn.css("background", "#2e7d32");
+                        loadCartCount();
 
-                    const promises = [];
-                    for (let i = 0; i < quantity; i++) {
-                        promises.push(
-                            $.ajax({
-                                url: contextPath + "/customer/cart/add",
-                                method: "POST",
-                                contentType: "application/json",
-                                data: JSON.stringify({
-                                    restaurantId: restaurantId,
-                                    menuItemId: menuItemId
-                                })
-                            })
-                        );
-                    }
+                        setTimeout(() => {
+                            btn.prop("disabled", false);
+                            btn.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
+                            btn.css("background", "");
+                            $('#qty-' + itemId).val(1);
+                        }, 2000);
 
-                    Promise.all(promises)
-                        .then(results => {
-                            handleAddToCartSuccess(results[0], quantity, card, btn, itemId);
-                        })
-                        .catch(error => {
-                            handleAddToCartError(error, btn);
-                        });
-                }
+                        setTimeout(() => {
+                            $("#message").fadeOut();
+                        }, 3000);
+                    },
+                    error: function(xhr) {
+                        const msg = xhr.responseJSON?.message || "Failed to add to cart";
+                        $("#message")
+                            .removeClass('success')
+                            .addClass('error')
+                            .html('<i class="fas fa-exclamation-circle"></i> ' + msg)
+                            .css("display", "flex");
 
-                function handleAddToCartSuccess(res, quantity, card, btn, itemId) {
-
-                    $("#message")
-                        .removeClass('error')
-                        .addClass('success')
-                        .html('<i class="fas fa-check-circle"></i> ' + quantity + ' x ' + card.find('h3').text() + ' added to cart!')
-                        .css("display", "flex");
-
-
-                    btn.html('<i class="fas fa-check"></i> Added to Cart');
-                    btn.css("background", "#2e7d32");
-
-
-                    loadCartCount();
-
-
-                    setTimeout(() => {
-                        $("#message").fadeOut();
-                    }, 3000);
-
-
-                    setTimeout(() => {
                         btn.prop("disabled", false);
                         btn.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
-                        btn.css("background", "");
-                        // Reset quantity to 1
-                        $('#qty-' + itemId).val(1);
-                    }, 2000);
-                }
 
-                function handleAddToCartError(xhr, btn) {
-                    const msg = xhr.responseJSON?.message || "Failed to add to cart";
-                    $("#message")
-                        .removeClass('success')
-                        .addClass('error')
-                        .html('<i class="fas fa-exclamation-circle"></i> ' + msg)
-                        .css("display", "flex");
-
-
-                    btn.prop("disabled", false);
-                    btn.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
-
-
-                    setTimeout(() => {
-                        $("#message").fadeOut();
-                    }, 3000);
-                }
+                        setTimeout(() => {
+                            $("#message").fadeOut();
+                        }, 3000);
+                    }
+                }); // <-- Added missing closing brace and parenthesis
             });
-        });
 
+            function initSidebarToggle() {
+                const hamburger = document.getElementById("hamburgerBtn");
+                const sidebar = document.getElementById("sidebar");
+                const mainContent = document.getElementById("mainContent");
 
-        function initSidebarToggle() {
-            const hamburger = document.getElementById("hamburgerBtn");
-            const sidebar = document.getElementById("sidebar");
-            const mainContent = document.getElementById("mainContent");
+                if (!hamburger || !sidebar || !mainContent) {
+                    console.error("Sidebar elements not found");
+                    return;
+                }
 
-            if (!hamburger || !sidebar || !mainContent) {
-                console.error("Sidebar elements not found");
-                return;
+                hamburger.addEventListener("click", function (e) {
+                    e.stopPropagation();
+                    sidebar.classList.toggle("open");
+                    mainContent.classList.toggle("shift");
+                });
+
+                document.addEventListener('click', function(event) {
+                    if (!sidebar.contains(event.target) &&
+                        !hamburger.contains(event.target) &&
+                        sidebar.classList.contains('open')) {
+                        sidebar.classList.remove('open');
+                        mainContent.classList.remove('shift');
+                    }
+                });
+
+                sidebar.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
             }
 
-
-            hamburger.addEventListener("click", function (e) {
-                e.stopPropagation();
-                sidebar.classList.toggle("open");
-                mainContent.classList.toggle("shift");
-            });
-
-
-            document.addEventListener('click', function(event) {
-                if (!sidebar.contains(event.target) &&
-                    !hamburger.contains(event.target) &&
-                    sidebar.classList.contains('open')) {
-                    sidebar.classList.remove('open');
-                    mainContent.classList.remove('shift');
-                }
-            });
-
-
-            sidebar.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-        }
-
-
-        $(document).ready(function() {
             setTimeout(initSidebarToggle, 100);
         });
     </script>
