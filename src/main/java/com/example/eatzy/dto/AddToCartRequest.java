@@ -8,5 +8,6 @@ import lombok.Setter;
 public class AddToCartRequest {
     private Long restaurantId;
     private Long menuItemId;
+    private Integer quantity;
 
 }
