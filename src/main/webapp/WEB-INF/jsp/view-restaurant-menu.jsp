@@ -495,220 +495,231 @@
     </div>
 
     <script>
-        $(document).ready(function () {
-            const restaurantId = "<%= restaurantId %>";
-            const contextPath = "${pageContext.request.contextPath}";
+       $(document).ready(function () {
+           const restaurantId = "<%= restaurantId %>";
+           const contextPath = "${pageContext.request.contextPath}";
 
-            loadCartCount();
+           loadCartCount();
 
-            function loadCartCount() {
-                $.ajax({
-                    url: contextPath + "/customer/cart/view",
-                    method: "GET",
-                    success: function(res) {
-                        if (res && res.data) {
-                            const cart = res.data;
-                            if (cart && cart.items) {
-                                const totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
-                                $('#cartCount').text(totalItems);
-                            }
-                        }
-                    },
-                    error: function(xhr) {
-                        console.log("Could not load cart count:", xhr.status);
-                        if (xhr.status === 401) {
-                            window.location.href = contextPath + "/login";
-                        }
-                    }
-                });
-            }
+           function loadCartCount() {
+               $.ajax({
+                   url: contextPath + "/customer/cart/view",
+                   method: "GET",
+                   success: function(res) {
+                       if (res && res.data) {
+                           const cart = res.data;
+                           if (cart && cart.items) {
+                               const totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+                               $('#cartCount').text(totalItems);
+                           }
+                       }
+                   },
+                   error: function(xhr) {
+                       console.log("Could not load cart count:", xhr.status);
+                       if (xhr.status === 401) {
+                           window.location.href = contextPath + "/login";
+                       }
+                   }
+               });
+           }
 
-            $("#menuGrid").html('<div class="loading">Loading delicious menu</div>');
+           $("#menuGrid").html('<div class="loading">Loading delicious menu</div>');
 
-            $.ajax({
-                url: contextPath + "/customer/restaurants/" + restaurantId + "/menu",
-                method: "GET",
-                success: function(response) {
-                    if (!response || !response.data) {
-                        $("#menuGrid").html('<div class="empty-menu"><i class="fas fa-exclamation-circle"></i>Invalid response from server</div>');
-                        return;
-                    }
+           $.ajax({
+               url: contextPath + "/customer/restaurants/" + restaurantId + "/menu",
+               method: "GET",
+               success: function(response) {
+                   if (!response || !response.data) {
+                       $("#menuGrid").html('<div class="empty-menu"><i class="fas fa-exclamation-circle"></i>Invalid response from server</div>');
+                       return;
+                   }
 
-                    const menuItems = response.data;
+                   const menuItems = response.data;
 
-                    if (!menuItems || menuItems.length === 0) {
-                        $("#menuGrid").html('<div class="empty-menu"><i class="fas fa-utensils"></i>No menu items available</div>');
-                        return;
-                    }
+                   if (!menuItems || menuItems.length === 0) {
+                       $("#menuGrid").html('<div class="empty-menu"><i class="fas fa-utensils"></i>No menu items available</div>');
+                       return;
+                   }
 
-                    let html = "";
+                   let html = "";
 
-                    $.each(menuItems, function(i, item) {
-                        const foodIcon = item.category === 'Beverage' ? 'fa-mug-hot' :
-                                        item.category === 'Dessert' ? 'fa-cake-candles' :
-                                        item.category === 'Starters' ? 'fa-leaf' : 'fa-utensils';
+                   $.each(menuItems, function(i, item) {
+                       const foodIcon = item.category === 'Beverage' ? 'fa-mug-hot' :
+                                       item.category === 'Dessert' ? 'fa-cake-candles' :
+                                       item.category === 'Starters' ? 'fa-leaf' : 'fa-utensils';
 
-                        html += '<div class="card" data-item-id="' + item.id + '">' +
-                                    '<div class="card-image">' +
-                                        '<i class="fas ' + foodIcon + '"></i>' +
-                                    '</div>' +
-                                    '<div class="card-content">' +
-                                        '<h3>' + item.name + '</h3>' +
-                                        (item.description ? '<p><i class="fas fa-info-circle"></i> ' + item.description + '</p>' : '') +
-                                        '<div class="price">' +
-                                            '<i class="fas fa-indian-rupee-sign"></i> ' + item.price +
-                                            ' <small>per item</small>' +
-                                        '</div>' +
-                                        '<div class="quantity-selector">' +
-                                            '<button class="qty-btn minus-btn" data-item-id="' + item.id + '">−</button>' +
-                                            '<input type="number" class="qty-input" id="qty-' + item.id + '" value="1" min="1" max="99" readonly>' +
-                                            '<button class="qty-btn plus-btn" data-item-id="' + item.id + '">+</button>' +
-                                        '</div>' +
-                                        '<button class="btn add-to-cart" ' +
-                                            'data-restaurant-id="' + restaurantId + '" ' +
-                                            'data-menu-item-id="' + item.id + '">' +
-                                            '<i class="fas fa-shopping-cart"></i> Add to Cart' +
-                                        '</button>' +
-                                    '</div>' +
-                                '</div>';
-                    });
+                       html += '<div class="card" data-item-id="' + item.id + '">' +
+                                   '<div class="card-image">' +
+                                       '<i class="fas ' + foodIcon + '"></i>' +
+                                   '</div>' +
+                                   '<div class="card-content">' +
+                                       '<h3>' + item.name + '</h3>' +
+                                       (item.description ? '<p><i class="fas fa-info-circle"></i> ' + item.description + '</p>' : '') +
+                                       '<div class="price">' +
+                                           '<i class="fas fa-indian-rupee-sign"></i> ' + item.price +
+                                           ' <small>per item</small>' +
+                                       '</div>' +
+                                       '<div class="quantity-selector">' +
+                                           '<button class="qty-btn minus-btn" data-item-id="' + item.id + '">−</button>' +
+                                           '<input type="number" class="qty-input" id="qty-' + item.id + '" value="1" min="1" max="99" readonly>' +
+                                           '<button class="qty-btn plus-btn" data-item-id="' + item.id + '">+</button>' +
+                                       '</div>' +
+                                       '<button class="btn add-to-cart" ' +
+                                           'data-restaurant-id="' + restaurantId + '" ' +
+                                           'data-menu-item-id="' + item.id + '">' +
+                                           '<i class="fas fa-shopping-cart"></i> Add to Cart' +
+                                       '</button>' +
+                                   '</div>' +
+                               '</div>';
+                   });
 
-                    $("#menuGrid").html(html);
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error loading menu:", {
-                        status: xhr.status,
-                        statusText: xhr.statusText,
-                        error: error
-                    });
+                   $("#menuGrid").html(html);
+               },
+               error: function(xhr, status, error) {
+                   console.error("Error loading menu:", {
+                       status: xhr.status,
+                       statusText: xhr.statusText,
+                       error: error
+                   });
 
-                    let errorMsg = "Failed to load menu. ";
-                    if (xhr.status === 401) {
-                        errorMsg = "Your session has expired. Please login again.";
-                        setTimeout(() => {
-                            window.location.href = contextPath + "/login";
-                        }, 2000);
-                    } else if (xhr.status === 404) {
-                        errorMsg = "Restaurant not found.";
-                    } else if (xhr.status === 500) {
-                        errorMsg = "Server error. Please try again later.";
-                    }
+                   let errorMsg = "Failed to load menu. ";
+                   if (xhr.status === 401) {
+                       errorMsg = "Your session has expired. Please login again.";
+                       setTimeout(() => {
+                           window.location.href = contextPath + "/login";
+                       }, 2000);
+                   } else if (xhr.status === 404) {
+                       errorMsg = "Restaurant not found.";
+                   } else if (xhr.status === 500) {
+                       errorMsg = "Server error. Please try again later.";
+                   }
 
-                    $("#menuGrid").html('<div class="empty-menu"><i class="fas fa-exclamation-circle"></i>' + errorMsg + '</div>');
-                }
-            });
+                   $("#menuGrid").html('<div class="empty-menu"><i class="fas fa-exclamation-circle"></i>' + errorMsg + '</div>');
+               }
+           });
 
-            $(document).on('click', '.plus-btn', function() {
-                const itemId = $(this).data('item-id');
-                const input = $('#qty-' + itemId);
-                let val = parseInt(input.val()) || 1;
-                if (val < 99) {
-                    input.val(val + 1);
-                }
-            });
+           $(document).on('click', '.plus-btn', function() {
+               const itemId = $(this).data('item-id');
+               const input = $('#qty-' + itemId);
+               let val = parseInt(input.val()) || 1;
+               if (val < 99) {
+                   input.val(val + 1);
+               }
+           });
 
-            $(document).on('click', '.minus-btn', function() {
-                const itemId = $(this).data('item-id');
-                const input = $('#qty-' + itemId);
-                let val = parseInt(input.val()) || 1;
-                if (val > 1) {
-                    input.val(val - 1);
-                }
-            });
+           $(document).on('click', '.minus-btn', function() {
+               const itemId = $(this).data('item-id');
+               const input = $('#qty-' + itemId);
+               let val = parseInt(input.val()) || 1;
+               if (val > 1) {
+                   input.val(val - 1);
+               }
+           });
 
-            $(document).on("click", ".add-to-cart", function () {
-                const btn = $(this);
-                const card = btn.closest('.card');
-                const itemId = card.data('item-id');
-                const restaurantId = $(this).data("restaurant-id");
-                const menuItemId = $(this).data("menu-item-id");
-                const quantity = parseInt($('#qty-' + itemId).val()) || 1;
+           $(document).on("click", ".add-to-cart", function () {
+               const btn = $(this);
+               const card = btn.closest('.card');
+               const itemId = card.data('item-id');
+               const restaurantId = $(this).data("restaurant-id");
+               const menuItemId = $(this).data("menu-item-id");
+               const quantity = parseInt($('#qty-' + itemId).val()) || 1;
 
-                btn.prop("disabled", true);
-                btn.html('<i class="fas fa-spinner fa-spin"></i> Adding...');
+               // Store the current quantity before making the button loading
+               const currentQuantity = quantity;
 
-                $.ajax({
-                    url: contextPath + "/customer/cart/add",
-                    method: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify({
-                        restaurantId: restaurantId,
-                        menuItemId: menuItemId,
-                        quantity: quantity
-                    }),
-                    success: function(res) {
-                        $("#message")
-                            .removeClass('error')
-                            .addClass('success')
-                            .html('<i class="fas fa-check-circle"></i> ' + quantity + ' x ' +
-                                 card.find('h3').text() + ' added to cart!')
-                            .css("display", "flex");
+               btn.prop("disabled", true);
+               btn.html('<i class="fas fa-spinner fa-spin"></i> Adding...');
+               // Remove any green background that might be set
+               btn.css("background", "");
 
-                        btn.html('<i class="fas fa-check"></i> Added to Cart');
-                        btn.css("background", "#2e7d32");
-                        loadCartCount();
+               $.ajax({
+                   url: contextPath + "/customer/cart/add",
+                   method: "POST",
+                   contentType: "application/json",
+                   data: JSON.stringify({
+                       restaurantId: restaurantId,
+                       menuItemId: menuItemId,
+                       quantity: currentQuantity
+                   }),
+                   success: function(res) {
+                       $("#message")
+                           .removeClass('error')
+                           .addClass('success')
+                           .html('<i class="fas fa-check-circle"></i> ' + currentQuantity + ' x ' +
+                                card.find('h3').text() + ' added to cart!')
+                           .css("display", "flex");
 
-                        setTimeout(() => {
-                            btn.prop("disabled", false);
-                            btn.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
-                            btn.css("background", "");
-                            $('#qty-' + itemId).val(1);
-                        }, 2000);
+                       // Keep the button text as "Added to Cart" but maintain orange color
+                       btn.html('<i class="fas fa-check"></i> Added to Cart');
+                       // Ensure button stays orange (default color)
+                       btn.css("background", "#f97316");
 
-                        setTimeout(() => {
-                            $("#message").fadeOut();
-                        }, 3000);
-                    },
-                    error: function(xhr) {
-                        const msg = xhr.responseJSON?.message || "Failed to add to cart";
-                        $("#message")
-                            .removeClass('success')
-                            .addClass('error')
-                            .html('<i class="fas fa-exclamation-circle"></i> ' + msg)
-                            .css("display", "flex");
+                       loadCartCount();
 
-                        btn.prop("disabled", false);
-                        btn.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
+                       // Restore button after 2 seconds without changing quantity
+                       setTimeout(() => {
+                           btn.prop("disabled", false);
+                           btn.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
+                           btn.css("background", "#f97316");
+                           // Don't reset the quantity - keep it as user selected
+                       }, 2000);
 
-                        setTimeout(() => {
-                            $("#message").fadeOut();
-                        }, 3000);
-                    }
-                }); // <-- Added missing closing brace and parenthesis
-            });
+                       setTimeout(() => {
+                           $("#message").fadeOut();
+                       }, 3000);
+                   },
+                   error: function(xhr) {
+                       const msg = xhr.responseJSON?.message || "Failed to add to cart";
+                       $("#message")
+                           .removeClass('success')
+                           .addClass('error')
+                           .html('<i class="fas fa-exclamation-circle"></i> ' + msg)
+                           .css("display", "flex");
 
-            function initSidebarToggle() {
-                const hamburger = document.getElementById("hamburgerBtn");
-                const sidebar = document.getElementById("sidebar");
-                const mainContent = document.getElementById("mainContent");
+                       btn.prop("disabled", false);
+                       btn.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
+                       // Ensure button returns to orange
+                       btn.css("background", "#f97316");
 
-                if (!hamburger || !sidebar || !mainContent) {
-                    console.error("Sidebar elements not found");
-                    return;
-                }
+                       setTimeout(() => {
+                           $("#message").fadeOut();
+                       }, 3000);
+                   }
+               });
+           });
 
-                hamburger.addEventListener("click", function (e) {
-                    e.stopPropagation();
-                    sidebar.classList.toggle("open");
-                    mainContent.classList.toggle("shift");
-                });
+           function initSidebarToggle() {
+               const hamburger = document.getElementById("hamburgerBtn");
+               const sidebar = document.getElementById("sidebar");
+               const mainContent = document.getElementById("mainContent");
 
-                document.addEventListener('click', function(event) {
-                    if (!sidebar.contains(event.target) &&
-                        !hamburger.contains(event.target) &&
-                        sidebar.classList.contains('open')) {
-                        sidebar.classList.remove('open');
-                        mainContent.classList.remove('shift');
-                    }
-                });
+               if (!hamburger || !sidebar || !mainContent) {
+                   console.error("Sidebar elements not found");
+                   return;
+               }
 
-                sidebar.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                });
-            }
+               hamburger.addEventListener("click", function (e) {
+                   e.stopPropagation();
+                   sidebar.classList.toggle("open");
+                   mainContent.classList.toggle("shift");
+               });
 
-            setTimeout(initSidebarToggle, 100);
-        });
+               document.addEventListener('click', function(event) {
+                   if (!sidebar.contains(event.target) &&
+                       !hamburger.contains(event.target) &&
+                       sidebar.classList.contains('open')) {
+                       sidebar.classList.remove('open');
+                       mainContent.classList.remove('shift');
+                   }
+               });
+
+               sidebar.addEventListener('click', function(e) {
+                   e.stopPropagation();
+               });
+           }
+
+           setTimeout(initSidebarToggle, 100);
+       });
     </script>
 </body>
 </html>

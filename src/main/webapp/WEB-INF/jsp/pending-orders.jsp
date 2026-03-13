@@ -301,6 +301,83 @@ body {
     transform: scale(1.05);
 }
 
+/* Toast Container */
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 290px;
+    max-width: 380px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    pointer-events: all;
+    opacity: 0;
+    transform: translateX(50px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.toast.hide {
+    opacity: 0;
+    transform: translateX(50px);
+}
+
+.toast.success {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+}
+
+.toast.error {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+}
+
+.toast.info {
+    background: linear-gradient(135deg, #f97316, #e85d0e);
+}
+
+.toast-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.toast-msg {
+    flex: 1;
+    line-height: 1.4;
+}
+
+.toast-close {
+    cursor: pointer;
+    opacity: 0.7;
+    font-size: 15px;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: white;
+    padding: 0;
+}
+
+.toast-close:hover {
+    opacity: 1;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     body {
@@ -335,7 +412,8 @@ body {
 
 <jsp:include page="/WEB-INF/jsp/sidebar.jsp" />
 
-
+<!-- Toast Container -->
+<div id="toast-container"></div>
 
 <div class="dashboard" id="mainContent">
     <h2>Incoming Orders</h2>
@@ -356,6 +434,38 @@ body {
 </div>
 
 <script>
+    // Toast function from the example
+    function showToast(msg, type) {
+        const icons = {
+            success: '✅',
+            error: '❌',
+            info: 'ℹ️'
+        };
+
+        const toast = $('<div class="toast ' + type + '"><span class="toast-icon">' + (icons[type] || 'ℹ️') + '</span><span class="toast-msg">' + msg + '</span><button class="toast-close">✕</button></div>');
+
+        // Append the toast to the container
+        $('#toast-container').append(toast);
+
+        // Trigger the show animation
+        requestAnimationFrame(() => requestAnimationFrame(() => toast.addClass('show')));
+
+        // Set a timeout to hide the toast after 3.5 seconds
+        const tmr = setTimeout(() => dismiss(toast), 3500);
+
+        // Close the toast when the close button is clicked
+        toast.find('.toast-close').on('click', () => {
+            clearTimeout(tmr);
+            dismiss(toast);
+        });
+    }
+
+    // Dismiss function to remove toast
+    function dismiss(toast) {
+        toast.removeClass('show').addClass('hide');
+        setTimeout(() => toast.remove(), 350);
+    }
+
     // restaurantId is passed from controller:
     // model.addAttribute("restaurantId", restaurantId);
     const restaurantId = ${restaurantId};
@@ -497,11 +607,11 @@ body {
                 type: "POST",
                 success: function() {
                     table.ajax.reload(null, false);
-                    alert("Order accepted ");
+                    showToast("Order accepted successfully!", "success");
                 },
                 error: function(err) {
                      console.error("Accept failed", err);
-                     alert("Accept failed");
+                     showToast("Accept failed", "error");
                 }
             });
         }
@@ -513,11 +623,11 @@ body {
                 contentType: "application/json",
                 success: function() {
                      table.ajax.reload(null, false);
-                     alert("Order rejected ");
+                     showToast("Order rejected!", "success");
                 },
                 error: function(err) {
                      console.error("Reject failed", err);
-                     alert("Reject failed");
+                     showToast("Reject failed", "error");
                 }
             });
         }
@@ -529,9 +639,10 @@ body {
                 contentType: "application/json",
                 success: function(){
                     table.ajax.reload(null,false);
+                    showToast("Started preparing order!", "info");
                 },
                 error: function(){
-                    alert("Couldnt start preparing");
+                    showToast("Couldn't start preparing", "error");
                 }
             });
         }
@@ -543,9 +654,10 @@ body {
                 contentType: "application/json",
                 success: function(){
                     table.ajax.reload(null,false);
+                    showToast("Order marked as ready!", "success");
                 },
                 error: function(){
-                    alert("Order not ready yet");
+                    showToast("Order not ready yet", "error");
                 }
             });
         }
@@ -557,10 +669,10 @@ body {
                 contentType: "application/json",
                 success: function () {
                     table.ajax.reload(null, false);
-                    alert("Order is now out for delivery ");
+                    showToast("Order is now out for delivery!", "success");
                 },
                 error: function () {
-                    alert("Failed to mark order as out for delivery");
+                    showToast("Failed to mark order as out for delivery", "error");
                 }
             });
         }

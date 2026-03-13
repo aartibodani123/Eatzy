@@ -546,8 +546,6 @@ $(document).ready(function () {
             success: function() {
                 table.ajax.reload(null, false);
                 loadingOverlay.removeClass('active');
-
-                // Show success toast
                 showToast('Restaurant approved successfully', 'success');
             },
             error: function(err) {
@@ -568,31 +566,38 @@ $(document).ready(function () {
             return;
         }
 
-        // Use custom modal instead of prompt for better UX
         showRejectModal(rowData.id, table, loadingOverlay);
     });
 
 
     function showToast(message, type) {
         const toast = $('<div class="toast-message"></div>')
-            .text(message)
+            .html('<i class="fas ' + (type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle') + '"></i> ' + message)
             .css({
                 position: 'fixed',
-                bottom: '20px',
+                top: '20px',
                 right: '20px',
                 background: type === 'success' ? '#2e7d32' : '#b34033',
                 color: 'white',
                 padding: '1rem 2rem',
                 borderRadius: '40px',
                 boxShadow: '0 10px 25px -8px rgba(0,0,0,0.3)',
-                zIndex: 9999,
-                animation: 'slideIn 0.3s ease'
+                zIndex: 10001,
+                animation: 'slideIn 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                fontWeight: '500'
             });
 
         $('body').append(toast);
-        setTimeout(() => toast.fadeOut(() => toast.remove()), 3000);
-    }
 
+        setTimeout(() => {
+            toast.fadeOut(300, function() {
+                $(this).remove();
+            });
+        }, 3000);
+    }
 
     function showRejectModal(restaurantId, table, loadingOverlay) {
         const modal = $(`
@@ -675,7 +680,7 @@ $(document).ready(function () {
         modal.find('.confirm-reject-btn').click(() => {
             const reason = $('#rejectReason').val();
             if (!reason) {
-                alert('Please enter a rejection reason');
+                showToast('Please enter a rejection reason', 'error');
                 return;
             }
 
@@ -694,7 +699,7 @@ $(document).ready(function () {
                 success: function() {
                     table.ajax.reload(null, false);
                     loadingOverlay.removeClass('active');
-                    showToast('Restaurant rejected', 'success');
+                    showToast('Restaurant rejected successfully', 'success');
                 },
                 error: function(err) {
                     console.error("Reject failed", err);
@@ -705,6 +710,10 @@ $(document).ready(function () {
         });
     }
 
+    // Add slideIn animation to style if not already present
+    if (!$('#toast-animation').length) {
+        $('<style id="toast-animation">@keyframes slideIn {from {transform: translateX(100%); opacity: 0;}to {transform: translateX(0); opacity: 1;}}</style>').appendTo('head');
+    }
 
     document.getElementById("hamburgerBtn").addEventListener("click", function () {
         document.getElementById("sidebar").classList.toggle("open");

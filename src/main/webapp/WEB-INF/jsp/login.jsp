@@ -115,7 +115,6 @@
             border-color: #ffcdc7;
         }
 
-
         .input-group {
             margin-bottom: 1.3rem;
         }
@@ -315,9 +314,11 @@
                 <c:if test="${not empty message}">
                     <p class="success-msg">${message}</p>
                 </c:if>
-                <c:if test="${not empty error}">
-                    <p class="error-msg">${error}</p>
-                </c:if>
+
+                <!-- Dynamic error message container -->
+                <div id="errorMessageContainer" style="display: none;">
+                    <p class="error-msg" id="errorMessageText"></p>
+                </div>
 
                 <!-- login form (identical id/fields to preserve your js) -->
                 <form id="loginForm">
@@ -408,7 +409,17 @@
                     "${pageContext.request.contextPath}" + data.redirectUrl;
             })
             .catch(error => {
-                alert("Invalid Email or Password");
+                // Display error message on the page instead of alert
+                const errorContainer = document.getElementById("errorMessageContainer");
+                const errorText = document.getElementById("errorMessageText");
+                errorText.textContent = "Invalid Email or Password";
+                errorContainer.style.display = "block";
+
+                // Hide any existing success message if present
+                const successMsg = document.querySelector(".success-msg");
+                if (successMsg) {
+                    successMsg.style.display = "none";
+                }
             });
         });
     </script>

@@ -365,13 +365,7 @@
 <script>
 
        function showToast(msg, type) {
-
-
            $('#toast-container').empty();
-
-
-
-
            const toast = $('<div class="toast-message ' + type + '">' +
                '<i class="fas ' + (type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle') + '"></i>' +
                '<span>' + msg + '</span>' +
