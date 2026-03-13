@@ -99,4 +99,10 @@ public class CartController {
         CustomerOrder  order = orderService.confirmDelivery(orderId,user.getUserId());
         return ResponseEntity.ok(new ApiResponse<>(200,"Confirmed Delivery",new TrackOrderResponse(order)));
     }
+    @GetMapping("/orders/{orderId}")
+    public OrderResponseDTO getOrderDetails(@PathVariable Long orderId){
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user=userGuard.validateCustomer(email);
+        return orderService.getOrderDetails(orderId,user.getUserId());
+    }
 }

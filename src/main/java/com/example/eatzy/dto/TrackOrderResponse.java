@@ -17,12 +17,14 @@ public class TrackOrderResponse {
     private OrderStatus status;
     private LocalDateTime lastUpdated;
     private double totalAmount;
+    private LocalDateTime createdAt;
 
     public TrackOrderResponse(CustomerOrder order) {
         this.orderId = order.getId();
         this.status = order.getStatus();
         this.lastUpdated = order.getLastUpdated();
         this.totalAmount = order.getTotalAmount();
+        this.createdAt=order.getCreatedAt();
     }
 
 

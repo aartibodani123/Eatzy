@@ -1,5 +1,9 @@
 package com.example.eatzy.service.impl;
 
+import com.example.eatzy.common.exception.ResourceAccessDeniedException;
+import com.example.eatzy.common.exception.ResourceNotFoundException;
+import com.example.eatzy.dto.OrderItemResponseDTO;
+import com.example.eatzy.dto.OrderResponseDTO;
 import com.example.eatzy.dto.TrackOrderResponse;
 import com.example.eatzy.model.*;
 import com.example.eatzy.repository.*;
@@ -10,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -21,6 +26,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private RestaurantOrderRepository restaurantOrderRepository;
+
+    @Autowired
+    private BaseOrderRepository baseOrderRepository;
 
     @Autowired
     private OrderItemRepository orderItemRepository;
@@ -89,7 +97,16 @@ public class OrderServiceImpl implements OrderService {
 
         order.setStatus(OrderStatus.DELIVERED);
 
-        return customerOrderRepository.save(order);
+        CustomerOrder saved = customerOrderRepository.save(order);
+
+        // sync restaurant order
+        RestaurantOrder ro = restaurantOrderRepository.findByCustomerOrderId(orderId)
+                .orElseThrow(() -> new RuntimeException("Restaurant order not found"));
+
+        ro.setStatus(OrderStatus.DELIVERED);
+        restaurantOrderRepository.save(ro);
+
+        return saved;
     }
 
     @Override
@@ -100,6 +117,42 @@ public class OrderServiceImpl implements OrderService {
         return orders.stream()
                 .map(this::toDTO)
                 .toList();
+    }
+
+    @Override
+    public OrderResponseDTO getOrderDetails(Long orderId, Long userId) {
+        BaseOrder order=baseOrderRepository.findById(orderId)
+                .orElseThrow(()->new ResourceNotFoundException("order not found"));
+        if(!order.getUserId().equals(userId)){
+            throw new ResourceAccessDeniedException("Not your Order");
+        }
+        OrderResponseDTO response=new OrderResponseDTO();
+        response.setId(order.getId());
+        response.setStatus(order.getStatus());
+        response.setTotalAmount(order.getTotalAmount());
+        response.setCreatedAt(order.getCreatedAt());
+        response.setUserId(order.getUserId());
+
+        List<OrderItemResponseDTO> items = order.getItems()
+                .stream()
+                .map(this::mapItem)
+                .toList();
+
+        response.setItems(items);
+
+        return response;
+
+    }
+    private OrderItemResponseDTO mapItem(OrderItem item) {
+
+        OrderItemResponseDTO dto = new OrderItemResponseDTO();
+
+        dto.setId(item.getMenuItemId());
+        dto.setName(item.getName());
+        dto.setPrice(item.getPrice());
+        dto.setQuantity(item.getQuantity());
+
+        return dto;
     }
 
 

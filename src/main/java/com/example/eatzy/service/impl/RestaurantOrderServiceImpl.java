@@ -5,9 +5,11 @@ import com.example.eatzy.common.exception.ResourceNotFoundException;
 import com.example.eatzy.dto.OrderItemResponseDTO;
 import com.example.eatzy.dto.OrderResponseDTO;
 //import com.example.eatzy.model.Order;
+import com.example.eatzy.model.CustomerOrder;
 import com.example.eatzy.model.OrderStatus;
 import com.example.eatzy.model.RestaurantOrder;
 //import com.example.eatzy.repository.OrderRepository;
+import com.example.eatzy.repository.CustomerOrderRepository;
 import com.example.eatzy.repository.RestaurantOrderRepository;
 import com.example.eatzy.service.RestaurantOrderService;
 import jakarta.transaction.Transactional;
@@ -21,6 +23,8 @@ import java.util.List;
 public class RestaurantOrderServiceImpl implements RestaurantOrderService {
     @Autowired
     private RestaurantOrderRepository restaurantOrderRepository;
+    @Autowired
+    private CustomerOrderRepository customerOrderRepository;
 
     public List<OrderResponseDTO> getIncomingOrders(Long restaurantId) {
 
@@ -80,8 +84,12 @@ public class RestaurantOrderServiceImpl implements RestaurantOrderService {
         }
 
         order.setStatus(newStatus);
-
         restaurantOrderRepository.save(order);
+
+
+        CustomerOrder customerOrder = order.getCustomerOrder();
+        customerOrder.setStatus(newStatus);
+        customerOrderRepository.save(customerOrder);
 
         return toDto(order);
     }
