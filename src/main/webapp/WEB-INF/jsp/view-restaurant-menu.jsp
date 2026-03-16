@@ -9,7 +9,6 @@
     <title>Restaurant Menu | Eatzy</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         * {
@@ -23,7 +22,6 @@
             background: linear-gradient(145deg, #fefaf5 0%, #fff6ed 100%);
             min-height: 100vh;
         }
-
 
         .content {
             margin-left: 0;
@@ -45,7 +43,7 @@
             box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.15);
         }
 
-
+        /* Enhanced Menu Header */
         .menu-header {
             display: flex;
             align-items: center;
@@ -55,6 +53,18 @@
             padding-bottom: 1.5rem;
             border-bottom: 2px solid #f0e4d5;
             flex-wrap: wrap;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .header-left {
@@ -93,8 +103,8 @@
         }
 
         .header-content h2 {
-            font-size: 2.2rem;
-            font-weight: 800;
+            font-size: 2rem;
+            font-weight: 700;
             color: #1e1e1e;
             margin-bottom: 0.3rem;
             letter-spacing: -0.02em;
@@ -102,7 +112,7 @@
 
         .header-content p {
             color: #6b6b6b;
-            font-size: 1rem;
+            font-size: 0.95rem;
             display: flex;
             align-items: center;
             gap: 1rem;
@@ -118,12 +128,12 @@
             color: #f97316;
             padding: 0.3rem 1rem;
             border-radius: 40px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
             border: 1px solid #f97316;
         }
 
-
+        /* Enhanced Cart Icon */
         .cart-icon {
             position: relative;
             display: inline-flex;
@@ -151,17 +161,17 @@
             background: #2e7d32;
             color: white;
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
             border: 2px solid white;
         }
 
-
+        /* Message Styling */
         #message {
             padding: 1rem 1.5rem;
             border-radius: 40px;
@@ -200,199 +210,16 @@
             }
         }
 
-
+        /* Enhanced Menu Grid - More columns with smaller cards */
         .menu-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.8rem;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
             margin-top: 2rem;
+            animation: fadeIn 0.6s ease-out;
         }
 
-
-        .card {
-            background: white;
-            border: 2px solid #eaeef2;
-            border-radius: 24px;
-            padding: 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            border-color: #f97316;
-            box-shadow: 0 20px 30px -12px rgba(249, 115, 22, 0.3);
-        }
-
-        .card-image {
-            height: 160px;
-            background: linear-gradient(45deg, #f97316, #ff8c42);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .card-image i {
-            font-size: 3rem;
-            color: white;
-            opacity: 0.8;
-        }
-
-        .card-content {
-            padding: 1.5rem;
-        }
-
-        .card h3 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #1e1e1e;
-            margin-bottom: 0.8rem;
-        }
-
-        .card p {
-            color: #6b6b6b;
-            font-size: 0.95rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .card p i {
-            color: #f97316;
-            width: 18px;
-        }
-
-        .price {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #f97316;
-            margin: 1rem 0 1.2rem 0;
-        }
-
-        .price small {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: #6b6b6b;
-        }
-
-
-        .quantity-selector {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .qty-btn {
-            width: 36px;
-            height: 36px;
-            border: 2px solid #eaeef2;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: #f97316;
-            font-weight: 700;
-        }
-
-        .qty-btn:hover {
-            border-color: #f97316;
-            background: #fff6ed;
-        }
-
-        .qty-input {
-            width: 50px;
-            text-align: center;
-            border: 2px solid #eaeef2;
-            border-radius: 40px;
-            padding: 0.3rem;
-            font-weight: 600;
-        }
-
-
-        .btn {
-            width: 100%;
-            padding: 1rem;
-            background: #f97316;
-            color: white;
-            border: none;
-            border-radius: 40px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.8rem;
-        }
-
-        .btn:hover:not(:disabled) {
-            background: #e85d0e;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px -8px rgba(249, 115, 22, 0.4);
-        }
-
-        .btn:disabled {
-            background: #b7ebc3;
-            color: #2e7d32;
-            cursor: not-allowed;
-            opacity: 0.8;
-        }
-
-        .btn i {
-            font-size: 1.1rem;
-        }
-
-
-        .loading {
-            text-align: center;
-            padding: 4rem;
-            color: #6b6b6b;
-            font-size: 1.1rem;
-            grid-column: 1 / -1;
-        }
-
-        .loading::after {
-            content: '...';
-            animation: dots 1.5s steps(4, end) infinite;
-        }
-
-        @keyframes dots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60%, 100% { content: '...'; }
-        }
-
-
-        .empty-menu {
-            text-align: center;
-            padding: 4rem;
-            background: #f9f9fb;
-            border-radius: 30px;
-            color: #6b6b6b;
-            font-size: 1.1rem;
-            border: 2px dashed #eaeef2;
-            grid-column: 1 / -1;
-        }
-
-        .empty-menu i {
-            font-size: 3rem;
-            color: #f97316;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-
-        @keyframes fadeInUp {
+        @keyframes fadeIn {
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -403,10 +230,291 @@
             }
         }
 
+        /* Enhanced Card Styling - Smaller size */
         .card {
-            animation: fadeInUp 0.5s ease forwards;
+            background: white;
+            border: 1px solid #eaeef2;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            max-width: 280px;
+            height: 100%;
+            animation: cardAppear 0.5s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+        .card:nth-child(6) { animation-delay: 0.6s; }
+        .card:nth-child(7) { animation-delay: 0.7s; }
+        .card:nth-child(8) { animation-delay: 0.8s; }
+
+        @keyframes cardAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: #f97316;
+            box-shadow: 0 15px 30px -12px rgba(249, 115, 22, 0.25);
+        }
+
+        /* Enhanced Card Image - Smaller height */
+        .card-image {
+            height: 130px;
+            background: linear-gradient(45deg, #f97316, #ff8c42);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .card:hover .card-image i {
+            transform: scale(1.1);
+        }
+
+        .card-image i {
+            font-size: 2.5rem;
+            color: white;
+            opacity: 0.9;
+            transition: transform 0.3s ease;
+        }
+
+        /* Add category badge */
+        .card-image::after {
+            content: attr(data-category);
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #f97316;
+            padding: 4px 10px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(249, 115, 22, 0.2);
+        }
+
+        /* Enhanced Card Content - Smaller padding */
+        .card-content {
+            padding: 1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1e1e1e;
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            letter-spacing: -0.3px;
+        }
+
+        .card p {
+            color: #6b6b6b;
+            font-size: 0.8rem;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.3rem;
+            line-height: 1.4;
+            min-height: 35px;
+            max-height: 50px;
+            overflow-y: auto;
+            background: #f8fafc;
+            padding: 0.4rem;
+            border-radius: 8px;
+            border: 1px solid #eef2f6;
+        }
+
+        /* Custom scrollbar */
+        .card p::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .card p::-webkit-scrollbar-track {
+            background: #eef2f6;
+            border-radius: 4px;
+        }
+
+        .card p::-webkit-scrollbar-thumb {
+            background: #f97316;
+            border-radius: 4px;
+        }
+
+        .card p i {
+            color: #f97316;
+            font-size: 0.7rem;
+            margin-top: 0.15rem;
+            flex-shrink: 0;
+        }
+
+        /* Enhanced Price */
+        .price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #f97316;
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .price small {
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #6b6b6b;
+        }
+
+        /* Compact Quantity Selector */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .qty-btn {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #eaeef2;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #f97316;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .qty-btn:hover {
+            border-color: #f97316;
+            background: #fff6ed;
+        }
+
+        .qty-input {
+            width: 40px;
+            text-align: center;
+            border: 2px solid #eaeef2;
+            border-radius: 40px;
+            padding: 0.2rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* Enhanced Button - Smaller */
+        .btn {
+            width: 100%;
+            padding: 0.65rem;
+            background: #f97316;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: #e85d0e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -8px rgba(249, 115, 22, 0.4);
+        }
+
+        .btn:disabled {
+            background: #b7ebc3;
+            color: #2e7d32;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        .btn i {
+            font-size: 0.85rem;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #6b6b6b;
+            font-size: 1rem;
+            grid-column: 1 / -1;
+            background: white;
+            border-radius: 24px;
+            border: 1px solid #eef2f6;
+        }
+
+        .loading i {
+            display: block;
+            font-size: 2.5rem;
+            color: #f97316;
+            margin-bottom: 1rem;
+        }
+
+        /* Empty Menu State */
+        .empty-menu {
+            text-align: center;
+            padding: 3rem;
+            background: #f9f9fb;
+            border-radius: 24px;
+            color: #6b6b6b;
+            font-size: 1rem;
+            border: 2px dashed #eaeef2;
+            grid-column: 1 / -1;
+        }
+
+        .empty-menu i {
+            font-size: 2.5rem;
+            color: #f97316;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .content {
+                padding: 1.5rem 1.5rem 1.5rem 4.5rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                gap: 1.25rem;
+            }
+
+            .container {
+                padding: 1.5rem;
+            }
+        }
 
         @media (max-width: 768px) {
             .content {
@@ -415,10 +523,6 @@
 
             .content.shift {
                 margin-left: 0;
-            }
-
-            .container {
-                padding: 1.5rem;
             }
 
             .menu-header {
@@ -435,30 +539,60 @@
             }
 
             .header-content h2 {
-                font-size: 1.8rem;
+                font-size: 1.5rem;
             }
 
             .menu-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+
+            .card-image {
+                height: 110px;
+            }
+
+            .card-image i {
+                font-size: 2rem;
             }
         }
 
         @media (max-width: 480px) {
-            .header-content h2 {
-                font-size: 1.5rem;
+            .menu-grid {
+                grid-template-columns: 1fr;
             }
 
-            .card-image {
-                height: 140px;
+            .card {
+                max-width: 100%;
             }
+
+            .header-content h2 {
+                font-size: 1.25rem;
+            }
+
+            .back-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Subtle pattern overlay */
+        .content::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(rgba(249, 115, 22, 0.02) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+            z-index: -1;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-
     <jsp:include page="/WEB-INF/jsp/sidebar.jsp" />
-
 
     <div class="content" id="mainContent">
         <div class="container">
@@ -477,19 +611,16 @@
                     </div>
                 </div>
 
-
                 <a href="${pageContext.request.contextPath}/customer/cart-page" class="cart-icon">
-                    <i class="fas fa-shopping-cart"></i> View Cart
+                    <i class="fas fa-shopping-cart"></i> Cart
                     <span class="cart-count" id="cartCount">0</span>
                 </a>
             </div>
 
-
             <div id="message" style="display: none;"></div>
 
-
             <div id="menuGrid" class="menu-grid">
-                <div class="loading">Loading delicious menu</div>
+                <div class="loading"><i class="fas fa-spinner fa-pulse"></i>Loading delicious menu...</div>
             </div>
         </div>
     </div>
@@ -523,7 +654,7 @@
                });
            }
 
-           $("#menuGrid").html('<div class="loading">Loading delicious menu</div>');
+           $("#menuGrid").html('<div class="loading"><i class="fas fa-spinner fa-pulse"></i>Loading delicious menu...</div>');
 
            $.ajax({
                url: contextPath + "/customer/restaurants/" + restaurantId + "/menu",
@@ -549,7 +680,7 @@
                                        item.category === 'Starters' ? 'fa-leaf' : 'fa-utensils';
 
                        html += '<div class="card" data-item-id="' + item.id + '">' +
-                                   '<div class="card-image">' +
+                                   '<div class="card-image" data-category="' + (item.category || 'Main Course') + '">' +
                                        '<i class="fas ' + foodIcon + '"></i>' +
                                    '</div>' +
                                    '<div class="card-content">' +
@@ -567,7 +698,7 @@
                                        '<button class="btn add-to-cart" ' +
                                            'data-restaurant-id="' + restaurantId + '" ' +
                                            'data-menu-item-id="' + item.id + '">' +
-                                           '<i class="fas fa-shopping-cart"></i> Add to Cart' +
+                                           '<i class="fas fa-shopping-cart"></i> Add' +
                                        '</button>' +
                                    '</div>' +
                                '</div>';
@@ -624,12 +755,10 @@
                const menuItemId = $(this).data("menu-item-id");
                const quantity = parseInt($('#qty-' + itemId).val()) || 1;
 
-               // Store the current quantity before making the button loading
                const currentQuantity = quantity;
 
                btn.prop("disabled", true);
                btn.html('<i class="fas fa-spinner fa-spin"></i> Adding...');
-               // Remove any green background that might be set
                btn.css("background", "");
 
                $.ajax({
@@ -646,22 +775,18 @@
                            .removeClass('error')
                            .addClass('success')
                            .html('<i class="fas fa-check-circle"></i> ' + currentQuantity + ' x ' +
-                                card.find('h3').text() + ' added to cart!')
+                                card.find('h3').text() + ' added!')
                            .css("display", "flex");
 
-                       // Keep the button text as "Added to Cart" but maintain orange color
-                       btn.html('<i class="fas fa-check"></i> Added to Cart');
-                       // Ensure button stays orange (default color)
+                       btn.html('<i class="fas fa-check"></i> Added');
                        btn.css("background", "#f97316");
 
                        loadCartCount();
 
-                       // Restore button after 2 seconds without changing quantity
                        setTimeout(() => {
                            btn.prop("disabled", false);
-                           btn.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
+                           btn.html('<i class="fas fa-shopping-cart"></i> Add');
                            btn.css("background", "#f97316");
-                           // Don't reset the quantity - keep it as user selected
                        }, 2000);
 
                        setTimeout(() => {
@@ -677,8 +802,7 @@
                            .css("display", "flex");
 
                        btn.prop("disabled", false);
-                       btn.html('<i class="fas fa-shopping-cart"></i> Add to Cart');
-                       // Ensure button returns to orange
+                       btn.html('<i class="fas fa-shopping-cart"></i> Add');
                        btn.css("background", "#f97316");
 
                        setTimeout(() => {

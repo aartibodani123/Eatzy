@@ -22,10 +22,9 @@
         }
 
         body {
-            background: linear-gradient(145deg, #fefaf5 0%, #fff6ed 100%);
+            background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%);
             min-height: 100vh;
         }
-
 
         .content {
             margin-left: 0;
@@ -38,146 +37,294 @@
             margin-left: 280px;
         }
 
-
         .dashboard-container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
             background: white;
-            border-radius: 2.5rem;
-            box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.15);
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(226, 232, 240, 0.4);
         }
 
-
+        /* Enhanced Header Section */
         .page-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 2px solid #f0e4d5;
-            flex-wrap: wrap;
-            gap: 1rem;
+            margin-bottom: 2.5rem;
         }
 
         .page-title {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.2rem;
+            margin-bottom: 1.8rem;
         }
 
         .page-title i {
-            font-size: 2.5rem;
-            color: #f97316;
-            background: #fff6ed;
-            padding: 1rem;
-            border-radius: 50%;
-        }
-
-        .page-title h2 {
             font-size: 2.2rem;
-            font-weight: 800;
-            color: #1e1e1e;
-            letter-spacing: -0.02em;
+            color: #f97316;
+            background: linear-gradient(135deg, #fff6ed 0%, #ffe4d6 100%);
+            padding: 1rem;
+            border-radius: 18px;
+            box-shadow: 0 10px 20px -10px rgba(249, 115, 22, 0.3);
         }
 
-        .page-title h2::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background: #f97316;
-            border-radius: 4px;
-            margin-top: 0.5rem;
-        }
-
-
-        .stats-summary {
+        .title-wrapper {
             display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
+            flex-direction: column;
         }
 
-        .stat-badge {
-            background: #f9f9fb;
-            border: 2px solid #eaeef2;
-            border-radius: 40px;
-            padding: 0.8rem 1.5rem;
+        .title-wrapper h2 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .title-wrapper .subtitle {
+            color: #64748b;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-top: 0.2rem;
+        }
+
+        /* Enhanced Stats Cards - Now below title */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            padding: 1.5rem 1.2rem;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            box-shadow: 0 5px 15px -8px rgba(0, 0, 0, 0.1);
+            gap: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
-        .stat-badge i {
-            color: #f97316;
-            font-size: 1.2rem;
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(249, 115, 22, 0.15), 0 10px 10px -5px rgba(249, 115, 22, 0.05);
+            border-color: #f97316;
         }
 
-        .stat-badge span {
-            font-weight: 600;
-            color: #1e1e1e;
+        .stat-card.active {
+            background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+            border-color: #f97316;
         }
 
-        .stat-badge .count {
-            background: #f97316;
+        .stat-card.active .stat-icon,
+        .stat-card.active .stat-info h3,
+        .stat-card.active .stat-info p {
             color: white;
-            padding: 0.2rem 0.8rem;
-            border-radius: 40px;
-            font-size: 0.9rem;
-            margin-left: 0.5rem;
         }
 
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(249, 115, 22, 0) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
 
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            background: #f8fafc;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: #f97316;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card:hover .stat-icon {
+            background: white;
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .stat-info {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-info h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.2;
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-info p {
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-trend {
+            font-size: 0.85rem;
+            color: #22c55e;
+            background: #dcfce7;
+            padding: 0.2rem 0.6rem;
+            border-radius: 40px;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* Enhanced Table Container */
         .table-container {
             background: white;
-            border-radius: 24px;
-            padding: 1.5rem;
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
-            border: 2px solid #eaeef2;
+            border-radius: 28px;
+            padding: 1.8rem;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
             margin-top: 2rem;
         }
 
+        .table-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
 
+        .table-title {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .table-title h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .table-title span {
+            background: #f1f5f9;
+            color: #f97316;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .filter-chips {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-chip:hover {
+            background: #fff6ed;
+            border-color: #f97316;
+            color: #f97316;
+        }
+
+        .filter-chip.active {
+            background: #f97316;
+            border-color: #f97316;
+            color: white;
+        }
+
+        .filter-chip i {
+            font-size: 0.8rem;
+        }
+
+        /* DataTables Customization */
         .dataTables_wrapper {
             font-family: 'Inter', sans-serif;
         }
 
         .dataTables_wrapper .dataTables_length,
         .dataTables_wrapper .dataTables_filter {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.8rem;
         }
 
         .dataTables_wrapper .dataTables_length label,
         .dataTables_wrapper .dataTables_filter label {
-            color: #1e1e1e;
-            font-weight: 500;
+            color: #0f172a;
+            font-weight: 600;
+            font-size: 0.95rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
         }
 
-        .dataTables_wrapper .dataTables_length select,
+        .dataTables_wrapper .dataTables_length select {
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 0.6rem 2rem 0.6rem 1rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.2s;
+            background: #f8fafc;
+            cursor: pointer;
+        }
+
         .dataTables_wrapper .dataTables_filter input {
-            border: 2px solid #eaeef2;
-            border-radius: 40px;
-            padding: 0.5rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 0.6rem 1rem;
             font-family: 'Inter', sans-serif;
             outline: none;
             transition: all 0.2s;
+            min-width: 280px;
+            background: #f8fafc;
         }
 
         .dataTables_wrapper .dataTables_length select:focus,
         .dataTables_wrapper .dataTables_filter input:focus {
             border-color: #f97316;
             box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+            background: white;
         }
 
-        .dataTables_filter input {
-            min-width: 250px;
-        }
-
-
+        /* Enhanced Table */
         #ordersTable {
             border-collapse: separate;
             border-spacing: 0 0.8rem;
@@ -185,186 +332,208 @@
         }
 
         #ordersTable thead th {
-            background: #f9f9fb;
-            color: #1e1e1e;
+            background: #f8fafc;
+            color: #0f172a;
             font-weight: 700;
             font-size: 0.9rem;
-            padding: 1rem;
+            padding: 1.2rem 1rem;
             border: none;
-            border-bottom: 2px solid #f97316;
+            border-bottom: 3px solid #f97316;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         #ordersTable thead th:first-child {
-            border-radius: 40px 0 0 40px;
+            border-radius: 20px 0 0 20px;
         }
 
         #ordersTable thead th:last-child {
-            border-radius: 0 40px 40px 0;
+            border-radius: 0 20px 20px 0;
         }
 
         #ordersTable tbody tr {
             background: white;
-            border-radius: 40px;
-            transition: all 0.2s;
-            box-shadow: 0 5px 15px -8px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             cursor: pointer;
+            border: 1px solid transparent;
         }
 
         #ordersTable tbody tr:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px -10px rgba(249, 115, 22, 0.3);
+            box-shadow: 0 20px 25px -5px rgba(249, 115, 22, 0.15), 0 10px 10px -5px rgba(249, 115, 22, 0.05);
+            border-color: #f97316;
         }
 
         #ordersTable tbody td {
-            padding: 1.2rem 1rem;
-            border: 2px solid transparent;
-            border-bottom: 2px solid #eaeef2;
-            color: #2e2e2e;
+            padding: 1.4rem 1rem;
+            border: none;
+            color: #334155;
+            font-weight: 500;
         }
 
         #ordersTable tbody td:first-child {
-            border-radius: 40px 0 0 40px;
-            border-left: 2px solid transparent;
+            border-radius: 20px 0 0 20px;
         }
 
         #ordersTable tbody td:last-child {
-            border-radius: 0 40px 40px 0;
-            border-right: 2px solid transparent;
+            border-radius: 0 20px 20px 0;
         }
 
-
+        /* Enhanced Order ID */
         .order-id {
             font-weight: 700;
             color: #f97316;
             background: #fff6ed;
-            padding: 0.3rem 0.8rem;
+            padding: 0.4rem 1rem;
             border-radius: 40px;
             display: inline-block;
             font-size: 0.9rem;
+            border: 1px solid #ffe4d6;
         }
 
-
+        /* Enhanced Status Badges */
         .status-badge {
             display: inline-flex;
             align-items: center;
-            gap: 0.3rem;
-            padding: 0.3rem 1rem;
+            gap: 0.5rem;
+            padding: 0.5rem 1.2rem;
             border-radius: 40px;
             font-size: 0.85rem;
             font-weight: 600;
+            border: 1px solid transparent;
         }
 
         .status-badge i {
-            font-size: 0.5rem;
+            font-size: 0.7rem;
         }
 
         .status-placed {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeeba;
+            background: #fef3c7;
+            color: #92400e;
+            border-color: #fde68a;
         }
 
         .status-accepted {
-            background: #cce5ff;
-            color: #004085;
-            border: 1px solid #b8daff;
+            background: #dbeafe;
+            color: #1e40af;
+            border-color: #bfdbfe;
         }
 
         .status-preparing {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: #dcfce7;
+            color: #166534;
+            border-color: #bbf7d0;
         }
 
         .status-ready {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
+            background: #cffafe;
+            color: #0891b2;
+            border-color: #a5f3fc;
         }
 
         .status-out_for_delivery {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeeba;
+            background: #fed7aa;
+            color: #9a3412;
+            border-color: #fdba74;
         }
 
         .status-delivered {
-            background: #e6f7e6;
-            color: #2e7d32;
-            border: 1px solid #b7ebc3;
+            background: #e0f2fe;
+            color: #0369a1;
+            border-color: #bae6fd;
         }
 
         .status-rejected {
-            background: #fff1f0;
-            color: #b34033;
-            border: 1px solid #ffcdc7;
+            background: #fee2e2;
+            color: #b91c1c;
+            border-color: #fecaca;
         }
 
-
+        /* Enhanced Action Button */
         .action-btn {
-            background: #f97316;
+            background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
             color: white;
             border: none;
             border-radius: 40px;
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.4rem;
             font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.7rem;
             position: relative;
             z-index: 10;
+            box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.3);
         }
 
         .action-btn:hover {
-            background: #e85d0e;
+            background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px -8px #f97316;
-        }
-
-        .action-btn i {
-            font-size: 0.9rem;
-        }
-
-        .action-btn:disabled {
-            background: #b7ebc3;
-            color: #2e7d32;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
+            box-shadow: 0 20px 25px -5px rgba(249, 115, 22, 0.4);
         }
 
         .action-btn.confirm {
-            background: #2e7d32;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.3);
         }
 
         .action-btn.confirm:hover {
-            background: #1e5f22;
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
         }
 
+        /* Enhanced Date Display */
+        .date-display {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
 
-        .message-area {
-            margin: 1rem 0;
-            padding: 1rem;
-            border-radius: 40px;
+        .date-main {
+            font-weight: 600;
+            color: #0f172a;
+            font-size: 0.9rem;
+        }
+
+        .date-time {
+            font-size: 0.75rem;
+            color: #64748b;
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 0.3rem;
+        }
+
+        .date-time i {
+            color: #f97316;
+            font-size: 0.7rem;
+        }
+
+        /* Message Area */
+        .message-area {
+            margin: 1rem 0;
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
             animation: slideIn 0.3s ease;
+            font-weight: 500;
+            border-left: 4px solid;
         }
 
         .message-area.success {
-            background: #e6f7e6;
-            color: #2e7d32;
-            border: 1px solid #b7ebc3;
+            background: #f0fdf4;
+            color: #166534;
+            border-left-color: #22c55e;
         }
 
         .message-area.error {
-            background: #fff1f0;
-            color: #b34033;
-            border: 1px solid #ffcdc7;
+            background: #fef2f2;
+            color: #991b1b;
+            border-left-color: #ef4444;
         }
 
         .message-area i {
@@ -382,7 +551,7 @@
             }
         }
 
-
+        /* Modal Enhancements */
         .order-details-modal {
             display: none;
             position: fixed;
@@ -390,7 +559,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(8px);
             z-index: 10000;
             align-items: center;
             justify-content: center;
@@ -402,38 +572,38 @@
 
         .modal-window {
             background: white;
-            border-radius: 24px;
+            border-radius: 32px;
             width: 90%;
-            max-width: 800px;
+            max-width: 900px;
             max-height: 90vh;
             overflow: hidden;
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
-            animation: modalSlideIn 0.3s ease;
+            box-shadow: 0 50px 70px -15px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .modal-header {
-            background: #f97316;
+            background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
             color: white;
-            padding: 1rem 1.5rem;
+            padding: 1.2rem 1.8rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
         .modal-header h3 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
         }
 
         .close-btn {
             background: rgba(255, 255, 255, 0.2);
             border: none;
             color: white;
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -441,6 +611,7 @@
             cursor: pointer;
             transition: all 0.2s;
             font-size: 1.2rem;
+            backdrop-filter: blur(4px);
         }
 
         .close-btn:hover {
@@ -448,20 +619,15 @@
             transform: rotate(90deg);
         }
 
-        .modal-body {
-            padding: 1.5rem;
-            max-height: calc(90vh - 80px);
-            overflow-y: auto;
-        }
-
-
+        /* Loading Overlay */
         .loading-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255,255,255,0.8);
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(4px);
             display: none;
             justify-content: center;
             align-items: center;
@@ -473,116 +639,25 @@
         }
 
         .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid #f0e4d5;
+            width: 60px;
+            height: 60px;
+            border: 4px solid #f1f5f9;
             border-top-color: #f97316;
+            border-right-color: #f97316;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-
-        .session-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 10002;
-        }
-
-        .session-modal-overlay.active {
-            display: flex;
-        }
-
-        .session-modal-content {
-            background: white;
-            border-radius: 24px;
-            padding: 2rem;
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
-            animation: modalSlideIn 0.3s ease;
-            text-align: center;
-        }
-
-        @keyframes modalSlideIn {
-            from {
-                transform: translateY(-30px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
-
-        .session-modal-content i {
-            font-size: 4rem;
-            color: #f97316;
-            margin-bottom: 1rem;
-        }
-
-        .session-modal-content h3 {
-            color: #1e1e1e;
-            margin-bottom: 1rem;
-        }
-
-        .session-modal-content p {
-            color: #6b6b6b;
-            margin-bottom: 2rem;
-        }
-
-        .modal-btn {
-            background: #f97316;
-            color: white;
-            border: none;
-            border-radius: 40px;
-            padding: 0.8rem 2rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-
-        .dataTables_info {
-            color: #6b6b6b;
-            font-size: 0.9rem;
-            padding-top: 1rem;
-        }
-
-        .dataTables_paginate {
-            padding-top: 1rem;
-        }
-
-        .dataTables_paginate .paginate_button {
-            border-radius: 40px !important;
-            margin: 0 0.2rem;
-            border: 1px solid #eaeef2 !important;
-            background: white !important;
-            color: #2e2e2e !important;
-        }
-
-        .dataTables_paginate .paginate_button.current {
-            background: #f97316 !important;
-            border-color: #f97316 !important;
-            color: white !important;
-        }
-
-        .dataTables_paginate .paginate_button:hover {
-            background: #fff6ed !important;
-            border-color: #f97316 !important;
-        }
-
 
         @media (max-width: 768px) {
             .content {
@@ -597,141 +672,204 @@
                 padding: 1.5rem;
             }
 
-            .page-header {
-                flex-direction: column;
-                align-items: flex-start;
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.8rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 1.4rem;
+            }
+
+            .stat-info h3 {
+                font-size: 1.4rem;
             }
 
             .page-title h2 {
-                font-size: 1.8rem;
+                font-size: 2rem;
             }
 
-            .dataTables_filter input {
-                min-width: 150px;
+            .table-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
 
-        .order-details-container {
-            padding: 1rem;
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
-        .detail-row {
+        /* Pagination Enhancement */
+        .dataTables_paginate {
+            padding-top: 1.5rem;
+        }
+
+        .dataTables_paginate .paginate_button {
+            border-radius: 12px !important;
+            margin: 0 0.2rem;
+            border: 1px solid #e2e8f0 !important;
+            background: white !important;
+            color: #334155 !important;
+            padding: 0.5rem 1rem !important;
+            font-weight: 500 !important;
+        }
+
+        .dataTables_paginate .paginate_button.current {
+            background: #f97316 !important;
+            border-color: #f97316 !important;
+            color: white !important;
+        }
+
+        .dataTables_paginate .paginate_button:hover {
+            background: #fff6ed !important;
+            border-color: #f97316 !important;
+            color: #f97316 !important;
+        }
+
+        /* Info Text */
+        .dataTables_info {
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding-top: 1rem;
+        }
+        /* Enhanced Stats Cards - Made Smaller */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1.2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 1rem 1rem;
             display: flex;
             align-items: center;
-            margin-bottom: 1.2rem;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #f0e4d5;
-        }
-
-        .detail-row:last-child {
-            border-bottom: none;
-        }
-
-        .detail-label {
-            font-weight: 600;
-            color: #6b6b6b;
-            width: 120px;
-            font-size: 0.95rem;
-        }
-
-        .detail-value {
-            color: #1e1e1e;
-            font-weight: 500;
-            flex: 1;
-        }
-
-        .order-id-value {
-            color: #f97316;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .amount-value {
-            color: #2e7d32;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-
-        .items-table-container {
-            margin-top: 1.5rem;
-            overflow-x: auto;
-        }
-
-        .items-table {
-            width: 100%;
-            border-collapse: collapse;
-            border-radius: 12px;
+            gap: 0.8rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
             overflow: hidden;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
         }
 
-        .items-table thead {
-            background: #f97316;
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px -5px rgba(249, 115, 22, 0.15);
+            border-color: #f97316;
+        }
+
+        .stat-card.active {
+            background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+            border-color: #f97316;
+        }
+
+        .stat-card.active .stat-icon,
+        .stat-card.active .stat-info h3,
+        .stat-card.active .stat-info p {
             color: white;
         }
 
-        .items-table thead th {
-            padding: 1rem;
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            background: #f8fafc;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #f97316;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card:hover .stat-icon {
+            background: white;
+            transform: scale(1.05) rotate(3deg);
+        }
+
+        .stat-info {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-info h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.2;
+            margin-bottom: 0.1rem;
+        }
+
+        .stat-info p {
+            color: #64748b;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .stat-trend {
+            font-size: 0.7rem;
+            color: #22c55e;
+            background: #dcfce7;
+            padding: 0.15rem 0.4rem;
+            border-radius: 30px;
+            margin-left: 0.3rem;
             font-weight: 600;
-            font-size: 0.95rem;
-            text-align: left;
         }
 
-        .items-table thead th:first-child {
-            border-radius: 12px 0 0 0;
+        /* Responsive adjustments for smaller stats */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                gap: 0.8rem;
+            }
         }
 
-        .items-table thead th:last-child {
-            border-radius: 0 12px 0 0;
-        }
-
-        .items-table tbody tr {
-            background: #f9f9fb;
-            transition: all 0.2s;
-        }
-
-        .items-table tbody tr:hover {
-            background: #fff6ed;
-        }
-
-        .items-table tbody td {
-            padding: 1rem;
-            border-bottom: 1px solid #eaeef2;
-            color: #1e1e1e;
-        }
-
-        .items-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .items-table tbody tr:last-child td:first-child {
-            border-radius: 0 0 0 12px;
-        }
-
-        .items-table tbody tr:last-child td:last-child {
-            border-radius: 0 0 12px 0;
-        }
-
-
-        .detail-text {
-            color: #1e1e1e;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-            padding: 0.5rem;
-            background: #f9f9fb;
-            border-radius: 8px;
-        }
-
-
-        @media (max-width: 600px) {
-            .detail-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.6rem;
             }
 
-            .detail-label {
-                width: 100%;
+            .stat-card {
+                padding: 0.8rem;
+            }
+
+            .stat-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+                border-radius: 10px;
+            }
+
+            .stat-info h3 {
+                font-size: 1.2rem;
+            }
+
+            .stat-info p {
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -746,15 +884,35 @@
         <div class="page-header">
             <div class="page-title">
                 <i class="fas fa-shopping-bag"></i>
-                <h2>My Orders</h2>
+                <div class="title-wrapper">
+                    <h2>My Orders</h2>
+                    <span class="subtitle">Track and manage your orders in real-time</span>
+                </div>
             </div>
-            <div class="stats-summary" id="statsSummary">
+
+            <!-- Stats Grid - Now below title -->
+            <div class="stats-grid" id="statsGrid">
                 <!-- Stats will be populated by JavaScript -->
             </div>
         </div>
 
         <!-- Orders Table -->
         <div class="table-container">
+            <div class="table-header">
+                <div class="table-title">
+                    <h3>Order History</h3>
+                    <span id="totalOrdersCount">0</span>
+                </div>
+                <div class="filter-chips">
+                    <button class="filter-chip" onclick="clearAllFilters()">
+                        <i class="fas fa-times"></i> Clear All
+                    </button>
+                    <button class="filter-chip" onclick="refreshTable()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </div>
+
             <table id="ordersTable" class="display" style="width:100%">
                 <thead>
                 <tr>
@@ -784,10 +942,9 @@
             </button>
         </div>
         <div class="modal-body" id="orderDetailsContent">
-            <!-- Order details will be loaded here -->
             <div style="text-align: center; padding: 2rem;">
                 <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #f97316;"></i>
-                <p style="margin-top: 1rem; color: #6b6b6b;">Loading order details...</p>
+                <p style="margin-top: 1rem; color: #64748b;">Loading order details...</p>
             </div>
         </div>
     </div>
@@ -798,18 +955,12 @@
     <div class="loading-spinner"></div>
 </div>
 
-<!-- Session Expired Modal -->
-<div class="session-modal-overlay" id="sessionModal">
-    <div class="session-modal-content">
-        <i class="fas fa-clock"></i>
-        <h3>Session Expired</h3>
-        <p>Your session has expired. Please login again to continue.</p>
-        <a href="${pageContext.request.contextPath}/login" class="modal-btn">Go to Login</a>
-    </div>
-</div>
+
 
 <script>
     const contextPath = "${pageContext.request.contextPath}";
+    let ordersData = []; // Store all orders for filtering
+    let currentFilter = null;
 
     function confirmDelivery(orderId, button, event) {
         event.stopPropagation();
@@ -824,7 +975,7 @@
         }
 
         const originalText = $(button).html();
-        $(button).prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
+        $(button).prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Confirming...');
 
         $.ajax({
             url: contextPath + "/customer/orders/" + orderId + "/confirm-delivery",
@@ -846,7 +997,6 @@
     }
 
     function showMessage(message, type) {
-
         $('.message-area').remove();
 
         const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
@@ -856,7 +1006,6 @@
             '</div>';
 
         $('.page-header').after(messageHtml);
-
 
         setTimeout(function() {
             $('.message-area').fadeOut(300, function() {
@@ -874,7 +1023,6 @@
         $('#loadingOverlay').addClass('active');
         $('#orderDetailsModal').addClass('active');
 
-
         $.ajax({
             url: contextPath + "/customer/orders/" + orderId + "/details",
             type: "GET",
@@ -889,16 +1037,16 @@
                     $('#sessionModal').addClass('active');
                 } else if (xhr.status === 404) {
                     $('#orderDetailsContent').html(
-                        '<div style="text-align: center; padding: 2rem; color: #b34033;">' +
-                        '<i class="fas fa-exclamation-circle" style="font-size: 3rem; margin-bottom: 1rem;"></i>' +
-                        '<p>Order not found. The order may have been deleted.</p>' +
+                        '<div style="text-align: center; padding: 3rem; color: #991b1b;">' +
+                        '<i class="fas fa-exclamation-circle" style="font-size: 4rem; margin-bottom: 1rem;"></i>' +
+                        '<p style="font-size: 1.1rem; font-weight: 500;">Order not found. The order may have been deleted.</p>' +
                         '</div>'
                     );
                 } else {
                     $('#orderDetailsContent').html(
-                        '<div style="text-align: center; padding: 2rem; color: #b34033;">' +
-                        '<i class="fas fa-exclamation-circle" style="font-size: 3rem; margin-bottom: 1rem;"></i>' +
-                        '<p>Failed to load order details. Please try again.</p>' +
+                        '<div style="text-align: center; padding: 3rem; color: #991b1b;">' +
+                        '<i class="fas fa-exclamation-circle" style="font-size: 4rem; margin-bottom: 1rem;"></i>' +
+                        '<p style="font-size: 1.1rem; font-weight: 500;">Failed to load order details. Please try again.</p>' +
                         '</div>'
                     );
                 }
@@ -911,7 +1059,7 @@
         $('#orderDetailsContent').html(
             '<div style="text-align: center; padding: 2rem;">' +
             '<i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #f97316;"></i>' +
-            '<p style="margin-top: 1rem; color: #6b6b6b;">Loading order details...</p>' +
+            '<p style="margin-top: 1rem; color: #64748b;">Loading order details...</p>' +
             '</div>'
         );
     }
@@ -927,7 +1075,7 @@
             'REJECTED': { class: 'status-rejected', icon: 'fa-times-circle', text: 'Rejected' }
         };
 
-        const config = statusConfig[status] || { class: '', icon: 'fa-question-circle', text: status };
+        const config = statusConfig[status] || { class: 'status-placed', icon: 'fa-question-circle', text: status };
 
         return '<span class="status-badge ' + config.class + '">' +
                '<i class="fas ' + config.icon + '"></i>' +
@@ -935,10 +1083,10 @@
                '</span>';
     }
 
-
+    // Update stats with clickable cards
     function updateStats(orders) {
         if (!orders || !Array.isArray(orders)) {
-            return;
+            orders = [];
         }
 
         const stats = {
@@ -948,35 +1096,102 @@
             delivered: orders.filter(o => o && o.status === 'DELIVERED').length
         };
 
+        $('#totalOrdersCount').text(stats.total);
+
         const statsHtml =
-            '<div class="stat-badge">' +
-            '<i class="fas fa-shopping-bag"></i>' +
-            '<span>Total Orders <span class="count">' + stats.total + '</span></span>' +
+            '<div class="stat-card" onclick="filterByStatus(null)">' +
+            '<div class="stat-icon"><i class="fas fa-shopping-bag"></i></div>' +
+            '<div class="stat-info">' +
+            '<h3>' + stats.total + '</h3>' +
+            '<p>Total Orders</p>' +
             '</div>' +
-            '<div class="stat-badge">' +
-            '<i class="fas fa-clock"></i>' +
-            '<span>Placed <span class="count">' + stats.placed + '</span></span>' +
+            (stats.total > 0 ? '<span class="stat-trend">↗️ All</span>' : '') +
             '</div>' +
-            '<div class="stat-badge">' +
-            '<i class="fas fa-truck"></i>' +
-            '<span>Out for Delivery <span class="count">' + stats.outForDelivery + '</span></span>' +
+
+            '<div class="stat-card" onclick="filterByStatus(\'PLACED\')">' +
+            '<div class="stat-icon"><i class="fas fa-clock"></i></div>' +
+            '<div class="stat-info">' +
+            '<h3>' + stats.placed + '</h3>' +
+            '<p>Placed</p>' +
             '</div>' +
-            '<div class="stat-badge">' +
-            '<i class="fas fa-check-circle"></i>' +
-            '<span>Delivered <span class="count">' + stats.delivered + '</span></span>' +
+            (stats.placed > 0 ? '<span class="stat-trend">↗️ ' + stats.placed + '</span>' : '') +
+            '</div>' +
+
+            '<div class="stat-card" onclick="filterByStatus(\'OUT_FOR_DELIVERY\')">' +
+            '<div class="stat-icon"><i class="fas fa-truck"></i></div>' +
+            '<div class="stat-info">' +
+            '<h3>' + stats.outForDelivery + '</h3>' +
+            '<p>Out for Delivery</p>' +
+            '</div>' +
+            (stats.outForDelivery > 0 ? '<span class="stat-trend">↗️ ' + stats.outForDelivery + '</span>' : '') +
+            '</div>' +
+
+            '<div class="stat-card" onclick="filterByStatus(\'DELIVERED\')">' +
+            '<div class="stat-icon"><i class="fas fa-check-circle"></i></div>' +
+            '<div class="stat-info">' +
+            '<h3>' + stats.delivered + '</h3>' +
+            '<p>Delivered</p>' +
+            '</div>' +
+            (stats.delivered > 0 ? '<span class="stat-trend">↗️ ' + stats.delivered + '</span>' : '') +
             '</div>';
 
-        $('#statsSummary').html(statsHtml);
+        $('#statsGrid').html(statsHtml);
+
+        // Highlight active filter
+        highlightActiveFilter();
+    }
+
+    // Filter by status
+    function filterByStatus(status) {
+        currentFilter = status;
+        const table = $('#ordersTable').DataTable();
+
+        if (status === null) {
+            table.column(2).search('').draw();
+        } else {
+            table.column(2).search('^' + status + '$', true, false).draw();
+        }
+
+        highlightActiveFilter();
+        showMessage('Filtered: Showing ' + (status || 'all') + ' orders', 'success');
+    }
+
+    // Highlight active filter card
+    function highlightActiveFilter() {
+        $('.stat-card').removeClass('active');
+
+        if (currentFilter === null) {
+            $('.stat-card:first').addClass('active');
+        } else if (currentFilter === 'PLACED') {
+            $('.stat-card:eq(1)').addClass('active');
+        } else if (currentFilter === 'OUT_FOR_DELIVERY') {
+            $('.stat-card:eq(2)').addClass('active');
+        } else if (currentFilter === 'DELIVERED') {
+            $('.stat-card:eq(3)').addClass('active');
+        }
+    }
+
+    // Clear all filters
+    function clearAllFilters() {
+        currentFilter = null;
+        const table = $('#ordersTable').DataTable();
+        table.column(2).search('').draw();
+        highlightActiveFilter();
+        showMessage('All filters cleared', 'success');
+    }
+
+    // Refresh table
+    function refreshTable() {
+        $('#ordersTable').DataTable().ajax.reload();
+        showMessage('Orders refreshed', 'success');
     }
 
     $(document).ready(function () {
-
         const table = $('#ordersTable').DataTable({
             ajax: {
                 url: contextPath + "/customer/orders/get-all-orders",
                 dataSrc: function(json) {
                     console.log("API Response:", json);
-
 
                     let orders = [];
 
@@ -987,20 +1202,17 @@
                     } else if (json && json.orders && Array.isArray(json.orders)) {
                         orders = json.orders;
                     } else if (json && json.content && Array.isArray(json.content)) {
-                        orders = json.content; // For paginated responses
+                        orders = json.content;
                     }
 
+                    // Store orders data for stats
+                    ordersData = orders;
 
                     orders.forEach(function(order, index) {
                         if (!order.orderId) {
-                            console.warn("Order at index " + index + " is missing orderId:", order);
-
                             if (order.id) {
-                                console.log("Found 'id' field instead of 'orderId':", order.id);
-
                                 order.orderId = order.id;
                             } else if (order.order_id) {
-                                console.log("Found 'order_id' field instead of 'orderId':", order.order_id);
                                 order.orderId = order.order_id;
                             }
                         }
@@ -1023,22 +1235,14 @@
             },
             ordering: false,
             columns: [
-                {
-                    data: "orderId",
-                    render: function(data, type, row) {
+                 {
+                       data: null,
+                       render: function(data, type, row, meta) {
 
-                        let orderId = data;
-                        if (!orderId && row) {
-                            orderId = row.orderId || row.id || row.order_id || row.orderID;
-                        }
-
-                        if (!orderId) {
-                            console.warn("Missing orderId in row:", row);
-                            return '<span class="order-id">#N/A</span>';
-                        }
-                        return '<span class="order-id">#' + orderId + '</span>';
-                    }
-                },
+                           return '<span class="order-id">' + (meta.row + 1) + '</span>';
+                       },
+                       title: "S.No"
+                   },
                 {
                     data: "totalAmount",
                     render: function(data, type, row) {
@@ -1046,8 +1250,8 @@
                         if (!amount && row) {
                             amount = row.totalAmount || row.total_Amount || row.total || row.amount;
                         }
-                        if (!amount && amount !== 0) return '₹ 0.00';
-                        return '₹ ' + parseFloat(amount).toFixed(2);
+                        if (!amount && amount !== 0) return '<span style="font-weight: 600; color: #f97316;">₹ 0.00</span>';
+                        return '<span style="font-weight: 600; color: #f97316;">₹ ' + parseFloat(amount).toFixed(2) + '</span>';
                     }
                 },
                 {
@@ -1061,27 +1265,24 @@
                     }
                 },
                 {
-                    data: "lastUpdated",
-                    render: function(data, type, row) {
-                        let lastUpdated = data;
-                        if (!lastUpdated && row) {
-                            lastUpdated = row.lastUpdated || row.last_Updated || row.updatedAt || row.updateDate;
-                        }
-                        if (!lastUpdated) return '-';
-                        try {
-                            return new Date(lastUpdated).toLocaleString();
-                        } catch(e) {
-                            return lastUpdated;
-                        }
-                    }
+                                    data: "lastUpdated",
+                                    render: function(data, type, row) {
+                                        let lastUpdated = data;
+                                        if (!lastUpdated && row) {
+                                            lastUpdated = row.lastUpdated || row.last_Updated || row.updatedAt || row.updateDate;
+                                        }
+                                        if (!lastUpdated) return '-';
+                                        try {
+                                            return new Date(lastUpdated).toLocaleString();
+                                        } catch(e) {
+                                            return lastUpdated;
+                                        }
+                                    }
                 },
                 {
                     data: null,
                     render: function(data, type, row) {
-
                         const orderId = data?.orderId || data?.id || data?.order_id || data?.orderID;
-
-
                         const status = data?.status || data?.orderStatus || data?.order_Status;
 
                         if (status === 'OUT_FOR_DELIVERY' && orderId) {
@@ -1115,50 +1316,38 @@
             }
         });
 
+        // Row click handler
+        $('#ordersTable tbody').on('click', 'tr', function() {
+            const data = table.row(this).data();
 
-       $('#ordersTable tbody').on('click', 'tr', function() {
+            if (!data) {
+                showMessage('Error: No data found for this row', 'error');
+                return;
+            }
 
-           const data = table.row(this).data();
+            const orderId = data.orderId;
 
-           console.log("Row clicked data:", data);
+            if (!orderId) {
+                showMessage('Error: Order ID not found', 'error');
+                return;
+            }
 
-           if (!data) {
-               showMessage('Error: No data found for this row', 'error');
-               return;
-           }
+            openOrderDetails(orderId);
+        });
 
-           const orderId = data.orderId;
-
-           console.log("Extracted Order ID:", orderId);
-
-           if (!orderId) {
-               showMessage('Error: Order ID not found', 'error');
-               return;
-           }
-
-           openOrderDetails(orderId);
-       });
-
-
+        // Modal click outside handler
         $(window).on('click', function(event) {
             if ($(event.target).hasClass('order-details-modal')) {
                 closeOrderDetails();
             }
         });
 
-
+        // ESC key handler
         $(document).on('keydown', function(event) {
             if (event.key === 'Escape' && $('#orderDetailsModal').hasClass('active')) {
                 closeOrderDetails();
             }
         });
-
-
-        $('.page-header').append(
-            '<button class="action-btn" onclick="$(\'#ordersTable\').DataTable().ajax.reload()" style="margin-left: auto;">' +
-            '<i class="fas fa-sync-alt"></i> Refresh' +
-            '</button>'
-        );
     });
 
     // Sidebar toggle functionality

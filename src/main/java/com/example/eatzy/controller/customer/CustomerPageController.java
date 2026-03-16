@@ -72,5 +72,14 @@ public class CustomerPageController {
         return "track-order";
     }
 
+    @GetMapping("/orders/{orderId}/details")
+    public String orderDetailsPage(@PathVariable Long orderId, Model model) {
+
+        model.addAttribute("orderId", orderId);
+
+        return "order-details";
+    }
+
+
 
 }
