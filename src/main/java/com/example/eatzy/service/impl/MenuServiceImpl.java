@@ -3,6 +3,7 @@ package com.example.eatzy.service.impl;
 import com.example.eatzy.common.exception.InvalidOperationException;
 import com.example.eatzy.common.exception.ResourceAccessDeniedException;
 import com.example.eatzy.common.exception.ResourceNotFoundException;
+import com.example.eatzy.dto.CategoryMenuResponseDTO;
 import com.example.eatzy.dto.MenuItemRequest;
 import com.example.eatzy.dto.MenuItemResponseDTO;
 import com.example.eatzy.model.*;
@@ -17,6 +18,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -83,12 +85,34 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<MenuItemResponseDTO> getMenuByRestaurant(Long id) {
+    public List<CategoryMenuResponseDTO> getMenuByRestaurant(Long id) {
         if(!restaurantRepository.existsById(id)){
             throw new ResourceNotFoundException("Restaurant not found with id"+id);
         }
         List<MenuItem> items=menuItemRepository.findByRestaurantIdAndAvailableTrue(id);
-        return items.stream().map(this::toDto).toList();
+        Map<Category, List<MenuItem>> grouped = items.stream()
+                .flatMap(item -> item.getCategories().stream()
+                        .map(cat -> Map.entry(cat, item)))
+                .collect(Collectors.groupingBy(
+                        Map.Entry::getKey,
+                        Collectors.mapping(Map.Entry::getValue, Collectors.toList())
+                ));
+        return grouped.entrySet().stream().map(entry -> {
+            Category category = entry.getKey();
+            List<MenuItem> menuItems = entry.getValue();
+
+            CategoryMenuResponseDTO dto = new CategoryMenuResponseDTO();
+            dto.setCategoryId(category.getId());
+            dto.setCategoryName(category.getName());
+
+            List<MenuItemResponseDTO> itemDtos = menuItems.stream()
+                    .map(this::toDto)
+                    .toList();
+
+            dto.setItems(itemDtos);
+
+            return dto;
+        }).toList();
     }
     private MenuItemResponseDTO toDto(MenuItem item) {
         MenuItemResponseDTO dto = new MenuItemResponseDTO();
