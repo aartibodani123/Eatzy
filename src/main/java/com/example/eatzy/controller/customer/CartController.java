@@ -83,6 +83,19 @@ public class CartController {
         return ResponseEntity.ok(new ApiResponse<>(200,"All orders",response));
 
     }
+    @GetMapping("/orders/get-all-orders-with-restaurant")
+    public ResponseEntity<ApiResponse<List<TrackOrderWithRestaurantResponse>>> allOrdersWithRestaurant() {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        User user = userGuard.validateCustomer(email);
+
+        List<TrackOrderWithRestaurantResponse> response =
+                orderService.allOrdersWithRestaurant(user.getUserId());
+
+        return ResponseEntity.ok(new ApiResponse<>(200, "All orders with restaurant", response));
+    }
     @GetMapping("/orders/{orderId}/track")
     public ResponseEntity<ApiResponse<TrackOrderResponse>> trackOrder(@PathVariable Long orderId){
         String email = SecurityContextHolder.getContext().getAuthentication().getName();

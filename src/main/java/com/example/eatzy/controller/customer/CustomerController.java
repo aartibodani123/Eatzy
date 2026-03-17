@@ -1,6 +1,7 @@
 package com.example.eatzy.controller.customer;
 
 import com.example.eatzy.common.ApiResponse;
+import com.example.eatzy.dto.CategoryMenuResponseDTO;
 import com.example.eatzy.dto.MenuItemResponseDTO;
 import com.example.eatzy.dto.RestaurantResponseDTO;
 import com.example.eatzy.dto.TrackOrderResponse;
@@ -41,8 +42,8 @@ public class CustomerController {
     }
 
     @GetMapping("/restaurants/{id}/menu")
-    public ResponseEntity<ApiResponse<List<MenuItemResponseDTO>>> getMenuByRestaurant(@PathVariable Long id){
-        List<MenuItemResponseDTO> response = menuService.getMenuByRestaurant(id);
+    public ResponseEntity<ApiResponse<List<CategoryMenuResponseDTO>>> getMenuByRestaurant(@PathVariable Long id){
+        List<CategoryMenuResponseDTO> response = menuService.getMenuByRestaurant(id);
         return ResponseEntity.ok(new ApiResponse<>(200,"Menu fetched",response));
     }
 
