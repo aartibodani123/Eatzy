@@ -2,6 +2,7 @@ package com.example.eatzy.service;
 
 import com.example.eatzy.dto.OrderResponseDTO;
 import com.example.eatzy.dto.TrackOrderResponse;
+import com.example.eatzy.dto.TrackOrderWithRestaurantResponse;
 import com.example.eatzy.model.CustomerOrder;
 
 
@@ -15,4 +16,5 @@ public interface OrderService {
     List<TrackOrderResponse> allOrders(Long userId);
 
     OrderResponseDTO getOrderDetails(Long orderId, Long userId);
+    List<TrackOrderWithRestaurantResponse> allOrdersWithRestaurant(Long userId);
 }

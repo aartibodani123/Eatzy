@@ -5,6 +5,7 @@ import com.example.eatzy.common.exception.ResourceNotFoundException;
 import com.example.eatzy.dto.OrderItemResponseDTO;
 import com.example.eatzy.dto.OrderResponseDTO;
 import com.example.eatzy.dto.TrackOrderResponse;
+import com.example.eatzy.dto.TrackOrderWithRestaurantResponse;
 import com.example.eatzy.model.*;
 import com.example.eatzy.repository.*;
 import com.example.eatzy.service.OrderService;
@@ -14,7 +15,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -32,6 +36,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderItemRepository orderItemRepository;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
 
     @Transactional
     public CustomerOrder  placeOrder(Long userId){
@@ -118,7 +125,33 @@ public class OrderServiceImpl implements OrderService {
                 .map(this::toDTO)
                 .toList();
     }
+    @Override
+    public List<TrackOrderWithRestaurantResponse> allOrdersWithRestaurant(Long userId) {
 
+        List<CustomerOrder> orders = customerOrderRepository.findAllByUserId(userId);
+
+
+        Set<Long> restaurantIds = orders.stream()
+                .map(CustomerOrder::getRestaurantId)
+                .collect(Collectors.toSet());
+
+
+        Map<Long, Restaurant> restaurantMap = restaurantRepository.findAllById(restaurantIds)
+                .stream()
+                .collect(Collectors.toMap(Restaurant::getId, r -> r));
+
+        return orders.stream().map(order -> {
+
+            Restaurant restaurant = restaurantMap.get(order.getRestaurantId());
+
+            if (restaurant == null) {
+                throw new ResourceNotFoundException("Restaurant not found for order " + order.getId());
+            }
+
+            return new TrackOrderWithRestaurantResponse(order, restaurant);
+
+        }).toList();
+    }
     @Override
     public OrderResponseDTO getOrderDetails(Long orderId, Long userId) {
         BaseOrder order=baseOrderRepository.findById(orderId)

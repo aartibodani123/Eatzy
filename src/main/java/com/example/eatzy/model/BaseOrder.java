@@ -1,6 +1,7 @@
 package com.example.eatzy.model;
 
 import jakarta.persistence.*;
+import jdk.jfr.EventType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,4 +44,6 @@ public abstract class BaseOrder {
     protected void onUpdate() {
         this.lastUpdated = LocalDateTime.now();
     }
+
+
 }
