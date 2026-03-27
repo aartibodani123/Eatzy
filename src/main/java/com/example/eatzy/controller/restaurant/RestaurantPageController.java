@@ -81,4 +81,14 @@ public class RestaurantPageController {
         return "add-restaurant";
     }
 
+    @GetMapping("/{restaurantId}/coupons")
+    public String manageCoupons(@PathVariable Long restaurantId, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+        User user = userGuard.validateRestaurantOwner(email);
+
+        model.addAttribute("restaurantId", restaurantId);
+        return "manage-coupons";
+    }
+
 }

@@ -37,7 +37,6 @@ public class RestaurantController {
     public ResponseEntity<ApiResponse<RestaurantDTO>> addRestaurantDetails(
             @RequestBody RestaurantDTO rest) throws AccessDeniedException {
 
-        // Get logged-in user from SecurityContext
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || auth.getPrincipal().equals("anonymousUser")) {
             return ResponseEntity.status(401).body(new ApiResponse<>(401, "Access Denied", null));
