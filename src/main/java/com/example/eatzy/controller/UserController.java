@@ -38,19 +38,6 @@ public class UserController {
         return "Customer Orders";
     }
 
-    @PostMapping("/logout")
-    public String logout(HttpServletResponse response) {
-
-        Cookie cookie = new Cookie("jwt", null);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false);
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
-
-        response.addCookie(cookie);
-
-        return "redirect:/login-page";
-    }
 
 }
 
