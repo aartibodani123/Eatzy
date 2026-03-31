@@ -142,6 +142,7 @@ public class MenuServiceImpl implements MenuService {
         dto.setPrice(item.getPrice());
         dto.setDescription(item.getDescription());
         dto.setAvailable(item.isAvailable());
+        dto.setImageUrl(item.getImageUrl());
         return dto;
     }
 }

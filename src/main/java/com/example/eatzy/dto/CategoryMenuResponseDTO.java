@@ -9,4 +9,5 @@ public class CategoryMenuResponseDTO {
     private Long categoryId;
     private String categoryName;
     private List<MenuItemResponseDTO> items;
+    private String imageUrl;
 }

@@ -560,7 +560,7 @@
               });
           }
 
-          /* Category image map */
+          /* Category image map - fallback images */
           function getCategoryImage(name) {
               const map = {
                   'Snacks':      'https://images.unsplash.com/photo-1621939514649-280e2ee25f60?w=400&h=300&fit=crop&auto=format',
@@ -574,6 +574,14 @@
                   'Rice & Bowls':'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&h=300&fit=crop&auto=format'
               };
               return map[name] || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=300&fit=crop&auto=format';
+          }
+
+          /* Function to get item image URL - prioritizes item's imageUrl, falls back to category image */
+          function getItemImage(item, categoryName) {
+              if (item.imageUrl && item.imageUrl !== null && item.imageUrl !== "") {
+                  return item.imageUrl;
+              }
+              return getCategoryImage(categoryName);
           }
 
           /* ── Build quantity selector HTML ── */
@@ -605,11 +613,9 @@
                       return;
                   }
 
-
                   const categories = response.data;
                   let tabsHtml = '';
                   let menuHtml = '';
-
 
                   categories.sort((a, b) => a.categoryName.localeCompare(b.categoryName));
 
@@ -618,9 +624,6 @@
                       const availableItems = cat.items.filter(item => item.available === true);
 
                       if (availableItems.length === 0) return;
-
-                      const catImg  = getCategoryImage(cat.categoryName);
-
 
                       tabsHtml += '<button class="tab-btn' + (idx === 0 ? ' active' : '') + '" ' +
                                       'data-target="cat-' + cat.categoryId + '">' +
@@ -634,21 +637,23 @@
                                       '<button class="view-all-btn">View All <i class="fas fa-chevron-right"></i></button>' +
                                   '</div>';
 
-
                       menuHtml += '<div class="items-card-grid">';
                       $.each(availableItems, function(_, item) {
+                          // Get the appropriate image URL (item's own image or fallback to category image)
+                          const itemImageUrl = getItemImage(item, cat.categoryName);
+
                           menuHtml +=
                               '<div class="card-item" data-item-id="' + item.id + '">' +
-                                  '<img src="' + catImg + '" alt="' + item.name + '" class="card-item-img">' +
+                                  '<img src="' + itemImageUrl + '" alt="' + item.name + '" class="card-item-img" onerror="this.src=\'' + getCategoryImage(cat.categoryName) + '\'">' +
                                   '<div class="card-item-body">' +
-                                      '<div class="card-item-name">' + item.name + '</div>' +
+                                      '<div class="card-item-name">' + escapeHtml(item.name) + '</div>' +
                                       '<div class="card-item-price-row">' +
                                           '<span class="card-item-price">₹ ' + item.price.toFixed(0) + '</span>' +
                                           '<span class="card-item-per">per item</span>' +
                                       '</div>' +
                                       (item.description ?
                                           '<div class="card-item-desc" style="font-size:0.75rem;color:#888;margin-bottom:0.5rem;">' +
-                                              item.description.substring(0, 30) + (item.description.length > 30 ? '...' : '') +
+                                              escapeHtml(item.description.substring(0, 30)) + (item.description.length > 30 ? '...' : '') +
                                           '</div>' :
                                           '') +
                                       '<div class="card-item-footer">' +
@@ -663,7 +668,6 @@
                       menuHtml += '</div>'; /* /category-section */
                   });
 
-
                   if (tabsHtml === '') {
                       $("#menuGrid").html('<div class="empty-menu"><i class="fas fa-utensils"></i>No menu items available</div>');
                       return;
@@ -672,13 +676,10 @@
                   $('#categoryTabs').html(tabsHtml);
                   $('#menuGrid').html(menuHtml);
 
-
-
                   const restaurantName = "<%= restaurantName != null ? restaurantName : "" %>";
                   if (restaurantName) {
                       $('h2').text(restaurantName);
                   }
-
 
                   $('.restaurant-badge').html('<i class="fas fa-store"></i> ID: ' + restaurantId);
               },
@@ -695,6 +696,17 @@
                   $("#menuGrid").html('<div class="empty-menu"><i class="fas fa-exclamation-circle"></i>' + msg + '</div>');
               }
           });
+
+          // Helper function to escape HTML to prevent XSS
+          function escapeHtml(str) {
+              if (!str) return '';
+              return str.replace(/[&<>]/g, function(m) {
+                  if (m === '&') return '&amp;';
+                  if (m === '<') return '&lt;';
+                  if (m === '>') return '&gt;';
+                  return m;
+              });
+          }
 
           /* ── Tab click: scroll to section ── */
           $(document).on('click', '.tab-btn', function() {
