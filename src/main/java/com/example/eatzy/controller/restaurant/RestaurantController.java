@@ -8,10 +8,7 @@ import com.example.eatzy.model.Category;
 import com.example.eatzy.model.Restaurant;
 import com.example.eatzy.model.User;
 import com.example.eatzy.repository.UserRepository;
-import com.example.eatzy.service.CategoryService;
-import com.example.eatzy.service.CustomerUserDetailsService;
-import com.example.eatzy.service.MenuService;
-import com.example.eatzy.service.RestaurantService;
+import com.example.eatzy.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -33,6 +30,8 @@ public class RestaurantController {
     private MenuService menuService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private CloudinaryService cloudinaryService;
     @PostMapping("/addRestaurant")
     public ResponseEntity<ApiResponse<RestaurantDTO>> addRestaurantDetails(
             @RequestBody RestaurantDTO rest) throws AccessDeniedException {

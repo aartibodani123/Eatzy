@@ -12,4 +12,6 @@ public interface MenuService {
     MenuItemRequest addMenuItem(Long id, MenuItemRequest request, String email);
 
     List<CategoryMenuResponseDTO> getMenuByRestaurant(Long id);
+
+    MenuItemRequest addMenuItemWithImage(Long restaurantId, MenuItemRequest request, String email);
 }
