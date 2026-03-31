@@ -20,7 +20,6 @@
             min-height: 100vh;
         }
 
-
         .content {
             margin-left: 0;
             padding: 2rem 2rem 2rem 5rem;
@@ -101,6 +100,45 @@
             color: #f97316;
         }
 
+        /* Toggle Buttons */
+        .category-toggle {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #eaeef2;
+            padding-bottom: 0.5rem;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: #6b6b6b;
+            transition: all 0.2s;
+            border-radius: 8px;
+        }
+
+        .toggle-btn.active {
+            color: #f97316;
+            background: #fff6ed;
+        }
+
+        .toggle-btn:hover {
+            color: #f97316;
+        }
+
+        /* Category Sections */
+        .category-section {
+            display: none;
+        }
+
+        .category-section.active {
+            display: block;
+        }
+
         /* Form Groups */
         .form-group {
             margin-bottom: 1.5rem;
@@ -115,7 +153,8 @@
 
         .form-group input[type="text"],
         .form-group input[type="number"],
-        .form-group select {
+        .form-group select,
+        .form-group input[type="file"] {
             width: 100%;
             padding: 1rem 1.2rem;
             background: #f9f9fb;
@@ -124,6 +163,11 @@
             font-size: 1rem;
             outline: none;
             transition: all 0.2s;
+        }
+
+        .form-group input[type="file"] {
+            padding: 0.8rem 1.2rem;
+            cursor: pointer;
         }
 
         .form-group input:focus,
@@ -150,6 +194,21 @@
             font-size: 0.85rem;
             color: #6b6b6b;
             margin-top: 0.3rem;
+        }
+
+        /* Image Preview */
+        .image-preview {
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 1rem;
+            border: 2px solid #eaeef2;
+            padding: 0.5rem;
+            background: #f9f9fb;
         }
 
         /* Buttons */
@@ -179,6 +238,12 @@
             box-shadow: 0 10px 20px -8px rgba(249, 115, 22, 0.4);
         }
 
+        .btn-primary:disabled {
+            background: #ffb085;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .btn-primary i {
             font-size: 1.1rem;
         }
@@ -199,6 +264,81 @@
 
         #categorySelect option {
             padding: 0.5rem;
+        }
+
+        /* Manual Category Input */
+        .category-input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-input-group input {
+            flex: 1;
+        }
+
+        .btn-add-category {
+            padding: 1rem 1.5rem;
+            background: #f97316;
+            color: white;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-add-category:hover {
+            background: #e85d0e;
+            transform: translateY(-2px);
+        }
+
+        .category-list {
+            margin-top: 1rem;
+            border: 2px solid #eaeef2;
+            border-radius: 1rem;
+            padding: 1rem;
+            background: #f9f9fb;
+        }
+
+        .category-list h4 {
+            font-size: 0.9rem;
+            color: #1e1e1e;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .category-tag {
+            background: #fff6ed;
+            color: #f97316;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid #ffd9b5;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-tag .remove-category {
+            cursor: pointer;
+            font-size: 1rem;
+            color: #f97316;
+            font-weight: bold;
+            margin-left: 0.3rem;
+        }
+
+        .category-tag .remove-category:hover {
+            color: #e85d0e;
         }
 
         /* Message Area */
@@ -252,6 +392,14 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Selected Categories Tags */
+        .selected-categories {
+            margin-top: 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .content {
@@ -268,6 +416,14 @@
 
             .page-header h1 {
                 font-size: 1.8rem;
+            }
+
+            .category-input-group {
+                flex-direction: column;
+            }
+
+            .btn-add-category {
+                justify-content: center;
             }
         }
     </style>
@@ -314,42 +470,81 @@
                 </form>
             </div>
 
-            <!-- Add Menu Item Form -->
+            <!-- Add Menu Item Form with Image Upload -->
             <div class="form-card">
                 <h2><i class="fas fa-utensils"></i> Add Menu Item</h2>
-                <form id="addMenuItemForm">
+                <form id="addMenuItemForm" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label>Restaurant ID</label>
-                        <input type="number" id="menuRestaurantId" placeholder="Enter restaurant ID" required />
+                        <label>Restaurant ID *</label>
+                        <input type="number" id="restaurantId" name="restaurantId" placeholder="Enter restaurant ID" required />
                         <div class="helper-text">Enter restaurant ID to load categories</div>
                     </div>
 
-                    <div class="form-group">
-                        <label>Select Categories</label>
-                        <select id="categorySelect" multiple size="4">
-                            <option value="">Enter Restaurant ID first</option>
-                        </select>
-                        <div class="helper-text">Hold Ctrl/Cmd to select multiple categories</div>
+                    <!-- Category Selection Toggle -->
+                    <div class="category-toggle">
+                        <button type="button" class="toggle-btn active" data-mode="dropdown">
+                            <i class="fas fa-list"></i> Select from List
+                        </button>
+                        <button type="button" class="toggle-btn" data-mode="manual">
+                            <i class="fas fa-keyboard"></i> Enter Manually
+                        </button>
+                    </div>
+
+                    <!-- Dropdown Selection Mode -->
+                    <div id="dropdownMode" class="category-section active">
+                        <div class="form-group">
+                            <label>Select Categories *</label>
+                            <select id="categorySelect" multiple size="4">
+                                <option value="">Enter Restaurant ID first</option>
+                            </select>
+                            <div class="helper-text">Hold Ctrl/Cmd to select multiple categories</div>
+                            <div id="selectedCategoriesDisplay" class="selected-categories"></div>
+                        </div>
+                    </div>
+
+                    <!-- Manual Entry Mode -->
+                    <div id="manualMode" class="category-section">
+                        <div class="form-group">
+                            <label>Add Category IDs *</label>
+                            <div class="category-input-group">
+                                <input type="number" id="manualCategoryId" placeholder="Enter category ID (e.g., 1, 2, 3)" />
+                                <button type="button" id="addCategoryBtn" class="btn-add-category">
+                                    <i class="fas fa-plus"></i> Add Category ID
+                                </button>
+                            </div>
+                            <div class="helper-text">Enter category IDs manually (must exist in the system)</div>
+
+                            <div id="manualCategoryList" style="display: none;">
+                                <div class="category-list">
+                                    <h4><i class="fas fa-tags"></i> Selected Categories:</h4>
+                                    <div id="manualCategoriesContainer" class="category-items"></div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="manualCategoryIds" name="categoryIds" value="" />
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Category IDs (comma separated)</label>
-                        <input type="text" id="categoryIdsInput" placeholder="e.g. 1,2,5" required />
-                        <div class="helper-text">Or enter category IDs manually</div>
+                        <label>Item Name *</label>
+                        <input type="text" id="name" name="name" placeholder="e.g. Paneer Butter Masala" required />
                     </div>
 
                     <div class="form-group">
-                        <label>Item Name</label>
-                        <input type="text" id="itemName" placeholder="e.g. Paneer Butter Masala" required />
+                        <label>Price (₹) *</label>
+                        <input type="number" id="price" name="price" placeholder="e.g. 299" step="0.01" required />
                     </div>
 
                     <div class="form-group">
-                        <label>Price (₹)</label>
-                        <input type="number" id="itemPrice" placeholder="e.g. 299" step="0.01" required />
+                        <label>Item Image</label>
+                        <input type="file" id="imageFile" name="imageFile" accept="image/jpeg,image/png,image/jpg,image/gif" />
+                        <div class="helper-text">Upload image for the menu item (JPEG, PNG, JPG, GIF)</div>
+                        <div class="image-preview" id="imagePreview">
+                            <img id="previewImage" src="#" alt="Preview">
+                        </div>
                     </div>
 
                     <div class="form-group checkbox-group">
-                        <input type="checkbox" id="available" checked />
+                        <input type="checkbox" id="available" name="available" checked />
                         <label for="available" style="display: inline; margin: 0;">Available for ordering</label>
                     </div>
 
@@ -364,6 +559,7 @@
 
 <script>
     const BASE_URL = "http://localhost:8080";
+    let selectedManualCategories = [];
 
     function getToken() {
         return localStorage.getItem("token");
@@ -381,12 +577,166 @@
         }, 5000);
     }
 
+    // Toggle between dropdown and manual modes
+    $(".toggle-btn").click(function() {
+        const mode = $(this).data("mode");
+
+        // Update active state
+        $(".toggle-btn").removeClass("active");
+        $(this).addClass("active");
+
+        // Show appropriate section
+        $(".category-section").removeClass("active");
+        if (mode === "dropdown") {
+            $("#dropdownMode").addClass("active");
+        } else {
+            $("#manualMode").addClass("active");
+            // Refresh display when switching to manual mode
+            updateManualCategoriesDisplay();
+        }
+    });
+
+    // Image preview functionality
+    $("#imageFile").change(function() {
+        const file = this.files[0];
+        if (file) {
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+            if (!validTypes.includes(file.type)) {
+                showMessage("Please select a valid image file (JPEG, PNG, JPG, GIF)", "error");
+                $(this).val("");
+                return;
+            }
+
+            // Validate file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showMessage("Image size should be less than 5MB", "error");
+                $(this).val("");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $("#previewImage").attr("src", e.target.result);
+                $("#imagePreview").show();
+            };
+            reader.readAsDataURL(file);
+        } else {
+            $("#imagePreview").hide();
+            $("#previewImage").attr("src", "#");
+        }
+    });
+
+    // Display selected categories from dropdown
+    function updateSelectedCategoriesDisplay() {
+        const selectedOptions = $("#categorySelect option:selected");
+        const displayDiv = $("#selectedCategoriesDisplay");
+
+        if (selectedOptions.length > 0 && selectedOptions[0].value !== "") {
+            let tags = '';
+            selectedOptions.each(function() {
+                const categoryId = $(this).val();
+                const categoryName = $(this).text().split(' (ID:')[0];
+                tags += `<span class="category-tag">${categoryName} (ID: ${categoryId})</span>`;
+            });
+            displayDiv.html(tags);
+            displayDiv.show();
+        } else {
+            displayDiv.hide();
+            displayDiv.html('');
+        }
+    }
+
+    // Manual category management
+    function updateManualCategoriesDisplay() {
+        const container = $("#manualCategoriesContainer");
+        console.log("Updating manual categories display. Current array:", selectedManualCategories);
+
+        if (selectedManualCategories.length > 0) {
+            $("#manualCategoryList").show();
+            let tags = '';
+            selectedManualCategories.forEach(catId => {
+                tags += `
+                    <span class="category-tag">
+                        Category ID: ${catId}
+                        <span class="remove-category" data-id="${catId}">&times;</span>
+                    </span>
+                `;
+            });
+            container.html(tags);
+            $("#manualCategoryIds").val(selectedManualCategories.join(','));
+            console.log("Manual category IDs saved:", $("#manualCategoryIds").val());
+        } else {
+            $("#manualCategoryList").hide();
+            $("#manualCategoryIds").val('');
+        }
+
+        // Add remove event listeners
+        $(".remove-category").off('click').on('click', function() {
+            const id = parseInt($(this).data("id"));
+            console.log("Removing category ID:", id);
+            selectedManualCategories = selectedManualCategories.filter(catId => catId !== id);
+            updateManualCategoriesDisplay();
+            showMessage(`Category ID ${id} removed`, "success");
+        });
+    }
+
+    // Add manual category
+    $("#addCategoryBtn").click(function() {
+        const categoryIdInput = $("#manualCategoryId").val();
+        const categoryId = parseInt(categoryIdInput);
+
+        console.log("Add button clicked. Input value:", categoryIdInput, "Parsed ID:", categoryId);
+
+        if (!categoryIdInput || categoryIdInput.trim() === "") {
+            showMessage("Please enter a category ID", "error");
+            return;
+        }
+
+        if (isNaN(categoryId)) {
+            showMessage("Please enter a valid number for category ID", "error");
+            return;
+        }
+
+        if (categoryId <= 0) {
+            showMessage("Please enter a positive category ID", "error");
+            return;
+        }
+
+        if (selectedManualCategories.includes(categoryId)) {
+            showMessage(`Category ID ${categoryId} is already added`, "error");
+            return;
+        }
+
+        // Add the category ID
+        selectedManualCategories.push(categoryId);
+        console.log("Added category ID:", categoryId, "Updated array:", selectedManualCategories);
+
+        // Update display
+        updateManualCategoriesDisplay();
+
+        // Clear input
+        $("#manualCategoryId").val("");
+
+        // Show success message
+        showMessage(`Category ID ${categoryId} added successfully`, "success");
+    });
+
+    // Allow pressing Enter key to add category
+    $("#manualCategoryId").keypress(function(e) {
+        if (e.which === 13) { // Enter key
+            e.preventDefault();
+            $("#addCategoryBtn").click();
+        }
+    });
+
     // Load categories when restaurantId changes
-    $(document).on("input", "#menuRestaurantId", function () {
+    $(document).on("input", "#restaurantId", function () {
         const restaurantId = parseInt($(this).val());
 
-        if (!restaurantId) {
+        if (!restaurantId || isNaN(restaurantId)) {
             $("#categorySelect").html('<option value="">Enter Restaurant ID first</option>');
+            $("#selectedCategoriesDisplay").hide();
             return;
         }
 
@@ -403,7 +753,7 @@
                 const categories = res?.data || [];
 
                 if (!categories.length) {
-                    $("#categorySelect").html('<option value="">No categories found</option>');
+                    $("#categorySelect").html('<option value="">No categories found for this restaurant</option>');
                     return;
                 }
 
@@ -412,6 +762,9 @@
                     options += `<option value="${cat.id}">${cat.name} (ID: ${cat.id})</option>`;
                 });
                 $("#categorySelect").html(options);
+
+                // Add change event listener to update display
+                $("#categorySelect").off('change').on('change', updateSelectedCategoriesDisplay);
             },
             error: function (xhr) {
                 console.error("Failed categories API:", xhr.status, xhr.responseText);
@@ -425,11 +778,22 @@
     $("#addCategoryForm").submit(function (e) {
         e.preventDefault();
 
+        const restaurantId = parseInt($("#catRestaurantId").val());
+        if (!restaurantId || isNaN(restaurantId)) {
+            showMessage("Please enter a valid Restaurant ID", "error");
+            return;
+        }
+
         const data = {
-            name: $("#categoryName").val(),
-            restaurantId: parseInt($("#catRestaurantId").val()),
-            description: $("#categoryDescription").val()
+            name: $("#categoryName").val().trim(),
+            restaurantId: restaurantId,
+            description: $("#categoryDescription").val().trim()
         };
+
+        if (!data.name || !data.description) {
+            showMessage("Please fill all fields", "error");
+            return;
+        }
 
         const btn = $(this).find('button[type="submit"]');
         const originalText = btn.html();
@@ -449,13 +813,14 @@
                 $("#categoryDescription").val("");
 
                 // Reload categories if the restaurant ID matches
-                const menuRestId = $("#menuRestaurantId").val();
+                const menuRestId = $("#restaurantId").val();
                 if (menuRestId && parseInt(menuRestId) === data.restaurantId) {
-                    $("#menuRestaurantId").trigger('input');
+                    $("#restaurantId").trigger('input');
                 }
             },
             error: function (xhr) {
-                showMessage(xhr.responseJSON?.message || "Category add failed", "error");
+                const errorMsg = xhr.responseJSON?.message || "Category add failed";
+                showMessage(errorMsg, "error");
             },
             complete: function() {
                 btn.prop('disabled', false).html(originalText);
@@ -463,65 +828,148 @@
         });
     });
 
-    // Add Menu Item
+    // Add Menu Item with Image Upload
     $("#addMenuItemForm").submit(function (e) {
         e.preventDefault();
 
-        const rawCategoryIds = $("#categoryIdsInput").val().trim();
-        const selectedOptions = $("#categorySelect").val();
+        // Get common values
+        const restaurantId = parseInt($("#restaurantId").val());
+        const name = $("#name").val().trim();
+        const price = parseFloat($("#price").val());
+        const available = $("#available").is(":checked");
+        const imageFile = $("#imageFile")[0].files[0];
 
         let categoryIds = [];
 
-        // Use selected options from dropdown if available
-        if (selectedOptions && selectedOptions.length > 0) {
+        // Determine which mode is active
+        const activeMode = $(".toggle-btn.active").data("mode");
+
+        console.log("Active mode:", activeMode);
+
+        if (activeMode === "dropdown") {
+            // Get categories from dropdown
+            const selectedOptions = $("#categorySelect").val();
+            console.log("Selected options from dropdown:", selectedOptions);
+
+            if (!selectedOptions || selectedOptions.length === 0 || selectedOptions[0] === "" || selectedOptions[0] === "Enter Restaurant ID first") {
+                showMessage("Please select at least one category from the list", "error");
+                return;
+            }
             categoryIds = selectedOptions.map(id => parseInt(id));
-        }
-        // Otherwise use comma-separated input
-        else if (rawCategoryIds) {
-            categoryIds = rawCategoryIds
-                .split(",")
-                .map(id => id.trim())
-                .filter(id => id !== "")
-                .map(Number);
+            console.log("Category IDs from dropdown:", categoryIds);
+        } else {
+            // Get categories from manual entry
+            console.log("Manual categories array:", selectedManualCategories);
+            console.log("Manual categories hidden field value:", $("#manualCategoryIds").val());
+
+            if (selectedManualCategories.length === 0) {
+                showMessage("Please add at least one category ID manually", "error");
+                return;
+            }
+            categoryIds = selectedManualCategories;
+            console.log("Category IDs from manual entry:", categoryIds);
         }
 
-        if (categoryIds.length === 0) {
-            showMessage("Please select at least one category", "error");
+        // Validate restaurant ID
+        if (!restaurantId || isNaN(restaurantId)) {
+            showMessage("Please enter a valid Restaurant ID", "error");
             return;
         }
 
-        if (categoryIds.some(isNaN)) {
-            showMessage("Category IDs must be numbers only", "error");
+        // Validate name
+        if (!name) {
+            showMessage("Please enter item name", "error");
             return;
         }
 
-        const data = {
-            name: $("#itemName").val(),
-            price: parseFloat($("#itemPrice").val()),
-            available: $("#available").is(":checked"),
-            restaurantId: parseInt($("#menuRestaurantId").val()),
-            categoryIds: categoryIds
-        };
+        // Validate price
+        if (isNaN(price) || price <= 0) {
+            showMessage("Please enter a valid price", "error");
+            return;
+        }
+
+        // Create FormData - field names must match MenuItemRequest DTO
+        const formData = new FormData();
+        formData.append("restaurantId", restaurantId);
+        formData.append("name", name);
+        formData.append("price", price);
+        formData.append("available", available);
+
+        // Append each category ID - this will bind to List<Long> categoryIds in MenuItemRequest
+        for (let i = 0; i < categoryIds.length; i++) {
+            formData.append("categoryIds[" + i + "]", categoryIds[i]);
+        }
+
+        // Append image if selected
+        if (imageFile) {
+            formData.append("imageFile", imageFile);
+        }
 
         const btn = $(this).find('button[type="submit"]');
         const originalText = btn.html();
         btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Adding...');
 
+        // Log the data being sent for debugging
+        console.log("=== Sending Form Data ===");
+        console.log("Mode:", activeMode);
+        console.log("Restaurant ID:", restaurantId);
+        console.log("Name:", name);
+        console.log("Price:", price);
+        console.log("Available:", available);
+        console.log("Category IDs:", categoryIds);
+        console.log("Has Image:", imageFile ? `Yes - ${imageFile.name} (${imageFile.type}, ${imageFile.size} bytes)` : "No");
+
+        for (let pair of formData.entries()) {
+            if (pair[0] === "imageFile") {
+                console.log(pair[0] + ': [File] ' + (pair[1] ? pair[1].name : 'null'));
+            } else {
+                console.log(pair[0] + ': ' + pair[1]);
+            }
+        }
+
         $.ajax({
-            url: BASE_URL + "/restaurant/add/MenuItem",
+            url: BASE_URL + "/restaurant/image/addMenuItem",
             type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            xhrFields: { withCredentials: true },
+            data: formData,
+            processData: false,
+            contentType: false,
+            headers: {
+                "Authorization": "Bearer " + getToken()
+            },
             success: function (res) {
                 showMessage(res.message || "Menu item added successfully!", "success");
-                $("#itemName").val("");
-                $("#itemPrice").val("");
-                $("#categoryIdsInput").val("");
+                // Reset form fields
+                $("#name").val("");
+                $("#price").val("");
                 $("#available").prop('checked', true);
+                $("#imageFile").val("");
+                $("#imagePreview").hide();
+                $("#previewImage").attr("src", "#");
+
+                // Reset category selections
+                if (activeMode === "dropdown") {
+                    $("#categorySelect").val([]);
+                    updateSelectedCategoriesDisplay();
+                } else {
+                    selectedManualCategories = [];
+                    updateManualCategoriesDisplay();
+                    $("#manualCategoryId").val("");
+                }
             },
             error: function (xhr) {
-                showMessage(xhr.responseJSON?.message || "Menu item add failed", "error");
+                console.error("Error response:", xhr);
+                let errorMessage = "Menu item add failed";
+                if (xhr.responseJSON) {
+                    errorMessage = xhr.responseJSON.message || errorMessage;
+                } else if (xhr.responseText) {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        errorMessage = response.message || errorMessage;
+                    } catch(e) {
+                        errorMessage = xhr.statusText || errorMessage;
+                    }
+                }
+                showMessage(errorMessage, "error");
             },
             complete: function() {
                 btn.prop('disabled', false).html(originalText);
@@ -551,6 +999,9 @@
                 }
             });
         }
+
+        // Initialize manual categories display
+        updateManualCategoriesDisplay();
     });
 </script>
 
