@@ -595,11 +595,22 @@
     </div>
 
     <script>
+        // Helper function to escape HTML and prevent XSS attacks
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
         $(document).ready(function () {
             let area = "<%= area %>";
             const contextPath = "${pageContext.request.contextPath}";
 
-            $("#restaurantGrid").html('<div class="loading"><i class="fas fa-spinner fa-pulse"></i>Finding restaurants in ' + area + '...</div>');
+            $("#restaurantGrid").html('<div class="loading"><i class="fas fa-spinner fa-pulse"></i>Finding restaurants in ' + escapeHtml(area) + '...</div>');
 
             $.ajax({
                 url: contextPath + "/customer/restaurants",
@@ -609,14 +620,19 @@
                     let restaurants = response.data;
 
                     if (!restaurants || restaurants.length === 0) {
-                        $("#restaurantGrid").html('<div class="no-areas"><i class="fas fa-store-alt"></i>No restaurants found in ' + area + '</div>');
+                        $("#restaurantGrid").html('<div class="no-areas"><i class="fas fa-store-alt"></i>No restaurants found in ' + escapeHtml(area) + '</div>');
                         return;
                     }
 
                     let html = "";
 
                     $.each(restaurants, function (i, r) {
-                        const imageUrl = r.imageUrl || 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600';
+                        // Use the imageUrl from backend, fallback to default if not provided
+                        const defaultImage = 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600';
+                        const imageUrl = r.imageUrl && r.imageUrl.trim() !== ""
+                            ? r.imageUrl
+                            : defaultImage;
+
                         const rating = (Math.random() * 1.5 + 3.5).toFixed(1);
                         const deliveryTime = Math.floor(Math.random() * 20 + 25); // Random delivery time between 25-45 mins
 
@@ -625,12 +641,12 @@
                                         '<span class="delivery-badge"><i class="fas fa-motorcycle"></i> ' + deliveryTime + '-35 min</span>' +
                                     '</div>' +
                                     '<div class="card-content">' +
-                                        '<h3>' + r.name + '</h3>' +
+                                        '<h3>' + escapeHtml(r.name) + '</h3>' +
                                         '<div class="restaurant-meta">' +
-                                            '<span><i class="fas fa-map-marker-alt"></i> ' + r.area + '</span>' +
+                                            '<span><i class="fas fa-map-marker-alt"></i> ' + escapeHtml(r.area) + '</span>' +
                                             '<span class="rating-badge"><i class="fas fa-star"></i> ' + rating + '</span>' +
                                         '</div>' +
-                                        '<p><i class="fas fa-location-dot"></i> ' + (r.location || 'Location available') + '</p>' +
+                                        '<p><i class="fas fa-location-dot"></i> ' + escapeHtml(r.location || 'Location available') + '</p>' +
                                         '<button class="view-menu-btn"><i class="fas fa-utensils"></i> View Menu <i class="fas fa-arrow-right"></i></button>' +
                                     '</div>' +
                                 '</div>';
