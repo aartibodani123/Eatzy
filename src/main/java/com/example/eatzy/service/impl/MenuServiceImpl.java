@@ -101,6 +101,7 @@ public class MenuServiceImpl implements MenuService {
         menuItem.setPrice(request.getPrice());
         menuItem.setRestaurant(restaurant);
         menuItem.setCategories(categories);
+        menuItem.setDescription(request.getDescription());
 
         return menuItem;
     }
