@@ -154,7 +154,8 @@
         .form-group input[type="text"],
         .form-group input[type="number"],
         .form-group select,
-        .form-group input[type="file"] {
+        .form-group input[type="file"],
+        .form-group textarea {
             width: 100%;
             padding: 1rem 1.2rem;
             background: #f9f9fb;
@@ -163,6 +164,13 @@
             font-size: 1rem;
             outline: none;
             transition: all 0.2s;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        .form-group textarea {
+            border-radius: 24px;
+            resize: vertical;
+            min-height: 80px;
         }
 
         .form-group input[type="file"] {
@@ -171,7 +179,8 @@
         }
 
         .form-group input:focus,
-        .form-group select:focus {
+        .form-group select:focus,
+        .form-group textarea:focus {
             border-color: #f97316;
             background: white;
             box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
@@ -400,6 +409,14 @@
             gap: 0.5rem;
         }
 
+        /* Character Count */
+        .char-count {
+            text-align: right;
+            font-size: 0.75rem;
+            color: #6b6b6b;
+            margin-top: 0.3rem;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .content {
@@ -535,6 +552,15 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="description" name="description" rows="3" placeholder="Describe the item (e.g., ingredients, serving size, special instructions)" maxlength="500"></textarea>
+                        <div class="helper-text">Brief description of the menu item (optional, max 500 characters)</div>
+                        <div class="char-count">
+                            <span id="charCount">0</span>/500 characters
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label>Item Image</label>
                         <input type="file" id="imageFile" name="imageFile" accept="image/jpeg,image/png,image/jpg,image/gif" />
                         <div class="helper-text">Upload image for the menu item (JPEG, PNG, JPG, GIF)</div>
@@ -576,6 +602,17 @@
             msgDiv.fadeOut();
         }, 5000);
     }
+
+    // Character count for description
+    $("#description").on('input', function() {
+        const length = $(this).val().length;
+        $("#charCount").text(length);
+        if (length > 500) {
+            $(this).val($(this).val().substring(0, 500));
+            $("#charCount").text(500);
+            showMessage("Description cannot exceed 500 characters", "error");
+        }
+    });
 
     // Toggle between dropdown and manual modes
     $(".toggle-btn").click(function() {
@@ -836,6 +873,7 @@
         const restaurantId = parseInt($("#restaurantId").val());
         const name = $("#name").val().trim();
         const price = parseFloat($("#price").val());
+        const description = $("#description").val().trim();
         const available = $("#available").is(":checked");
         const imageFile = $("#imageFile")[0].files[0];
 
@@ -888,6 +926,12 @@
             return;
         }
 
+        // Validate description length
+        if (description.length > 500) {
+            showMessage("Description cannot exceed 500 characters", "error");
+            return;
+        }
+
         // Create FormData - field names must match MenuItemRequest DTO
         const formData = new FormData();
         formData.append("restaurantId", restaurantId);
@@ -895,9 +939,14 @@
         formData.append("price", price);
         formData.append("available", available);
 
+        // Add description if provided
+        if (description) {
+            formData.append("description", description);
+        }
+
         // Append each category ID - this will bind to List<Long> categoryIds in MenuItemRequest
         for (let i = 0; i < categoryIds.length; i++) {
-            formData.append("categoryIds[" + i + "]", categoryIds[i]);
+            formData.append("categoryIds", categoryIds[i]);
         }
 
         // Append image if selected
@@ -915,6 +964,7 @@
         console.log("Restaurant ID:", restaurantId);
         console.log("Name:", name);
         console.log("Price:", price);
+        console.log("Description:", description || "(empty)");
         console.log("Available:", available);
         console.log("Category IDs:", categoryIds);
         console.log("Has Image:", imageFile ? `Yes - ${imageFile.name} (${imageFile.type}, ${imageFile.size} bytes)` : "No");
@@ -941,6 +991,8 @@
                 // Reset form fields
                 $("#name").val("");
                 $("#price").val("");
+                $("#description").val("");
+                $("#charCount").text("0");
                 $("#available").prop('checked', true);
                 $("#imageFile").val("");
                 $("#imagePreview").hide();
