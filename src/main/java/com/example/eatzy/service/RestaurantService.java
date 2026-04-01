@@ -5,6 +5,8 @@ import com.example.eatzy.dto.RestaurantResponseDTO;
 
 import com.example.eatzy.model.Restaurant;
 import com.example.eatzy.model.User;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 import java.nio.file.AccessDeniedException;
@@ -17,4 +19,6 @@ public interface RestaurantService {
     List<RestaurantResponseDTO> getRestaurantsByOwner(Long ownerId);
     boolean isOwnedBy(Long restaurantId, Long ownerId);
     Restaurant getOwnedRestaurant(Long restaurantId, Long ownerId);
+
+    String uploadRestaurantImage(Long restaurantId, MultipartFile image, String email);
 }

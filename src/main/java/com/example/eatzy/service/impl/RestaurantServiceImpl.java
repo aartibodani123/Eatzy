@@ -9,10 +9,13 @@ import com.example.eatzy.model.Status;
 import com.example.eatzy.model.User;
 import com.example.eatzy.repository.RestaurantRepository;
 import com.example.eatzy.repository.UserRepository;
+import com.example.eatzy.service.CloudinaryService;
 import com.example.eatzy.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
@@ -22,6 +25,9 @@ public class RestaurantServiceImpl implements RestaurantService {
     RestaurantRepository repo;
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    CloudinaryService cloudinaryService;
     public RestaurantDTO  addRestuarantDetails(RestaurantDTO rest, User owner) throws AccessDeniedException {
         Restaurant restaurant=new Restaurant();
         restaurant.setName(rest.getName());
@@ -38,7 +44,9 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurant.setOwner(owner);
 
         Restaurant saved = repo.save(restaurant);
+
         RestaurantDTO response = new RestaurantDTO();
+        response.setId(saved.getId());
         response.setName(saved.getName());
         response.setArea(saved.getArea());
         response.setLocation(saved.getLocation());
@@ -51,7 +59,8 @@ public class RestaurantServiceImpl implements RestaurantService {
         if (area == null || area.trim().isEmpty()) {
             throw new IllegalArgumentException("Area must not be empty");
         }
-        List<Restaurant> restaurants = repo.findByAreaIgnoreCase(area);
+        List<Restaurant> restaurants =
+                repo.findActiveApprovedByArea(area, Status.APPROVED);
         return restaurants.stream()
                 .map(this::toDto)
                 .toList();
@@ -85,6 +94,42 @@ public class RestaurantServiceImpl implements RestaurantService {
         dto.setName(restaurant.getName());
         dto.setArea(restaurant.getArea());
         dto.setLocation(restaurant.getLocation());
+        dto.setImageUrl(restaurant.getImageUrl());
         return dto;
+    }
+    public String uploadRestaurantImage(Long restaurantId,
+                                        MultipartFile image,
+                                        String email) {
+
+        Restaurant restaurant = repo.findById(restaurantId)
+                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+
+        if (!restaurant.getOwner().getEmail().equals(email)) {
+            throw new RuntimeException("Unauthorized");
+        }
+
+
+        try {
+
+            if (restaurant.getImagePublicId() != null) {
+                cloudinaryService.deleteImage(restaurant.getImagePublicId());
+            }
+
+
+            var uploadResponse = cloudinaryService.uploadImage(
+                    image,
+                    "eatzy/restaurants"
+            );
+
+            restaurant.setImageUrl(uploadResponse.get("url"));
+            restaurant.setImagePublicId(uploadResponse.get("publicId"));
+
+            repo.saveAndFlush(restaurant);
+
+            return uploadResponse.get("url");
+
+        } catch (Exception e) {
+            throw new RuntimeException("Image upload failed", e);
+        }
     }
 }

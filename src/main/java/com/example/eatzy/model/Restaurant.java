@@ -45,6 +45,12 @@ public class Restaurant {
     @Column(nullable = false)
     private Status status;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column(name = "image_public_id")
+    private String imagePublicId;
+
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", referencedColumnName = "user_id", nullable = false)

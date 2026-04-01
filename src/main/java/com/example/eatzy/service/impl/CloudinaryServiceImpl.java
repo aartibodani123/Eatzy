@@ -32,7 +32,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         Map uploadResult = cloudinary.uploader().upload(
                 file.getBytes(),
                 ObjectUtils.asMap(
-                        "folder", folder,   // 🔥 dynamic folder
+                        "folder", folder,
                         "resource_type", "auto"
                 )
         );
