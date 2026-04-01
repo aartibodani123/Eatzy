@@ -6,7 +6,6 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         * {
@@ -21,7 +20,6 @@
             min-height: 100vh;
         }
 
-
         .content {
             margin-left: 0;
             padding: 2rem 2rem 2rem 5rem;
@@ -33,12 +31,10 @@
             margin-left: 280px;
         }
 
-
         .container {
             max-width: 600px;
             margin: 0 auto;
         }
-
 
         .page-header {
             display: flex;
@@ -72,7 +68,6 @@
             margin-top: 0.5rem;
         }
 
-
         .form-card {
             background: white;
             border-radius: 2rem;
@@ -94,7 +89,6 @@
         .form-card h2 i {
             color: #f97316;
         }
-
 
         .form-group {
             margin-bottom: 1.5rem;
@@ -135,6 +129,106 @@
             font-weight: 400;
         }
 
+        .image-upload-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .image-upload-group label {
+            display: block;
+            font-weight: 600;
+            color: #1e1e1e;
+            margin-bottom: 0.5rem;
+        }
+
+        .image-upload-group label i {
+            color: #f97316;
+            margin-right: 0.5rem;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 1.2rem;
+            background: #f9f9fb;
+            border: 2px dashed #eaeef2;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #6b6b6b;
+        }
+
+        .file-input-label i {
+            font-size: 1.2rem;
+            color: #f97316;
+        }
+
+        .file-input-label span {
+            flex: 1;
+        }
+
+        .file-input-wrapper:hover .file-input-label {
+            border-color: #f97316;
+            background: #fff6ed;
+        }
+
+        .image-preview {
+            margin-top: 1rem;
+            display: none;
+            position: relative;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: #f9f9fb;
+            border: 2px solid #eaeef2;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .remove-image {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .remove-image:hover {
+            background: #f97316;
+            transform: scale(1.05);
+        }
+
+        .image-preview.active {
+            display: block;
+        }
 
         .btn {
             padding: 1rem 2rem;
@@ -167,6 +261,11 @@
             font-size: 1.1rem;
         }
 
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
 
         .message-area {
             margin-top: 1.5rem;
@@ -183,6 +282,13 @@
             background: #e6f7e6;
             color: #2e7d32;
             border: 1px solid #b7ebc3;
+            display: flex;
+        }
+
+        .message-area.warning {
+            background: #fff9e6;
+            color: #b37400;
+            border: 1px solid #ffe8b3;
             display: flex;
         }
 
@@ -208,22 +314,6 @@
             }
         }
 
-
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #f0e4d5;
-            border-top-color: #f97316;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-
         .helper-text {
             font-size: 0.85rem;
             color: #6b6b6b;
@@ -236,20 +326,16 @@
             margin-right: 0.3rem;
         }
 
-
         @media (max-width: 768px) {
             .content {
                 padding: 1rem;
             }
-
             .content.shift {
                 margin-left: 0;
             }
-
             .page-header h1 {
                 font-size: 1.8rem;
             }
-
             .form-card {
                 padding: 1.5rem;
             }
@@ -262,13 +348,11 @@
 
 <div class="content" id="mainContent">
     <div class="container">
-        <!-- Page Header -->
         <div class="page-header">
             <i class="fas fa-store"></i>
             <h1>Add Restaurant</h1>
         </div>
 
-        <!-- Form Card -->
         <div class="form-card">
             <h2><i class="fas fa-plus-circle"></i> Restaurant Details</h2>
 
@@ -293,15 +377,31 @@
                     <input type="text" name="phone" placeholder="e.g. +91 98765 43210" required/>
                 </div>
 
+                <div class="image-upload-group">
+                    <label><i class="fas fa-image"></i> Restaurant Image (Optional)</label>
+                    <div class="file-input-wrapper">
+                        <input type="file" id="restaurantImage" name="image" accept="image/*"/>
+                        <div class="file-input-label">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Choose an image...</span>
+                            <i class="fas fa-chevron-down" style="font-size: 0.9rem;"></i>
+                        </div>
+                    </div>
+                    <div id="imagePreview" class="image-preview">
+                        <img id="previewImg" src="" alt="Preview"/>
+                        <button type="button" class="remove-image" id="removeImageBtn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-paper-plane"></i> Submit for Approval
                 </button>
             </form>
 
-            <!-- Message Area -->
             <div id="message" class="message-area"></div>
 
-            <!-- Helper Text -->
             <div class="helper-text">
                 <i class="fas fa-info-circle"></i>
                 Your restaurant will be reviewed by admin before being published
@@ -312,7 +412,7 @@
 
 <script>
     $(document).ready(function() {
-
+        // Sidebar toggle functionality
         const hamburger = document.getElementById("hamburgerBtn");
         const sidebar = document.getElementById("sidebar");
         const mainContent = document.getElementById("mainContent");
@@ -334,16 +434,133 @@
             });
         }
 
+        // Image preview functionality
+        let selectedFile = null;
 
+        $('#restaurantImage').on('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+                if (!validTypes.includes(file.type)) {
+                    showMessage("Invalid file type. Please upload JPEG, PNG, GIF, or WEBP images only.", "error");
+                    $(this).val('');
+                    return;
+                }
+
+                const maxSize = 5 * 1024 * 1024;
+                if (file.size > maxSize) {
+                    showMessage("File too large. Maximum size is 5MB.", "error");
+                    $(this).val('');
+                    return;
+                }
+
+                selectedFile = file;
+                $(this).siblings('.file-input-label').find('span').text(file.name);
+
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    $('#previewImg').attr('src', event.target.result);
+                    $('#imagePreview').addClass('active');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                selectedFile = null;
+                $(this).siblings('.file-input-label').find('span').text('Choose an image...');
+                $('#imagePreview').removeClass('active');
+                $('#previewImg').attr('src', '');
+            }
+        });
+
+        $('#removeImageBtn').on('click', function() {
+            selectedFile = null;
+            $('#restaurantImage').val('');
+            $('#restaurantImage').siblings('.file-input-label').find('span').text('Choose an image...');
+            $('#imagePreview').removeClass('active');
+            $('#previewImg').attr('src', '');
+        });
+
+        function showMessage(message, type) {
+            const messageDiv = $("#message");
+            messageDiv
+                .removeClass('success warning error')
+                .addClass(type)
+                .html('<i class="fas ' +
+                    (type === 'success' ? 'fa-check-circle' :
+                     type === 'warning' ? 'fa-exclamation-triangle' :
+                     'fa-exclamation-circle') + '"></i> ' + message)
+                .fadeIn();
+
+            setTimeout(() => {
+                messageDiv.fadeOut();
+            }, 5000);
+        }
+
+        function uploadImage(restaurantId, imageFile, successCallback, errorCallback) {
+            const uploadUrl = "/restaurant/" + restaurantId + "/upload-image";
+
+            const formData = new FormData();
+            formData.append('image', imageFile);
+
+            $.ajax({
+                url: uploadUrl,
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function(response) {
+                    if (successCallback) successCallback(response);
+                },
+                error: function(xhr) {
+                    let errorMsg = "Image upload failed";
+                    try {
+                        if (xhr.responseText) {
+                            const errorResponse = JSON.parse(xhr.responseText);
+                            errorMsg = errorResponse.message || errorMsg;
+                        }
+                    } catch(e) {
+                        errorMsg = `Upload failed with status ${xhr.status}`;
+                    }
+
+                    if (xhr.status === 401) {
+                        errorMsg = "Session expired. Please refresh the page and try again.";
+                    } else if (xhr.status === 403) {
+                        errorMsg = "You don't have permission to upload images for this restaurant.";
+                    } else if (xhr.status === 404) {
+                        errorMsg = "Restaurant not found. Please try again.";
+                    }
+
+                    if (errorCallback) errorCallback({ message: errorMsg, details: xhr });
+                }
+            });
+        }
+
+        function resetForm() {
+            $("#addRestaurantForm")[0].reset();
+            selectedFile = null;
+            $('#imagePreview').removeClass('active');
+            $('#restaurantImage').val('');
+            $('#restaurantImage').siblings('.file-input-label').find('span').text('Choose an image...');
+            $('#previewImg').attr('src', '');
+        }
+
+        // Main form submission
         $("#addRestaurantForm").on("submit", function (e) {
             e.preventDefault();
 
             const formData = {
-                name: $("input[name='name']").val(),
-                area: $("input[name='area']").val(),
-                phone: $("input[name='phone']").val(),
-                location: $("input[name='location']").val()
+                name: $("input[name='name']").val().trim(),
+                area: $("input[name='area']").val().trim(),
+                phone: $("input[name='phone']").val().trim(),
+                location: $("input[name='location']").val().trim()
             };
+
+            if (!formData.name || !formData.area || !formData.phone || !formData.location) {
+                showMessage("Please fill in all required fields", "error");
+                return;
+            }
 
             const btn = $(this).find('button[type="submit"]');
             const originalText = btn.html();
@@ -358,40 +575,74 @@
                     withCredentials: true
                 },
                 success: function (response) {
-                    $("#message")
-                        .removeClass('error')
-                        .addClass('success')
-                        .html('<i class="fas fa-check-circle"></i> ' + (response.message || "Restaurant request submitted. Awaiting admin approval."));
+                    let restaurantId = response?.data?.id || response?.id || null;
 
-                    $("#addRestaurantForm")[0].reset();
+                    if (response.data && response.data.id) {
+                        restaurantId = response.data.id;
+                    } else if (response.id) {
+                        restaurantId = response.id;
+                    } else if (response.data && typeof response.data === 'number') {
+                        restaurantId = response.data;
+                    } else if (typeof response === 'number') {
+                        restaurantId = response;
+                    }
 
-                    btn.prop('disabled', false).html(originalText);
-
-                    setTimeout(() => {
-                        $("#message").fadeOut();
-                    }, 5000);
-                },
-                error: function (xhr) {
-                    let msg = "Something went wrong";
-                    if (xhr.status === 403) msg = "You are not authorized to add a restaurant.";
-                    if (xhr.status === 401) {
-                        window.location.href = "${pageContext.request.contextPath}/login";
+                    if (!restaurantId) {
+                        showMessage(response.message || "Restaurant added successfully!", "success");
+                        resetForm();
+                        btn.prop('disabled', false).html(originalText);
                         return;
                     }
-                    if (xhr.responseJSON && xhr.responseJSON.message) {
+
+                    if (selectedFile) {
+                        showMessage("Restaurant created! Uploading image...", "warning");
+
+                        uploadImage(
+                            restaurantId,
+                            selectedFile,
+                            function(uploadResponse) {
+                                showMessage(
+                                    (response.message || "Restaurant added successfully!") + " Image uploaded to Cloudinary.",
+                                    "success"
+                                );
+                                resetForm();
+                                btn.prop('disabled', false).html(originalText);
+                            },
+                            function(error) {
+                                showMessage(
+                                    (response.message || "Restaurant added successfully!") +
+                                    " Warning: " + error.message + ". You can add the image later from restaurant settings.",
+                                    "warning"
+                                );
+                                resetForm();
+                                btn.prop('disabled', false).html(originalText);
+                            }
+                        );
+                    } else {
+                        showMessage(response.message || "Restaurant added successfully! Awaiting admin approval.", "success");
+                        resetForm();
+                        btn.prop('disabled', false).html(originalText);
+                    }
+                },
+                error: function (xhr) {
+                    let msg = "Something went wrong. Please try again.";
+
+                    if (xhr.status === 403) {
+                        msg = "You are not authorized to add a restaurant.";
+                    } else if (xhr.status === 401) {
+                        msg = "Please login to add a restaurant.";
+                        setTimeout(() => {
+                            window.location.href = "${pageContext.request.contextPath}/login";
+                        }, 2000);
+                        return;
+                    } else if (xhr.status === 409) {
+                        msg = "A restaurant with this name already exists in this area.";
+                    } else if (xhr.responseJSON && xhr.responseJSON.message) {
                         msg = xhr.responseJSON.message;
                     }
 
-                    $("#message")
-                        .removeClass('success')
-                        .addClass('error')
-                        .html('<i class="fas fa-exclamation-circle"></i> ' + msg);
-
+                    showMessage(msg, "error");
                     btn.prop('disabled', false).html(originalText);
-
-                    setTimeout(() => {
-                        $("#message").fadeOut();
-                    }, 5000);
                 }
             });
         });
