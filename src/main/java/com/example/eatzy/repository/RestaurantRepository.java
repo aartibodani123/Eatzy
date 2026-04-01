@@ -5,6 +5,7 @@ import com.example.eatzy.model.Status;
 import com.example.eatzy.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,4 +28,12 @@ public interface RestaurantRepository extends JpaRepository<Restaurant ,Long> {
     List<Restaurant> findByOwner_UserId(Long ownerId);
 
     boolean existsByIdAndOwner_UserId(Long restaurantId, Long ownerId);
+    @Query("SELECT r FROM Restaurant r " +
+            "WHERE LOWER(r.area) = LOWER(:area) " +
+            "AND r.status = :status " +
+            "AND r.active = true")
+    List<Restaurant> findActiveApprovedByArea(
+            @Param("area") String area,
+            @Param("status") Status status
+    );
 }

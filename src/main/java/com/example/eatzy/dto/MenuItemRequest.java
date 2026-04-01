@@ -20,5 +20,6 @@ public class MenuItemRequest {
     private MultipartFile imageFile;
     private String imageUrl;
     private String imagePublicId;
+    private String description;
 
 }

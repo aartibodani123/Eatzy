@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
@@ -49,6 +50,25 @@ public class RestaurantController {
 
         ApiResponse<RestaurantDTO> apiResponse = new ApiResponse<>(200,"Restaurant Added", saved);
         return ResponseEntity.ok(apiResponse);
+    }
+    @PostMapping("/{restaurantId}/upload-image")
+    public ResponseEntity<?> uploadRestaurantImage(
+            @PathVariable Long restaurantId,
+            @RequestParam("image") MultipartFile image,
+            Authentication authentication
+    ) throws Exception {
+
+        String email = authentication.getName();
+
+        String imageUrl = restaurantService.uploadRestaurantImage(
+                restaurantId,
+                image,
+                email
+        );
+
+        return ResponseEntity.ok(
+                new ApiResponse<>(200, "Image uploaded", imageUrl)
+        );
     }
 
     @PostMapping("/add/MenuItem")
