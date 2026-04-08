@@ -4,6 +4,8 @@ package com.example.eatzy.controller;
 import com.example.eatzy.common.ApiResponse;
 import com.example.eatzy.model.User;
 import com.example.eatzy.service.impl.UserServiceImpl;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -34,6 +36,20 @@ public class UserController {
     @GetMapping("/orders")
     public String customerOrders() {
         return "Customer Orders";
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpServletResponse response) {
+
+        Cookie cookie = new Cookie("jwt", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+
+        response.addCookie(cookie);
+
+        return "redirect:/login-page";
     }
 
 }

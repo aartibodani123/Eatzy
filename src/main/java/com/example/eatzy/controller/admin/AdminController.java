@@ -3,6 +3,7 @@ package com.example.eatzy.controller.admin;
 import com.example.eatzy.common.ApiResponse;
 import com.example.eatzy.dto.RestaurantDTO;
 import com.example.eatzy.dto.StatusUpdateDTO;
+import com.example.eatzy.dto.UserResponseDTO;
 import com.example.eatzy.repository.RestaurantRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -32,6 +33,12 @@ public class AdminController {
         long count =adminService.countTotalCustomer();
         return Map.of("totalCustomers",count);
 
+    }
+    @GetMapping("/get/customers")
+    @ResponseBody
+    public ResponseEntity<ApiResponse<List<UserResponseDTO>>> getAllCustomers(){
+        List<UserResponseDTO> customers=adminService.getAllCustomers();
+        return ResponseEntity.ok(new ApiResponse<List<UserResponseDTO>>(200,"All customers" ,customers));
     }
     @GetMapping("/countRestaurants")
     @ResponseBody

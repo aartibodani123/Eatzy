@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Data
-@Getter
-@Setter
+
 public class StatusUpdateDTO {
     private Long id;
     private Status status;

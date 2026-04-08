@@ -2,9 +2,12 @@ package com.example.eatzy.service.impl;
 
 import com.example.eatzy.dto.RestaurantDTO;
 import com.example.eatzy.dto.StatusUpdateDTO;
+import com.example.eatzy.dto.UserResponseDTO;
 import com.example.eatzy.exception.ResourceNotFoundException;
 import com.example.eatzy.model.Restaurant;
+import com.example.eatzy.model.Role;
 import com.example.eatzy.model.Status;
+import com.example.eatzy.model.User;
 import com.example.eatzy.repository.RestaurantRepository;
 import com.example.eatzy.repository.UserRepository;
 import com.example.eatzy.service.AdminService;
@@ -62,6 +65,16 @@ public class AdminServiceImpl implements AdminService {
                 .toList();
 
     }
+
+    @Override
+    public List<UserResponseDTO> getAllCustomers() {
+        List<User> customers=repo.findByRole(Role.CUSTOMER);
+
+        return customers.stream()
+                .map(this::toDTO)
+                .toList();
+    }
+
     private RestaurantDTO toDTO(Restaurant r) {
         RestaurantDTO dto = new RestaurantDTO();
         dto.setId(r.getId());
@@ -74,6 +87,13 @@ public class AdminServiceImpl implements AdminService {
         dto.setStatus(r.getStatus());
         dto.setRejectionReason(r.getRejectionReason());
 
+        return dto;
+    }
+    private UserResponseDTO toDTO(User user){
+        UserResponseDTO dto=new UserResponseDTO();
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+        dto.setEmail(user.getEmail());
         return dto;
     }
 

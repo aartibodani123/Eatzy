@@ -3,6 +3,7 @@ package com.example.eatzy.controller;
 import com.example.eatzy.dto.AuthRequest;
 import com.example.eatzy.util.JwtUtil;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +53,7 @@ public class AuthController {
                     redirectUrl="/admin/dashboard";
                     break;
                 case "ROLE_RESTAURANT_OWNER"  :
-                    redirectUrl="/restaurant_owner";
+                    redirectUrl="/restaurant/dashboard";
                     break;
                 default:
                     redirectUrl="/customer/dashboard";
@@ -69,4 +70,5 @@ public class AuthController {
                     .body("Invalid email or password");
         }
     }
+
 }

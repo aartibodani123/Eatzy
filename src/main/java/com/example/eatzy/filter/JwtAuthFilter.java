@@ -31,7 +31,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String token = null;
         String email = null;
         System.out.println("Cookies received:");
-        // 🔥 Extract JWT from cookie
         if (request.getCookies() != null) {
             System.out.println("Token from cookie: " + token);
 

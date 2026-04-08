@@ -15,7 +15,7 @@ public class PageController {
     }
     @GetMapping("/")
     public String home() {
-        return "index";
+        return "home-page";
     }
 
     @GetMapping("/signup-page")
@@ -31,5 +31,10 @@ public class PageController {
     @GetMapping("/admin/pending-restaurants-page")
     public String pendingRestaurantsPage() {
         return "pending-restaurants"; // pending-restaurants.jsp
+    }
+
+    @GetMapping("/admin/customer-details")
+    public String customerDetailsPage(){
+        return "customer-details";
     }
 }
